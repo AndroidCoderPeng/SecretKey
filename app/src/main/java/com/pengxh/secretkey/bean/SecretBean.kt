@@ -12,4 +12,6 @@ class SecretBean {
     lateinit var secretAccount: String //账号
 
     lateinit var secretPassword: String //密码
+
+    lateinit var recoverable: String //是否可以恢复  0-可恢复，1-不可恢复
 }

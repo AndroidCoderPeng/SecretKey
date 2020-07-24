@@ -45,13 +45,17 @@ class SQLiteUtil private constructor() {
         fun instance() = sqLiteUtil
     }
 
-    fun saveSecret(secretTitle: String, secretAccount: String, secretPassword: String) {
+    fun saveSecret(secretTitle: String,
+        secretAccount: String,
+        secretPassword: String,
+        recoverable: String) {
         if (!isSecretExist(secretTitle)) {
             //需要双重判断，title和account都相同才认为是同一个账号修改密码，否则认为是新增账号密码
             val values = ContentValues()
             values.put("secretTitle", secretTitle)
             values.put("secretAccount", secretAccount)
             values.put("secretPassword", secretPassword)
+            values.put("recoverable", recoverable)
             db.insert(SECRET, null, values)
         } else {
 
@@ -67,6 +71,7 @@ class SQLiteUtil private constructor() {
             resultBean.secretTitle = cursor.getString(cursor.getColumnIndex("secretTitle"))
             resultBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
             resultBean.secretPassword = cursor.getString(cursor.getColumnIndex("secretPassword"))
+            resultBean.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
             list.add(resultBean)
             //下一次循环开始
             cursor.moveToNext()
