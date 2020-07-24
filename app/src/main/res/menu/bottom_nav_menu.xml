@@ -5,14 +5,14 @@
     <item
         android:id="@+id/nav_home"
         android:enabled="true"
-        android:icon="@mipmap/ic_launcher"
-        android:title="密码"
+        android:icon="@mipmap/password"
+        android:title="密码箱"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/nav_settings"
         android:enabled="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/settings"
         android:title="设置中心"
         app:showAsAction="ifRoom" />
 </menu>

@@ -85,7 +85,7 @@ class AgreementDialog private constructor(builder: Builder) :
             //免责声明
             spanText.setSpan(object : ClickableSpan() {
                 override fun onClick(widget: View) {
-//                    context.startActivity(Intent(context, ExonerationActivity::class.java))
+                    //                    context.startActivity(Intent(context, ExonerationActivity::class.java))
                 }
 
                 override fun updateDrawState(ds: TextPaint) {
@@ -100,7 +100,7 @@ class AgreementDialog private constructor(builder: Builder) :
             //隐私政策
             spanText.setSpan(object : ClickableSpan() {
                 override fun onClick(widget: View) {
-//                    context.startActivity(Intent(context, PrivacyActivity::class.java))
+                    //                    context.startActivity(Intent(context, PrivacyActivity::class.java))
                 }
 
                 override fun updateDrawState(ds: TextPaint) {
@@ -112,8 +112,7 @@ class AgreementDialog private constructor(builder: Builder) :
             subMessage.movementMethod = LinkMovementMethod.getInstance()
             subMessage.text = spanText
         }
-        val confirmButton =
-            findViewById<Button>(R.id.confirmButton)
+        val confirmButton = findViewById<Button>(R.id.confirmButton)
         confirmButton?.setOnClickListener(this)
         val cancelView = findViewById<TextView>(R.id.cancelView)
         cancelView?.setOnClickListener(this)

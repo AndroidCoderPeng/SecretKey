@@ -4,10 +4,10 @@ import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.pengxh.app.multilib.base.BaseNormalActivity
-import com.pengxh.secretkey.ui.fragment.HomePageFragment
-import com.pengxh.secretkey.ui.fragment.SettingsFragment
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.ViewPagerAdapter
+import com.pengxh.secretkey.ui.fragment.HomePageFragment
+import com.pengxh.secretkey.ui.fragment.SettingsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseNormalActivity() {

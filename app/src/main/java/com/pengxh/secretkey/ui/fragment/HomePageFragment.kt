@@ -23,8 +23,8 @@ class HomePageFragment : BaseFragment() {
     override fun initLayoutView(): Int = R.layout.fragment_home
 
     override fun initData() {
-        activity?.let { StatusBarColorUtil.setColor(it, Color.WHITE) }
-        ImmersionBar.with(this).statusBarDarkFont(true, 0.2f).init()
+        activity?.let { StatusBarColorUtil.setColor(it, Color.parseColor("#03DAC5")) }
+        ImmersionBar.with(this).init()
 
         mTitleLeftView.visibility = View.GONE
         mTitleView.text = "密码箱"
