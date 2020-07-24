@@ -22,4 +22,21 @@
         <!-- 背景变灰：整个屏幕变灰，配合setCanceledOnTouchOutside(false) -->
         <item name="android:backgroundDimEnabled">true</item>
     </style>
+
+    <!--APP内所有左边图片样式-->
+    <style name="leftImageStyle">
+        <item name="android:layout_width">80px</item>
+        <item name="android:layout_height">80px</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginStart">10dp</item>
+    </style>
+
+    <!--APP内所有右边小箭头样式-->
+    <style name="rightImageStyle">
+        <item name="android:layout_width">55px</item>
+        <item name="android:layout_height">55px</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginEnd">10dp</item>
+    </style>
 </resources>

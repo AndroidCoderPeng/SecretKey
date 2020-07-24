@@ -36,7 +36,7 @@ class WelcomeActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks
             } else {
                 AgreementDialog.Builder()
                     .setContext(this)
-                    .setDialogTitle("免责声明和隐私政策")
+                    .setDialogTitle("使用须知")
                     .setDialogMessage("我们将严格按照上述协议为您提供服务，保护您的信息安全，点击“同意”即表示您已阅读并同意全部条款，可以继续使用本应用。")
                     .setOnDialogClickListener(object : AgreementDialog.OnDialogClickListener {
                         override fun onConfirmClick() {
