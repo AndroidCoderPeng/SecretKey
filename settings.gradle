@@ -1,0 +1,2 @@
+rootProject.name='SecretKey'
+include ':app'
