@@ -6,7 +6,7 @@ import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseFragment
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.StatusBarColorUtil
-import kotlinx.android.synthetic.main.include_title.*
+import kotlinx.android.synthetic.main.include_title_main.*
 
 /**
  * @author: Pengxh
