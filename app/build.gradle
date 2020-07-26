@@ -42,4 +42,8 @@ dependencies {
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
     //fragment快速实现
     implementation 'com.gyf.immersionbar:immersionbar-components:3.0.0'
+    //仿iOS风格的dialog库
+    implementation 'com.aihook:alertview:1.0.0'
+    //底部BottomSheet
+    implementation 'me.shaohui:bottomdialog:1.1.9'
 }

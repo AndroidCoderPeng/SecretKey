@@ -59,6 +59,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/cacheSizeLayout"
             style="@style/itemLayoutStyle"
             android:layout_marginTop="15dp">
 
@@ -70,7 +71,20 @@
                 style="@style/textViewStyle"
                 android:text="清除缓存" />
 
-            <ImageView style="@style/rightImageStyle" />
+            <TextView
+                android:id="@+id/cacheSizeView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:layout_toStartOf="@id/rightView"
+                android:text="0"
+                android:textColor="@color/colorText"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/rightView"
+                style="@style/rightImageStyle" />
         </RelativeLayout>
 
         <RelativeLayout
