@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="PasswordEditText">
-        <attr name="passwordLength" format="integer" />
-        <attr name="strokeWidth" format="dimension" />
-        <attr name="strokeColor" format="color" />
-        <attr name="viewHeight" format="integer" />
-        <attr name="textColor" format="color" />
-        <attr name="textSize" format="dimension" />
-        <attr name="isDrawDot" format="boolean" />
-        <attr name="dotRadius" format="dimension" />
-        <attr name="dotColor" format="color" />
-        <attr name="focusStrokeColor" format="color" />
-        <attr name="columnWidth" format="dimension" />
+        <!-- 密码的个数 -->
+        <attr name="passwordNumber" format="integer"/>
+        <!-- 密码圆点的半径 -->
+        <attr name="passwordRadius" format="dimension" />
+        <!-- 密码圆点的颜色 -->
+        <attr name="passwordColor" format="color" />
+        <!-- 下划线的厚度 -->
+        <attr name="underlineSize" format="dimension" />
+        <!-- 下划线的颜色 -->
+        <attr name="underlineColor" format="color" />
+        <!-- 分割线的颜色 -->
+        <attr name="divisionLineColor" format="color" />
+        <!-- 分割线的大小 -->
+        <attr name="divisionLineSize" format="color" />
+        <!-- 背景边框的颜色 -->
+        <attr name="bgColor" format="color" />
+        <!-- 背景边框的大小 -->
+        <attr name="bgSize" format="dimension" />
+        <!-- 背景边框的圆角大小 -->
+        <attr name="bgCorner" format="dimension"/>
+        <!-- -->
+        <attr name="bgStyle" format="integer" >
+            <enum name="border" value="0" />
+            <enum name="underline" value="1" />
+        </attr>
     </declare-styleable>
 </resources>
