@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/include_title_white" />
+
+    <com.pengxh.secretkey.widgets.GestureLockView
+        android:id="@+id/gestureLockView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:maxFailCounts="3"
+        app:minPoint="4"
+        app:paintColor="@color/colorAccent"
+        app:paintTextSize="20sp" />
+</LinearLayout>

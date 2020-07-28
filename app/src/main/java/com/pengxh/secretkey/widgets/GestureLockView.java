@@ -109,22 +109,22 @@ public class GestureLockView extends View {
         if (selected != null) {
             selectedBitmap = ((BitmapDrawable) selected).getBitmap();
         } else {
-            selectedBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_finger_selected);
+            selectedBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.finger_selected);
         }
         if (unSelect != null) {
             unSelectedBitmap = ((BitmapDrawable) unSelect).getBitmap();
         } else {
-            unSelectedBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_finger_unselected);
+            unSelectedBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.finger_unselected);
         }
         if (selectedSmall != null) {
             selectedBitmapSmall = ((BitmapDrawable) selectedSmall).getBitmap();
         } else {
-            selectedBitmapSmall = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_finger_selected_small);
+            selectedBitmapSmall = BitmapFactory.decodeResource(getResources(), R.mipmap.finger_selected_small);
         }
         if (unSelectSmall != null) {
             unSelectedBitmapSmall = ((BitmapDrawable) unSelectSmall).getBitmap();
         } else {
-            unSelectedBitmapSmall = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_finger_unselected_new);
+            unSelectedBitmapSmall = BitmapFactory.decodeResource(getResources(), R.mipmap.finger_unselected_small);
         }
         //等待时间,默认30s
         waitTime = typedArray.getInteger(R.styleable.GestureLockView_waitTime, 30);
@@ -161,7 +161,7 @@ public class GestureLockView extends View {
         mTimer = new Timer();
         //计算上次失败时间与现在的时间差
         try {
-            long lastTime = PreferenceCache.getGestureTime();
+            long lastTime = (long) SaveKeyValues.getValue("gestureTime", 0L);
             Date date = new Date();
             if (lastTime != 0 && (date.getTime() - lastTime) / 1000 < waitTime) {
                 //失败时间未到，还处于锁定状态
@@ -347,7 +347,7 @@ public class GestureLockView extends View {
                     //如果View处于认证状态
                     if (stateFlag == STATE_LOGIN) {
                         //相同那么认证成功
-                        if (gestureData.equals(loadSharedPrefferenceData())) {
+                        if (gestureData.equals(loadGestureData())) {
                             mError = false;
                             postListener(true);
                             invalidate();
@@ -359,8 +359,7 @@ public class GestureLockView extends View {
                                 mTimeOut = true;
                                 gestureData.clear();
                                 Date date = new Date();
-                                SaveKeyValues.putValue("", date.getTime());
-                                PreferenceCache.putGestureTime(date.getTime());
+                                SaveKeyValues.putValue("gestureTime", date.getTime());
                                 mTimerTask = new InnerTimerTask(handler);
                                 mTimer.schedule(mTimerTask, 0, 1000);
                                 invalidate();
@@ -390,11 +389,11 @@ public class GestureLockView extends View {
                         } else {
                             //两次认证成功
                             if (gestureData.equals(gestureDataCopy)) {
-                                saveToSharedPrefference(gestureData);
+                                saveGestureData(gestureData);
                                 mError = false;
                                 stateFlag = STATE_LOGIN;
                                 postListener(true);
-                                saveState();
+                                SaveKeyValues.putValue("state", stateFlag);
                             } else {
                                 mError = true;
                                 EasyToast.showToast("与上次手势绘制不一致，请重新设置", EasyToast.WARING);
@@ -412,31 +411,27 @@ public class GestureLockView extends View {
     }
 
     //读取之前保存的List
-    public List<GestureBean> loadSharedPrefferenceData() {
+    public List<GestureBean> loadGestureData() {
         List<GestureBean> list = new ArrayList<>();
-//        SharedPreferences mSharedPreference = mContext.getSharedPreferences("GESTURAE_DATA", Activity.MODE_PRIVATE);
         //取出点数
-        int size = mSharedPreference.getInt("data_size", 0);
+        int size = (int) SaveKeyValues.getValue("data_size", 0);
         //和坐标
         for (int i = 0; i < size; i++) {
-            String str = mSharedPreference.getString("data_" + i, "0 0");
+            String str = (String) SaveKeyValues.getValue("data_" + i, "0 0");
             list.add(new GestureBean(Integer.parseInt(str.split(" ")[0]), Integer.parseInt(str.split(" ")[1])));
         }
         return list;
     }
 
     //将点的xy list存入sp
-    private void saveToSharedPrefference(List<GestureBean> data) {
-        SharedPreferences sp = mContext.getSharedPreferences("GESTURAE_DATA", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor edit = sp.edit();
-//        //存入多少个点
-        edit.putInt("data_size", data.size()); /*sKey is an array*/
-//        //和每个店的坐标
-//        for (int i = 0; i < data.size(); i++) {
-//            edit.remove("data_" + i);
-//            edit.putString("data_" + i, data.get(i).getX() + " " + data.get(i).getY());
-//        }
-        edit.apply();
+    private void saveGestureData(List<GestureBean> data) {
+        //存入多少个点
+        SaveKeyValues.putValue("dataSize", data.size()); /*sKey is an array*/
+        //和每个点的坐标
+        for (int i = 0; i < data.size(); i++) {
+            SaveKeyValues.removeKey("data_" + i);
+            SaveKeyValues.putValue("data_" + i, data.get(i).getX() + " " + data.get(i).getY());
+        }
     }
 
 
@@ -513,14 +508,6 @@ public class GestureLockView extends View {
     private int getState() {
         SharedPreferences mSharedPreference = mContext.getSharedPreferences("STATE_DATA", Activity.MODE_PRIVATE);
         return mSharedPreference.getInt("state", STATE_REGISTER);
-    }
-
-    //成功后保存状态
-    private boolean saveState() {
-        SharedPreferences sp = mContext.getSharedPreferences("STATE_DATA", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor edit = sp.edit();
-        edit.putInt("state", stateFlag);
-        return edit.commit();
     }
 
     //清除以前保存的状态，用于关闭View
@@ -611,10 +598,10 @@ public class GestureLockView extends View {
         return minPointNumbers;
     }
 
-    public void setMinPointNumbers(int minPointNums) {
-        if (minPointNums <= 3)
+    public void setMinPointNumbers(int minPointNumbers) {
+        if (minPointNumbers <= 3)
             this.minPointNumbers = 3;
-        if (minPointNums >= 9)
+        if (minPointNumbers >= 9)
             this.minPointNumbers = 9;
     }
 }

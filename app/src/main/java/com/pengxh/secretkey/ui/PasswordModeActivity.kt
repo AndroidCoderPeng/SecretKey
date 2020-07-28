@@ -1,5 +1,6 @@
 package com.pengxh.secretkey.ui
 
+import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import com.gyf.immersionbar.ImmersionBar
@@ -44,11 +45,16 @@ class PasswordModeActivity : BaseNormalActivity() {
             }
         }
 
-        gestureSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            //手势解锁打开前需要检查是否有手势解锁方式
-            if (isChecked) {
-                numberSwitch.isChecked = false
-                fingerprintSwitch.isChecked = false
+        val gestureData = SaveKeyValues.getValue("gestureData", "") as String
+        if (gestureData == "") {
+            startActivity(Intent(this, GestureSetActivity::class.java))
+        } else {
+            gestureSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+                //手势解锁打开前需要检查是否有手势解锁方式
+                if (isChecked) {
+                    numberSwitch.isChecked = false
+                    fingerprintSwitch.isChecked = false
+                }
             }
         }
 
