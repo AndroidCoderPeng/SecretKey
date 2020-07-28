@@ -2,7 +2,7 @@
 
     <!-- Base application theme. -->
 
-    <style name="AgreementDialog">
+    <style name="DialogStyle">
         <!-- Dialog的windowFrame框为无 -->
         <item name="android:windowFrame">@null</item>
         <!-- 是否显示title -->

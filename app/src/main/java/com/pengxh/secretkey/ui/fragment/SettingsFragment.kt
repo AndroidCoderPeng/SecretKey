@@ -12,6 +12,7 @@ import com.pengxh.app.multilib.utils.FileUtil
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
+import com.pengxh.secretkey.ui.PasswordCheckActivity
 import com.pengxh.secretkey.ui.PasswordSetActivity
 import com.pengxh.secretkey.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.fragment_settings.*
@@ -30,8 +31,6 @@ class SettingsFragment : BaseFragment() {
         private const val Tag = "SettingsFragment"
     }
 
-    private var errorCount = 0
-
     override fun initLayoutView(): Int = R.layout.fragment_settings
 
     override fun initData() {
@@ -47,26 +46,15 @@ class SettingsFragment : BaseFragment() {
         /**
          * 密码设置Layout
          * */
-        if (errorCount < 3) {
-            passwordLayout.setOnClickListener {
-                //需要判断之前有无设置密码
-                val password = SaveKeyValues.getValue("password", "") as String
-                Log.d(Tag, "原先设置的密码是: $password")
-                if (password == "") {
-                    enterPasswordSetActivity()
-                } else {
-                    //显示密码输入框，验证通过后即可进入密码设置页面
-                    if (true) {
-                        enterPasswordSetActivity()
-                    } else {
-                        //提示错误，并且记录错误次数，错误三次就需要等待一小时后再试
-                        errorCount++
-                        EasyToast.showToast("密码错误，您还可以尝试" + (3 - errorCount) + "次", EasyToast.ERROR)
-                    }
-                }
+        passwordLayout.setOnClickListener {
+            //需要判断之前有无设置密码
+            val firstPassword = SaveKeyValues.getValue("firstPassword", "") as String
+            Log.d(Tag, "原先设置的密码是: $firstPassword")
+            if (firstPassword == "") {
+                startActivity(Intent(context, PasswordSetActivity::class.java))
+            } else {
+                startActivity(Intent(context, PasswordCheckActivity::class.java))
             }
-        } else {
-            EasyToast.showToast("休息1小时后再试吧", EasyToast.WARING)
         }
 
         /**
@@ -92,12 +80,5 @@ class SettingsFragment : BaseFragment() {
                     }
                 }).setCancelable(false).show()
         }
-    }
-
-    /**
-     * 密码设置页面
-     * */
-    private fun enterPasswordSetActivity() {
-        startActivity(Intent(context, PasswordSetActivity::class.java))
     }
 }

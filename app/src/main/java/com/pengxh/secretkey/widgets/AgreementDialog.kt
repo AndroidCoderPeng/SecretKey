@@ -21,7 +21,7 @@ import com.pengxh.secretkey.R
  * @date: 2020/7/24 10:44
  */
 class AgreementDialog private constructor(builder: Builder) :
-    AlertDialog(builder.mContext!!, R.style.AgreementDialog), View.OnClickListener {
+    AlertDialog(builder.mContext!!, R.style.DialogStyle), View.OnClickListener {
 
     private var ctx: Context? = null
     private var title: String? = null

@@ -24,6 +24,9 @@
 
         <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.PasswordSetActivity" />
+        <activity android:name=".ui.PasswordCheckActivity" />
+        <activity android:name=".ui.PasswordDoubleCheckActivity" />
+        <activity android:name=".ui.PasswordModeActivity" />
     </application>
 
 </manifest>

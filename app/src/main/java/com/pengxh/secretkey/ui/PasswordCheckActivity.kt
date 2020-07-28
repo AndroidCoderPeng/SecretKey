@@ -2,12 +2,12 @@ package com.pengxh.secretkey.ui
 
 import android.content.Intent
 import android.graphics.Color
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.app.multilib.utils.SaveKeyValues
+import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.StatusBarColorUtil
 import com.pengxh.secretkey.widgets.DigitKeyboard
@@ -16,25 +16,21 @@ import kotlinx.android.synthetic.main.activity_password_set.*
 import kotlinx.android.synthetic.main.include_title_white.*
 
 /**
- * @description: TODO
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @date: 2020/7/25 21:29
+ * @description: TODO
+ * @date: 2020/7/28 11:01
  */
-class PasswordSetActivity : BaseNormalActivity(), DigitKeyboard.DigitKeyboardClickListener,
+class PasswordCheckActivity : BaseNormalActivity(), DigitKeyboard.DigitKeyboardClickListener,
     PasswordEditText.OnFinishListener {
 
-    companion object {
-        private const val Tag: String = "PasswordSetActivity"
-    }
-
-    override fun initLayoutView(): Int = R.layout.activity_password_set
+    override fun initLayoutView(): Int = R.layout.activity_password_check
 
     override fun initData() {
         StatusBarColorUtil.setColor(this, Color.WHITE)
         ImmersionBar.with(this).statusBarDarkFont(true).init()
 
-        mTitleView.text = "设置密码"
+        mTitleView.text = "输入密码"
         mTitleRightView.visibility = View.GONE
     }
 
@@ -61,13 +57,15 @@ class PasswordSetActivity : BaseNormalActivity(), DigitKeyboard.DigitKeyboardCli
     }
 
     override fun onPasswordFinish(password: String?) {
-        Log.d(Tag, "设置密码: $password")
         if (password != null || password != "") {
-            SaveKeyValues.putValue("firstPassword", password)
+            val firstPassword = SaveKeyValues.getValue("firstPassword", "") as String
+            if (password == firstPassword) {
+                startActivity(Intent(this, PasswordModeActivity::class.java))
+                finish()
+            } else {
+                EasyToast.showToast("密码错误", EasyToast.ERROR)
+            }
         }
-        //第一遍设置完成后再来设置一次，两次对比相同就保存密码，否则重新对比
-        startActivity(Intent(this, PasswordDoubleCheckActivity::class.java))
-        finish()
     }
 
     override fun onPasswordChanged(password: String?) {
