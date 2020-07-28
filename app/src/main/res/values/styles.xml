@@ -1,7 +1,4 @@
 <resources>
-
-    <!-- Base application theme. -->
-
     <style name="DialogStyle">
         <!-- Dialog的windowFrame框为无 -->
         <item name="android:windowFrame">@null</item>
@@ -50,5 +47,13 @@
         <item name="android:layout_marginStart">135px</item>
         <item name="android:textColor">@color/colorText</item>
         <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="switchStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginEnd">10dp</item>
     </style>
 </resources>

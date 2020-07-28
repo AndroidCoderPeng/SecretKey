@@ -2,7 +2,6 @@ package com.pengxh.secretkey.ui
 
 import android.content.Intent
 import android.graphics.Color
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import com.gyf.immersionbar.ImmersionBar
@@ -24,10 +23,6 @@ import kotlinx.android.synthetic.main.include_title_white.*
  */
 class PasswordDoubleCheckActivity : BaseNormalActivity(), DigitKeyboard.DigitKeyboardClickListener,
     PasswordEditText.OnFinishListener {
-
-    companion object {
-        private const val Tag: String = "PasswordDoubleCheckActivity"
-    }
 
     override fun initLayoutView(): Int = R.layout.activity_password_set
 
@@ -62,7 +57,6 @@ class PasswordDoubleCheckActivity : BaseNormalActivity(), DigitKeyboard.DigitKey
     }
 
     override fun onPasswordFinish(password: String?) {
-        Log.d(Tag, "检验密码: $password")
         if (password != null || password != "") {
             val firstPassword = SaveKeyValues.getValue("firstPassword", "") as String
 
