@@ -12,6 +12,8 @@ import com.pengxh.app.multilib.utils.FileUtil
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
+import com.pengxh.secretkey.ui.GestureCheckActivity
+import com.pengxh.secretkey.ui.GestureSetActivity
 import com.pengxh.secretkey.ui.PasswordCheckActivity
 import com.pengxh.secretkey.ui.PasswordSetActivity
 import com.pengxh.secretkey.utils.StatusBarColorUtil
@@ -47,13 +49,29 @@ class SettingsFragment : BaseFragment() {
          * 密码设置Layout
          * */
         passwordLayout.setOnClickListener {
-            //需要判断之前有无设置密码
-            val firstPassword = SaveKeyValues.getValue("firstPassword", "") as String
-            Log.d(Tag, "原先设置的密码是: $firstPassword")
-            if (firstPassword == "") {
-                startActivity(Intent(context, PasswordSetActivity::class.java))
-            } else {
-                startActivity(Intent(context, PasswordCheckActivity::class.java))
+            //判断解密模式
+            when (SaveKeyValues.getValue("mode", "numberSwitch") as String) {
+                "numberSwitch" -> {
+                    //需要判断之前有无设置密码
+                    val firstPassword = SaveKeyValues.getValue("firstPassword", "") as String
+                    if (firstPassword == "") {
+                        startActivity(Intent(context, PasswordSetActivity::class.java))
+                    } else {
+                        startActivity(Intent(context, PasswordCheckActivity::class.java))
+                    }
+                }
+                "gestureSwitch" -> {
+                    val gesturePassword = SaveKeyValues.getValue("gesturePassword", "") as String
+                    Log.d(Tag, "gestureSwitch: $gesturePassword")
+                    if (gesturePassword == "") {
+                        startActivity(Intent(context, GestureSetActivity::class.java))
+                    } else {
+                        startActivity(Intent(context, GestureCheckActivity::class.java))
+                    }
+                }
+                "fingerprintSwitch" -> {
+                    EasyToast.showToast("指纹验证", EasyToast.DEFAULT)
+                }
             }
         }
 

@@ -28,6 +28,7 @@
         <activity android:name=".ui.PasswordDoubleCheckActivity" />
         <activity android:name=".ui.PasswordModeActivity" />
         <activity android:name=".ui.GestureSetActivity" />
+        <activity android:name=".ui.GestureCheckActivity" />
     </application>
 
 </manifest>

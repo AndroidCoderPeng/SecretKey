@@ -1,6 +1,5 @@
 package com.pengxh.secretkey.ui
 
-import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import com.gyf.immersionbar.ImmersionBar
@@ -27,39 +26,57 @@ class PasswordModeActivity : BaseNormalActivity() {
 
         mTitleView.text = "设置解锁方式"
         mTitleRightView.visibility = View.GONE
+
+        selectMode()
     }
 
     override fun initEvent() {
         mTitleLeftView.setOnClickListener { this.finish() }
 
-        val firstPassword = SaveKeyValues.getValue("firstPassword", "") as String
-        if (firstPassword != "") {
-            numberSwitch.isChecked = true
+        when (SaveKeyValues.getValue("mode", "numberSwitch") as String) {
+            "numberSwitch" -> {
+                numberSwitch.isChecked = true
+                gestureSwitch.isChecked = false
+                fingerprintSwitch.isChecked = false
+            }
+            "gestureSwitch" -> {
+                numberSwitch.isChecked = false
+                gestureSwitch.isChecked = true
+                fingerprintSwitch.isChecked = false
+            }
+            "fingerprintSwitch" -> {
+                numberSwitch.isChecked = false
+                gestureSwitch.isChecked = false
+                fingerprintSwitch.isChecked = true
+            }
         }
+    }
 
-        //解锁方式切换，事件相互独立，有且只能有一种解锁方式
+    /**
+     * 解锁方式切换，事件相互独立，有且只能有一种解锁方式
+     * */
+    private fun selectMode() {
         numberSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 gestureSwitch.isChecked = false
                 fingerprintSwitch.isChecked = false
+                SaveKeyValues.putValue("mode", "numberSwitch")
             }
         }
 
-
         gestureSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            //手势解锁打开前需要检查是否有手势解锁方式
             if (isChecked) {
                 numberSwitch.isChecked = false
                 fingerprintSwitch.isChecked = false
+                SaveKeyValues.putValue("mode", "gestureSwitch")
             }
-            startActivity(Intent(this, GestureSetActivity::class.java))
         }
 
         fingerprintSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            //指纹解锁打开前需要检查是否有手势解锁方式
             if (isChecked) {
                 numberSwitch.isChecked = false
                 gestureSwitch.isChecked = false
+                SaveKeyValues.putValue("mode", "fingerprintSwitch")
             }
         }
     }

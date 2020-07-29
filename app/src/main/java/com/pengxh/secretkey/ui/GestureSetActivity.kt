@@ -5,13 +5,14 @@ import android.os.Handler
 import android.view.View
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
-import com.pengxh.app.multilib.widget.EasyToast
+import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.ColorHelper
+import com.pengxh.secretkey.utils.OtherUtils
 import com.pengxh.secretkey.utils.StatusBarColorUtil
 import com.pengxh.secretkey.widgets.gesture.GestureLockLayout
 import com.pengxh.secretkey.widgets.gesture.GestureLockLayout.OnLockResetListener
-import kotlinx.android.synthetic.main.activity_gesture.*
+import kotlinx.android.synthetic.main.activity_gesture_set.*
 import kotlinx.android.synthetic.main.include_title_white.*
 
 /**
@@ -22,7 +23,7 @@ import kotlinx.android.synthetic.main.include_title_white.*
  */
 class GestureSetActivity : BaseNormalActivity() {
 
-    override fun initLayoutView(): Int = R.layout.activity_gesture
+    override fun initLayoutView(): Int = R.layout.activity_gesture_set
 
     override fun initData() {
         StatusBarColorUtil.setColor(this, Color.WHITE)
@@ -43,8 +44,6 @@ class GestureSetActivity : BaseNormalActivity() {
         gestureLockLayout.setDotCount(3)
         //设置手势解锁view 最少连接数
         gestureLockLayout.setMinCount(4)
-        //默认解锁样式为手Q手势解锁样式
-        //mGestureLockLayout.setLockView()
         //设置手势解锁view 模式为重置密码模式
         gestureLockLayout.setMode(GestureLockLayout.RESET_MODE)
         gestureLockLayout.setOnLockResetListener(object : OnLockResetListener {
@@ -67,7 +66,9 @@ class GestureSetActivity : BaseNormalActivity() {
                 //第二次密码绘制成功时调用
                 if (isMatched) {
                     //两次答案一致，保存
-                    EasyToast.showToast("验证通过", EasyToast.SUCCESS)
+                    SaveKeyValues.putValue("gesturePassword", answerList.toString())
+                    OtherUtils.intentActivity(PasswordModeActivity::class.java, "gestureSwitch")
+                    finish()
                 } else {
                     resetGesture()
                 }

@@ -1,6 +1,5 @@
 package com.pengxh.secretkey.ui
 
-import android.content.Intent
 import android.graphics.Color
 import android.view.KeyEvent
 import android.view.View
@@ -9,6 +8,7 @@ import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
+import com.pengxh.secretkey.utils.OtherUtils
 import com.pengxh.secretkey.utils.StatusBarColorUtil
 import com.pengxh.secretkey.widgets.DigitKeyboard
 import com.pengxh.secretkey.widgets.PasswordEditText
@@ -60,7 +60,7 @@ class PasswordCheckActivity : BaseNormalActivity(), DigitKeyboard.DigitKeyboardC
         if (password != null || password != "") {
             val firstPassword = SaveKeyValues.getValue("firstPassword", "") as String
             if (password == firstPassword) {
-                startActivity(Intent(this, PasswordModeActivity::class.java))
+                OtherUtils.intentActivity(PasswordModeActivity::class.java)
                 finish()
             } else {
                 EasyToast.showToast("密码错误", EasyToast.ERROR)

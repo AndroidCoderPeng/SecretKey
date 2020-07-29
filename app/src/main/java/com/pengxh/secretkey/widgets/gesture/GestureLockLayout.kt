@@ -152,7 +152,7 @@ class GestureLockLayout @JvmOverloads constructor(context: Context, attrs: Attri
             var topMargin = 0
 
             //每个View都有右外边距和底外边距 第一行的有上外边距 第一列的有左外边距
-            if (i >= 0 && i < mDotCount) { //第一行
+            if (i in 0 until mDotCount) { //第一行
                 topMargin = mLockViewMargin
             }
             if (i % mDotCount == 0) { //第一列
@@ -441,18 +441,6 @@ class GestureLockLayout @JvmOverloads constructor(context: Context, attrs: Attri
                 setLockViewParams(mLockViewFactory!!)
                 reset()
             }
-        }
-    }
-
-    /**
-     * 设置答案
-     *
-     * @param answer
-     */
-    fun setAnswer(vararg answer: Int) {
-        mAnswerList.clear()
-        for (element in answer) {
-            mAnswerList.add(element)
         }
     }
 
