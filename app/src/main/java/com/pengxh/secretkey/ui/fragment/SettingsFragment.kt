@@ -16,6 +16,7 @@ import com.pengxh.secretkey.ui.GestureCheckActivity
 import com.pengxh.secretkey.ui.GestureSetActivity
 import com.pengxh.secretkey.ui.PasswordCheckActivity
 import com.pengxh.secretkey.ui.PasswordSetActivity
+import com.pengxh.secretkey.utils.OtherUtils
 import com.pengxh.secretkey.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.fragment_settings.*
 import kotlinx.android.synthetic.main.include_title_main.*
@@ -52,7 +53,6 @@ class SettingsFragment : BaseFragment() {
             //判断解密模式
             when (SaveKeyValues.getValue("mode", "numberSwitch") as String) {
                 "numberSwitch" -> {
-                    //需要判断之前有无设置密码
                     val firstPassword = SaveKeyValues.getValue("firstPassword", "") as String
                     if (firstPassword == "") {
                         startActivity(Intent(context, PasswordSetActivity::class.java))
@@ -62,7 +62,6 @@ class SettingsFragment : BaseFragment() {
                 }
                 "gestureSwitch" -> {
                     val gesturePassword = SaveKeyValues.getValue("gesturePassword", "") as String
-                    Log.d(Tag, "gestureSwitch: $gesturePassword")
                     if (gesturePassword == "") {
                         startActivity(Intent(context, GestureSetActivity::class.java))
                     } else {
@@ -70,7 +69,12 @@ class SettingsFragment : BaseFragment() {
                     }
                 }
                 "fingerprintSwitch" -> {
-                    EasyToast.showToast("指纹验证", EasyToast.DEFAULT)
+                    if (OtherUtils.isSupportFingerprint()) {
+                        //指纹识别
+                        EasyToast.showToast("指纹识别", EasyToast.DEFAULT)
+                    } else {
+                        EasyToast.showToast("设备不支持指纹识别或者未录入指纹", EasyToast.ERROR)
+                    }
                 }
             }
         }

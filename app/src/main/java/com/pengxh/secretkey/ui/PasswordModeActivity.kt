@@ -1,11 +1,14 @@
 package com.pengxh.secretkey.ui
 
+import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.app.multilib.utils.SaveKeyValues
+import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
+import com.pengxh.secretkey.utils.OtherUtils
 import com.pengxh.secretkey.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.activity_password_mode.*
 import kotlinx.android.synthetic.main.include_title_white.*
@@ -65,18 +68,30 @@ class PasswordModeActivity : BaseNormalActivity() {
         }
 
         gestureSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                numberSwitch.isChecked = false
-                fingerprintSwitch.isChecked = false
-                SaveKeyValues.putValue("mode", "gestureSwitch")
+            val gesturePassword = SaveKeyValues.getValue("gesturePassword", "") as String
+            if (gesturePassword == "") {
+                buttonView.isChecked = false
+                startActivity(Intent(this, GestureSetActivity::class.java))
+                finish()
+            } else {
+                if (isChecked) {
+                    numberSwitch.isChecked = false
+                    fingerprintSwitch.isChecked = false
+                    SaveKeyValues.putValue("mode", "gestureSwitch")
+                }
             }
         }
 
         fingerprintSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                numberSwitch.isChecked = false
-                gestureSwitch.isChecked = false
-                SaveKeyValues.putValue("mode", "fingerprintSwitch")
+            if (!OtherUtils.isSupportFingerprint()) {
+                buttonView.isChecked = false
+                EasyToast.showToast("设备不支持指纹识别或者未录入指纹", EasyToast.ERROR)
+            } else {
+                if (isChecked) {
+                    numberSwitch.isChecked = false
+                    gestureSwitch.isChecked = false
+                    SaveKeyValues.putValue("mode", "fingerprintSwitch")
+                }
             }
         }
     }

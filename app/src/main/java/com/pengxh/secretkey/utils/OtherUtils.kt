@@ -2,7 +2,9 @@ package com.pengxh.secretkey.utils
 
 import android.content.Context
 import android.content.Intent
+import android.hardware.fingerprint.FingerprintManager
 import com.pengxh.app.multilib.base.BaseNormalActivity
+
 
 /**
  * @author: Pengxh
@@ -29,6 +31,21 @@ class OtherUtils {
             val intent = Intent(mContext, clazz)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             mContext!!.startActivity(intent)
+        }
+
+        /**
+         * 是否支持指纹
+         */
+        fun isSupportFingerprint(): Boolean {
+            val result: Boolean
+            result = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                val fingerprintManager =
+                    mContext!!.getSystemService(Context.FINGERPRINT_SERVICE) as FingerprintManager
+                fingerprintManager.isHardwareDetected && fingerprintManager.hasEnrolledFingerprints();
+            } else {
+                false
+            }
+            return result
         }
     }
 }
