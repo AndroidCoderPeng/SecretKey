@@ -44,8 +44,4 @@ dependencies {
     implementation 'com.gyf.immersionbar:immersionbar-components:3.0.0'
     //仿iOS风格的dialog库
     implementation 'com.aihook:alertview:1.0.0'
-    //底部BottomSheet
-    implementation 'me.shaohui:bottomdialog:1.1.9'
-    //自定义键盘
-    implementation 'com.github.wuzhendev:android-xnumberkeyboard:2.0.0'
 }
