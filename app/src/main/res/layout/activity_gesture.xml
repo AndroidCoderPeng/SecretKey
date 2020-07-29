@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <include layout="@layout/include_title_white" />
 
-    <com.pengxh.secretkey.widgets.GestureLockView
-        android:id="@+id/gestureLockView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:maxFailCounts="3"
-        app:minPoint="4"
-        app:paintColor="@color/colorAccent"
-        app:paintTextSize="20sp" />
+    <com.pengxh.secretkey.widgets.gesture.GestureLockDisplayView
+        android:id="@+id/displayView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp" />
+
+    <TextView
+        android:id="@+id/settingHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="30dp"
+        android:text="绘制解锁图案" />
+
+    <com.pengxh.secretkey.widgets.gesture.GestureLockLayout
+        android:id="@+id/gestureLockLayout"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

@@ -45,17 +45,14 @@ class PasswordModeActivity : BaseNormalActivity() {
             }
         }
 
-        val gestureData = SaveKeyValues.getValue("gestureData", "") as String
-        if (gestureData == "") {
-            startActivity(Intent(this, GestureSetActivity::class.java))
-        } else {
-            gestureSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-                //手势解锁打开前需要检查是否有手势解锁方式
-                if (isChecked) {
-                    numberSwitch.isChecked = false
-                    fingerprintSwitch.isChecked = false
-                }
+
+        gestureSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            //手势解锁打开前需要检查是否有手势解锁方式
+            if (isChecked) {
+                numberSwitch.isChecked = false
+                fingerprintSwitch.isChecked = false
             }
+            startActivity(Intent(this, GestureSetActivity::class.java))
         }
 
         fingerprintSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
