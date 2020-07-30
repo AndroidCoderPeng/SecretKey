@@ -29,13 +29,12 @@ class GestureCheckActivity : BaseNormalActivity() {
         StatusBarColorUtil.setColor(this, Color.WHITE)
         ImmersionBar.with(this).statusBarDarkFont(true).init()
 
+        mTitleLeftView.visibility = View.GONE
         mTitleView.text = "手势解锁"
         mTitleRightView.visibility = View.GONE
     }
 
     override fun initEvent() {
-        mTitleLeftView.setOnClickListener { this.finish() }
-
         //设置手势解锁view 每行每列点的个数
         gestureLockLayout.setDotCount(3)
         //设置手势解锁view 最少连接数
@@ -56,7 +55,7 @@ class GestureCheckActivity : BaseNormalActivity() {
                 //绘制手势解锁完成时调用
                 if (isMatched) {
                     //密码匹配
-                    OtherUtils.intentActivity(PasswordModeActivity::class.java)
+                    OtherUtils.intentActivity(MainActivity::class.java)
                     finish()
                 } else {
                     //不匹配

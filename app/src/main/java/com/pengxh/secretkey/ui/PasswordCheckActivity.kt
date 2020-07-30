@@ -30,13 +30,12 @@ class PasswordCheckActivity : BaseNormalActivity(), DigitKeyboard.DigitKeyboardC
         StatusBarColorUtil.setColor(this, Color.WHITE)
         ImmersionBar.with(this).statusBarDarkFont(true).init()
 
+        mTitleLeftView.visibility = View.GONE
         mTitleView.text = "输入密码"
         mTitleRightView.visibility = View.GONE
     }
 
     override fun initEvent() {
-        mTitleLeftView.setOnClickListener { this.finish() }
-
         digitKeyboard.setOnDigitKeyboardClickListener(this)
         passwordEditText.setOnFinishListener(this)
 
@@ -60,7 +59,7 @@ class PasswordCheckActivity : BaseNormalActivity(), DigitKeyboard.DigitKeyboardC
         if (password != null || password != "") {
             val firstPassword = SaveKeyValues.getValue("firstPassword", "") as String
             if (password == firstPassword) {
-                OtherUtils.intentActivity(PasswordModeActivity::class.java)
+                OtherUtils.intentActivity(MainActivity::class.java)
                 finish()
             } else {
                 EasyToast.showToast("密码错误", EasyToast.ERROR)

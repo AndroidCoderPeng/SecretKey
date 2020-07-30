@@ -14,10 +14,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentActivity
 import com.pengxh.secretkey.R
-import com.pengxh.secretkey.ui.PasswordModeActivity
-import com.pengxh.secretkey.utils.OtherUtils
+import com.pengxh.secretkey.ui.WelcomeActivity
 import javax.crypto.Cipher
 
 /**
@@ -34,11 +32,11 @@ class FingerprintDialog : DialogFragment() {
     private var isSelfCancelled = false //标识是否是用户主动取消的认证。
     private var fingerprintHint: TextView? = null
     private var fingerprintView: ImageView? = null
-    private var mActivity: FragmentActivity? = null
+    private var mActivity: WelcomeActivity? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        mActivity = activity
+        mActivity = activity as WelcomeActivity
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +56,7 @@ class FingerprintDialog : DialogFragment() {
         fingerprintCancel.setOnClickListener { v: View? ->
             dismiss()
             stopListening()
+            mActivity?.onFingerprintCancel()
         }
         return view
     }
@@ -117,7 +116,7 @@ class FingerprintDialog : DialogFragment() {
             super.handleMessage(msg)
             if (msg.what == 1) {
                 dismiss()
-                OtherUtils.intentActivity(PasswordModeActivity::class.java)
+                mActivity?.onAuthenticated()
             }
         }
     }

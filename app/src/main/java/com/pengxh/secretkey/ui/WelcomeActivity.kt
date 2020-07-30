@@ -4,10 +4,20 @@ import android.Manifest
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyProperties
 import androidx.appcompat.app.AppCompatActivity
+import com.pengxh.app.multilib.utils.SaveKeyValues
+import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
+import com.pengxh.secretkey.utils.OtherUtils
 import com.pengxh.secretkey.widgets.AgreementDialog
+import com.pengxh.secretkey.widgets.FingerprintDialog
 import pub.devrel.easypermissions.EasyPermissions
+import java.security.KeyStore
+import javax.crypto.Cipher
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
 
 
 /**
@@ -24,6 +34,8 @@ class WelcomeActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.USE_FINGERPRINT)
     }
+
+    private lateinit var keyStore: KeyStore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +65,49 @@ class WelcomeActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks
     }
 
     private fun startMainActivity() {
-        startActivity(Intent(this, MainActivity::class.java))
+        when (SaveKeyValues.getValue("mode", "numberSwitch") as String) {
+            "numberSwitch" -> {
+                val firstPassword = SaveKeyValues.getValue("firstPassword", "") as String
+                if (firstPassword == "") {
+                    startActivity(Intent(this, PasswordSetActivity::class.java))
+                } else {
+                    startActivity(Intent(this, PasswordCheckActivity::class.java))
+                }
+                finish()
+            }
+            "gestureSwitch" -> {
+                val gesturePassword = SaveKeyValues.getValue("gesturePassword", "") as String
+                if (gesturePassword == "") {
+                    startActivity(Intent(this, GestureSetActivity::class.java))
+                } else {
+                    startActivity(Intent(this, GestureCheckActivity::class.java))
+                }
+                finish()
+            }
+            "fingerprintSwitch" -> {
+                if (OtherUtils.isSupportFingerprint()) {
+                    //创建参数
+                    initKey()
+                    initCipher()
+                } else {
+                    EasyToast.showToast("设备不支持指纹识别或者未录入指纹", EasyToast.ERROR)
+                }
+            }
+        }
+    }
+
+    /**
+     * 指纹识别成功
+     * */
+    fun onAuthenticated() {
+        OtherUtils.intentActivity(MainActivity::class.java)
+        finish()
+    }
+
+    /**
+     * 取消指纹识别
+     * */
+    fun onFingerprintCancel() {
         finish()
     }
 
@@ -71,5 +125,43 @@ class WelcomeActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         //将请求结果传递EasyPermission库处理
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    /**
+     * 初始化指纹Key
+     * */
+    private fun initKey() {
+        try {
+            keyStore = KeyStore.getInstance("AndroidKeyStore")
+            keyStore.load(null)
+            val keyGenerator: KeyGenerator =
+                KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
+            val builder = KeyGenParameterSpec.Builder("fingerprint_key",
+                KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
+                .setBlockModes(KeyProperties.BLOCK_MODE_CBC).setUserAuthenticationRequired(true)
+                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+            keyGenerator.init(builder.build())
+            keyGenerator.generateKey()
+        } catch (e: Exception) {
+            throw RuntimeException(e)
+        }
+    }
+
+    /**
+     * 初始化密码
+     * */
+    private fun initCipher() {
+        try {
+            val key: SecretKey = keyStore.getKey("fingerprint_key", null) as SecretKey
+            val cipher: Cipher =
+                Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES + "/" + KeyProperties.BLOCK_MODE_CBC + "/" + KeyProperties.ENCRYPTION_PADDING_PKCS7)
+            cipher.init(Cipher.ENCRYPT_MODE, key)
+
+            val fingerprintDialog = FingerprintDialog()
+            fingerprintDialog.setCipher(cipher)
+            fingerprintDialog.show(supportFragmentManager, "fingerprint")
+        } catch (e: java.lang.Exception) {
+            throw java.lang.RuntimeException(e)
+        }
     }
 }

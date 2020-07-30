@@ -1,9 +1,6 @@
 package com.pengxh.secretkey.ui.fragment
 
-import android.content.Intent
 import android.graphics.Color
-import android.security.keystore.KeyGenParameterSpec
-import android.security.keystore.KeyProperties
 import android.util.Log
 import android.view.View
 import com.aihook.alertview.library.AlertView
@@ -11,23 +8,14 @@ import com.aihook.alertview.library.OnItemClickListener
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseFragment
 import com.pengxh.app.multilib.utils.FileUtil
-import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
-import com.pengxh.secretkey.ui.GestureCheckActivity
-import com.pengxh.secretkey.ui.GestureSetActivity
-import com.pengxh.secretkey.ui.PasswordCheckActivity
-import com.pengxh.secretkey.ui.PasswordSetActivity
+import com.pengxh.secretkey.ui.PasswordModeActivity
 import com.pengxh.secretkey.utils.OtherUtils
 import com.pengxh.secretkey.utils.StatusBarColorUtil
-import com.pengxh.secretkey.widgets.FingerprintDialog
 import kotlinx.android.synthetic.main.fragment_settings.*
 import kotlinx.android.synthetic.main.include_title_main.*
 import java.io.File
-import java.security.KeyStore
-import javax.crypto.Cipher
-import javax.crypto.KeyGenerator
-import javax.crypto.SecretKey
 
 
 /**
@@ -41,8 +29,6 @@ class SettingsFragment : BaseFragment() {
     companion object {
         private const val Tag = "SettingsFragment"
     }
-
-    private lateinit var keyStore: KeyStore
 
     override fun initLayoutView(): Int = R.layout.fragment_settings
 
@@ -60,34 +46,7 @@ class SettingsFragment : BaseFragment() {
          * 密码设置Layout
          * */
         passwordLayout.setOnClickListener {
-            //判断解密模式
-            when (SaveKeyValues.getValue("mode", "numberSwitch") as String) {
-                "numberSwitch" -> {
-                    val firstPassword = SaveKeyValues.getValue("firstPassword", "") as String
-                    if (firstPassword == "") {
-                        startActivity(Intent(context, PasswordSetActivity::class.java))
-                    } else {
-                        startActivity(Intent(context, PasswordCheckActivity::class.java))
-                    }
-                }
-                "gestureSwitch" -> {
-                    val gesturePassword = SaveKeyValues.getValue("gesturePassword", "") as String
-                    if (gesturePassword == "") {
-                        startActivity(Intent(context, GestureSetActivity::class.java))
-                    } else {
-                        startActivity(Intent(context, GestureCheckActivity::class.java))
-                    }
-                }
-                "fingerprintSwitch" -> {
-                    if (OtherUtils.isSupportFingerprint()) {
-                        //创建参数
-                        initKey()
-                        initCipher()
-                    } else {
-                        EasyToast.showToast("设备不支持指纹识别或者未录入指纹", EasyToast.ERROR)
-                    }
-                }
-            }
+            OtherUtils.intentActivity(PasswordModeActivity::class.java)
         }
 
         /**
@@ -112,38 +71,6 @@ class SettingsFragment : BaseFragment() {
                         EasyToast.showToast("清理成功", EasyToast.SUCCESS)
                     }
                 }).setCancelable(false).show()
-        }
-    }
-
-    private fun initKey() {
-        try {
-            keyStore = KeyStore.getInstance("AndroidKeyStore")
-            keyStore.load(null)
-            val keyGenerator: KeyGenerator =
-                KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
-            val builder = KeyGenParameterSpec.Builder("fingerprint_key",
-                KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
-                .setBlockModes(KeyProperties.BLOCK_MODE_CBC).setUserAuthenticationRequired(true)
-                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
-            keyGenerator.init(builder.build())
-            keyGenerator.generateKey()
-        } catch (e: Exception) {
-            throw RuntimeException(e)
-        }
-    }
-
-    private fun initCipher() {
-        try {
-            val key: SecretKey = keyStore.getKey("fingerprint_key", null) as SecretKey
-            val cipher: Cipher =
-                Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES + "/" + KeyProperties.BLOCK_MODE_CBC + "/" + KeyProperties.ENCRYPTION_PADDING_PKCS7)
-            cipher.init(Cipher.ENCRYPT_MODE, key)
-
-            val fingerprintDialog = FingerprintDialog()
-            fingerprintDialog.setCipher(cipher)
-            fingerprintDialog.show(fragmentManager!!, "fingerprint")
-        } catch (e: java.lang.Exception) {
-            throw java.lang.RuntimeException(e)
         }
     }
 }
