@@ -1,10 +1,10 @@
 package com.pengxh.secretkey.ui.fragment
 
-import android.graphics.Color
 import android.view.View
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseFragment
 import com.pengxh.secretkey.R
+import com.pengxh.secretkey.utils.ColorHelper
 import com.pengxh.secretkey.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.include_title_main.*
 
@@ -23,7 +23,9 @@ class HomePageFragment : BaseFragment() {
     override fun initLayoutView(): Int = R.layout.fragment_home
 
     override fun initData() {
-        activity?.let { StatusBarColorUtil.setColor(it, Color.parseColor("#03DAC5")) }
+        activity?.let {
+            StatusBarColorUtil.setColor(it, ColorHelper.getXmlColor(it, R.color.colorAccent))
+        }
         ImmersionBar.with(this).init()
 
         mTitleLeftView.visibility = View.GONE

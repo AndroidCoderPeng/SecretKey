@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="30dp"
+    android:layout_gravity="center"
     android:background="@drawable/bg_layout"
     android:gravity="center"
     android:orientation="vertical">
@@ -11,7 +11,7 @@
         android:id="@+id/fingerprintView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="20dp"
         android:background="@mipmap/fingerprint_ok"
         android:gravity="center" />
 
@@ -21,8 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:text="请验证您的指纹"
-        android:textSize="18sp" />
+        android:text="请验证您的指纹" />
 
     <View
         android:layout_width="match_parent"

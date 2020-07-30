@@ -1,6 +1,5 @@
 package com.pengxh.secretkey.ui.fragment
 
-import android.graphics.Color
 import android.util.Log
 import android.view.View
 import com.aihook.alertview.library.AlertView
@@ -11,6 +10,7 @@ import com.pengxh.app.multilib.utils.FileUtil
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.ui.PasswordModeActivity
+import com.pengxh.secretkey.utils.ColorHelper
 import com.pengxh.secretkey.utils.OtherUtils
 import com.pengxh.secretkey.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.fragment_settings.*
@@ -33,7 +33,9 @@ class SettingsFragment : BaseFragment() {
     override fun initLayoutView(): Int = R.layout.fragment_settings
 
     override fun initData() {
-        activity?.let { StatusBarColorUtil.setColor(it, Color.parseColor("#03DAC5")) }
+        activity?.let {
+            StatusBarColorUtil.setColor(it, ColorHelper.getXmlColor(it, R.color.colorAccent))
+        }
         ImmersionBar.with(this).init()
 
         mTitleLeftView.visibility = View.GONE

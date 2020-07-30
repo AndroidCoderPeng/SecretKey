@@ -2,21 +2,27 @@ package com.pengxh.secretkey.widgets
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.hardware.fingerprint.FingerprintManager
 import android.os.Bundle
 import android.os.CancellationSignal
 import android.os.Handler
 import android.os.Message
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import com.pengxh.app.multilib.utils.DensityUtil
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.ui.WelcomeActivity
 import javax.crypto.Cipher
+
 
 /**
  * @description: TODO
@@ -59,6 +65,21 @@ class FingerprintDialog : DialogFragment() {
             mActivity?.onFingerprintCancel()
         }
         return view
+    }
+
+    /**
+     * 初始化窗口，比如圆角，宽高等
+     * */
+    override fun onStart() {
+        super.onStart()
+        val win: Window = dialog!!.window ?: return
+        win.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val dm = DisplayMetrics()
+        activity!!.windowManager.defaultDisplay.getMetrics(dm)
+        val params = win.attributes
+        params.width = DensityUtil.dp2px(context, 250.0f)
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT
+        win.attributes = params;
     }
 
     fun setCipher(cipher: Cipher?) {
