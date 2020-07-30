@@ -31,6 +31,9 @@
         <activity android:name=".ui.PasswordModeActivity" />
         <activity android:name=".ui.GestureSetActivity" />
         <activity android:name=".ui.GestureCheckActivity" />
+        <activity android:name=".ui.ExonerationActivity" />
+        <activity android:name=".ui.PrivacyActivity" />
+        <activity android:name=".ui.AboutActivity" />
     </application>
 
 </manifest>

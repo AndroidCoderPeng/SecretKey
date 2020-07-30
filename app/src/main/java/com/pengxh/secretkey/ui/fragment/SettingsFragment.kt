@@ -8,6 +8,7 @@ import com.pengxh.app.multilib.base.BaseFragment
 import com.pengxh.app.multilib.utils.FileUtil
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
+import com.pengxh.secretkey.ui.AboutActivity
 import com.pengxh.secretkey.ui.PasswordModeActivity
 import com.pengxh.secretkey.utils.ColorHelper
 import com.pengxh.secretkey.utils.OtherUtils
@@ -46,6 +47,13 @@ class SettingsFragment : BaseFragment() {
          * */
         passwordLayout.setOnClickListener {
             OtherUtils.intentActivity(PasswordModeActivity::class.java)
+        }
+
+        /**
+         * 关于Layout
+         * */
+        aboutLayout.setOnClickListener {
+            OtherUtils.intentActivity(AboutActivity::class.java)
         }
 
         /**

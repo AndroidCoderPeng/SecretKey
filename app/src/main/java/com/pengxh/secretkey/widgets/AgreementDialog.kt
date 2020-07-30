@@ -12,7 +12,10 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import com.pengxh.secretkey.ui.ExonerationActivity
+import com.pengxh.secretkey.ui.PrivacyActivity
 import com.pengxh.secretkey.R
+import com.pengxh.secretkey.utils.OtherUtils
 
 /**
  * @author: Pengxh
@@ -85,7 +88,7 @@ class AgreementDialog private constructor(builder: Builder) :
             //免责声明
             spanText.setSpan(object : ClickableSpan() {
                 override fun onClick(widget: View) {
-                    //                    context.startActivity(Intent(context, ExonerationActivity::class.java))
+                    OtherUtils.intentActivity(ExonerationActivity::class.java)
                 }
 
                 override fun updateDrawState(ds: TextPaint) {
@@ -100,7 +103,7 @@ class AgreementDialog private constructor(builder: Builder) :
             //隐私政策
             spanText.setSpan(object : ClickableSpan() {
                 override fun onClick(widget: View) {
-                    //                    context.startActivity(Intent(context, PrivacyActivity::class.java))
+                    OtherUtils.intentActivity(PrivacyActivity::class.java)
                 }
 
                 override fun updateDrawState(ds: TextPaint) {
