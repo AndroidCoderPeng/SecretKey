@@ -6,8 +6,8 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import com.gyf.immersionbar.ImmersionBar
-import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.app.multilib.utils.SaveKeyValues
+import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.StatusBarColorUtil
 import com.pengxh.secretkey.widgets.DigitKeyboard
@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.include_title_white.*
  * @email: 290677893@qq.com
  * @date: 2020/7/25 21:29
  */
-class PasswordSetActivity : BaseNormalActivity(), DigitKeyboard.DigitKeyboardClickListener,
+class PasswordSetActivity : BaseActivity(), DigitKeyboard.DigitKeyboardClickListener,
     PasswordEditText.OnFinishListener {
 
     companion object {

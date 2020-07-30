@@ -44,7 +44,8 @@ class SettingsFragment : BaseFragment() {
 
         mTitleView.text = "设置中心"
 
-        captureSwitchStatus = SaveKeyValues.getValue("captureSwitchStatus", true) as Boolean
+        //默认不让截屏
+        captureSwitchStatus = SaveKeyValues.getValue("captureSwitchStatus", false) as Boolean
         captureSwitch.isChecked = captureSwitchStatus
     }
 
@@ -64,7 +65,7 @@ class SettingsFragment : BaseFragment() {
         }
 
         /**
-         * 关于Layout
+         * 截屏开关状态管理
          * */
         captureSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {

@@ -16,9 +16,9 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.pengxh.app.multilib.utils.DensityUtil
+import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.ui.WelcomeActivity
 import javax.crypto.Cipher
@@ -77,7 +77,7 @@ class FingerprintDialog : DialogFragment() {
         val dm = DisplayMetrics()
         activity!!.windowManager.defaultDisplay.getMetrics(dm)
         val params = win.attributes
-        params.width = DensityUtil.dp2px(context, 250.0f)
+        params.width = DensityUtil.dp2px(context, 245.0f)
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT
         win.attributes = params;
     }
@@ -104,7 +104,7 @@ class FingerprintDialog : DialogFragment() {
                     if (!isSelfCancelled) {
                         fingerprintHint!!.text = errString
                         if (errorCode == FingerprintManager.FINGERPRINT_ERROR_LOCKOUT) {
-                            Toast.makeText(mActivity, errString, Toast.LENGTH_SHORT).show()
+                            EasyToast.showToast(errString.toString(), EasyToast.ERROR)
                             dismiss()
                         }
                     }

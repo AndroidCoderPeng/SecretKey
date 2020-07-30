@@ -84,7 +84,7 @@
 
             <TextView
                 style="@style/textViewStyle"
-                android:text="允许截图" />
+                android:text="允许截屏" />
 
             <Switch
                 android:id="@+id/captureSwitch"

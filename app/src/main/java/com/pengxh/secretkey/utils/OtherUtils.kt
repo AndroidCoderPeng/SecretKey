@@ -6,7 +6,7 @@ import android.hardware.fingerprint.FingerprintManager
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import androidx.fragment.app.FragmentManager
-import com.pengxh.app.multilib.base.BaseNormalActivity
+import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.widgets.FingerprintDialog
 import java.security.KeyStore
 import javax.crypto.Cipher
@@ -29,14 +29,14 @@ class OtherUtils {
             mContext = context.applicationContext //获取全局上下文，最长生命周期
         }
 
-        fun <T : BaseNormalActivity?> intentActivity(clazz: Class<T>?, mode: String?) {
+        fun <T : BaseActivity?> intentActivity(clazz: Class<T>?, mode: String?) {
             val intent = Intent(mContext, clazz)
             intent.putExtra("mode", mode)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             mContext!!.startActivity(intent)
         }
 
-        fun <T : BaseNormalActivity?> intentActivity(clazz: Class<T>?) {
+        fun <T : BaseActivity?> intentActivity(clazz: Class<T>?) {
             val intent = Intent(mContext, clazz)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             mContext!!.startActivity(intent)

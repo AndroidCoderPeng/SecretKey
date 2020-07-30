@@ -3,8 +3,8 @@ package com.pengxh.secretkey.ui
 import android.graphics.Color
 import android.os.Handler
 import com.gyf.immersionbar.ImmersionBar
-import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.app.multilib.utils.SaveKeyValues
+import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.ColorHelper
 import com.pengxh.secretkey.utils.OtherUtils
@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.include_title_white.*
  * @email: 290677893@qq.com
  * @date: 2020/7/28 22:29
  */
-class GestureSetActivity : BaseNormalActivity() {
+class GestureSetActivity : BaseActivity() {
 
     override fun initLayoutView(): Int = R.layout.activity_gesture_set
 

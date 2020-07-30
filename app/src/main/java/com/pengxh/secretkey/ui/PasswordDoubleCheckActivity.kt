@@ -4,9 +4,9 @@ import android.graphics.Color
 import android.view.KeyEvent
 import android.view.View
 import com.gyf.immersionbar.ImmersionBar
-import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
+import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.OtherUtils
 import com.pengxh.secretkey.utils.StatusBarColorUtil
@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.include_title_white.*
  * @description: TODO
  * @date: 2020/7/28 11:01
  */
-class PasswordDoubleCheckActivity : BaseNormalActivity(), DigitKeyboard.DigitKeyboardClickListener,
+class PasswordDoubleCheckActivity : BaseActivity(), DigitKeyboard.DigitKeyboardClickListener,
     PasswordEditText.OnFinishListener {
 
     override fun initLayoutView(): Int = R.layout.activity_password_set

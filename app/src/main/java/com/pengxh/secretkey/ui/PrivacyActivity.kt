@@ -2,7 +2,7 @@ package com.pengxh.secretkey.ui
 
 import android.graphics.Color
 import com.gyf.immersionbar.ImmersionBar
-import com.pengxh.app.multilib.base.BaseNormalActivity
+import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.include_title_white.*
@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.include_title_white.*
  * @description: TODO 隐私政策
  * @date: 2020/6/22 16:38
  */
-class PrivacyActivity : BaseNormalActivity() {
+class PrivacyActivity : BaseActivity() {
 
     override fun initLayoutView(): Int = R.layout.activity_privacy
 

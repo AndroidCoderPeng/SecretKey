@@ -2,7 +2,7 @@ package com.pengxh.secretkey.ui
 
 import android.graphics.Color
 import com.gyf.immersionbar.ImmersionBar
-import com.pengxh.app.multilib.base.BaseNormalActivity
+import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.BuildConfig
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.OtherUtils
@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.include_title_white.*
  * @description: TODO
  * @date: 2020/7/30 16:56
  */
-class AboutActivity : BaseNormalActivity() {
+class AboutActivity : BaseActivity() {
 
     override fun initLayoutView(): Int = R.layout.activity_about
 
