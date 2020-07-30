@@ -28,14 +28,10 @@ class PasswordModeActivity : BaseNormalActivity() {
         ImmersionBar.with(this).statusBarDarkFont(true).init()
 
         mTitleView.text = "设置解锁方式"
-        mTitleRightView.visibility = View.GONE
-
         selectMode()
     }
 
     override fun initEvent() {
-        mTitleLeftView.setOnClickListener { this.finish() }
-
         when (SaveKeyValues.getValue("mode", "numberSwitch") as String) {
             "numberSwitch" -> {
                 numberSwitch.isChecked = true

@@ -35,7 +35,6 @@ class PasswordSetActivity : BaseNormalActivity(), DigitKeyboard.DigitKeyboardCli
         ImmersionBar.with(this).statusBarDarkFont(true).init()
 
         mTitleView.text = "设置密码"
-        mTitleRightView.visibility = View.GONE
     }
 
     override fun initEvent() {

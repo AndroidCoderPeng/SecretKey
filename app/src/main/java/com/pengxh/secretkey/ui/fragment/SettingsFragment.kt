@@ -1,7 +1,6 @@
 package com.pengxh.secretkey.ui.fragment
 
 import android.util.Log
-import android.view.View
 import com.aihook.alertview.library.AlertView
 import com.aihook.alertview.library.OnItemClickListener
 import com.gyf.immersionbar.ImmersionBar
@@ -38,9 +37,7 @@ class SettingsFragment : BaseFragment() {
         }
         ImmersionBar.with(this).init()
 
-        mTitleLeftView.visibility = View.GONE
         mTitleView.text = "设置中心"
-        mTitleRightView.visibility = View.GONE
     }
 
     override fun initEvent() {

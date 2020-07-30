@@ -2,7 +2,6 @@ package com.pengxh.secretkey.ui
 
 import android.graphics.Color
 import android.os.Handler
-import android.view.View
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.app.multilib.utils.SaveKeyValues
@@ -30,7 +29,6 @@ class GestureSetActivity : BaseNormalActivity() {
         ImmersionBar.with(this).statusBarDarkFont(true).init()
 
         mTitleView.text = "设置手势解锁密码"
-        mTitleRightView.visibility = View.GONE
     }
 
     override fun initEvent() {

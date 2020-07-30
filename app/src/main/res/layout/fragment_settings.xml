@@ -59,6 +59,45 @@
         </RelativeLayout>
 
         <RelativeLayout
+            style="@style/itemLayoutStyle"
+            android:layout_marginTop="15dp">
+
+            <ImageView
+                style="@style/leftImageStyle"
+                android:background="@mipmap/about" />
+
+            <TextView
+                style="@style/textViewStyle"
+                android:text="关于应用" />
+
+            <ImageView style="@style/rightImageStyle" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/captureLayout"
+            style="@style/itemLayoutStyle"
+            android:layout_marginTop="15dp">
+
+            <ImageView
+                style="@style/leftImageStyle"
+                android:background="@mipmap/capture" />
+
+            <TextView
+                style="@style/textViewStyle"
+                android:text="允许截图" />
+
+            <Switch
+                android:id="@+id/numberSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="10dp"
+                android:thumb="@drawable/select_switch_circle"
+                android:track="@drawable/select_switch_background" />
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/cacheSizeLayout"
             style="@style/itemLayoutStyle"
             android:layout_marginTop="15dp">
@@ -75,31 +114,12 @@
                 android:id="@+id/cacheSizeView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="5dp"
-                android:layout_toStartOf="@id/rightView"
+                android:layout_marginEnd="10dp"
                 android:text="0"
                 android:textColor="@color/colorText"
                 android:textSize="18sp" />
-
-            <ImageView
-                android:id="@+id/rightView"
-                style="@style/rightImageStyle" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            style="@style/itemLayoutStyle"
-            android:layout_marginTop="15dp">
-
-            <ImageView
-                style="@style/leftImageStyle"
-                android:background="@mipmap/about" />
-
-            <TextView
-                style="@style/textViewStyle"
-                android:text="关于应用" />
-
-            <ImageView style="@style/rightImageStyle" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

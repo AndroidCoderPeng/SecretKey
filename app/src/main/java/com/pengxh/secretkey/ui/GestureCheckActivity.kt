@@ -2,7 +2,6 @@ package com.pengxh.secretkey.ui
 
 import android.graphics.Color
 import android.os.Handler
-import android.view.View
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.app.multilib.utils.SaveKeyValues
@@ -29,9 +28,7 @@ class GestureCheckActivity : BaseNormalActivity() {
         StatusBarColorUtil.setColor(this, Color.WHITE)
         ImmersionBar.with(this).statusBarDarkFont(true).init()
 
-        mTitleLeftView.visibility = View.GONE
         mTitleView.text = "手势解锁"
-        mTitleRightView.visibility = View.GONE
     }
 
     override fun initEvent() {

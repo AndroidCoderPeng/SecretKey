@@ -1,6 +1,5 @@
 package com.pengxh.secretkey.ui.fragment
 
-import android.view.View
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseFragment
 import com.pengxh.secretkey.R
@@ -28,9 +27,7 @@ class HomePageFragment : BaseFragment() {
         }
         ImmersionBar.with(this).init()
 
-        mTitleLeftView.visibility = View.GONE
         mTitleView.text = "密码箱"
-        mTitleRightView.visibility = View.GONE
     }
 
     override fun initEvent() {

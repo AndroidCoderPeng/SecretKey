@@ -31,7 +31,6 @@ class PasswordDoubleCheckActivity : BaseNormalActivity(), DigitKeyboard.DigitKey
         ImmersionBar.with(this).statusBarDarkFont(true).init()
 
         mTitleView.text = "确认密码"
-        mTitleRightView.visibility = View.GONE
     }
 
     override fun initEvent() {

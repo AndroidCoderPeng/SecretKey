@@ -30,9 +30,7 @@ class PasswordCheckActivity : BaseNormalActivity(), DigitKeyboard.DigitKeyboardC
         StatusBarColorUtil.setColor(this, Color.WHITE)
         ImmersionBar.with(this).statusBarDarkFont(true).init()
 
-        mTitleLeftView.visibility = View.GONE
         mTitleView.text = "输入密码"
-        mTitleRightView.visibility = View.GONE
     }
 
     override fun initEvent() {

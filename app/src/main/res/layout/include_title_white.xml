@@ -5,12 +5,13 @@
     android:background="@color/white">
 
     <ImageView
+        android:id="@+id/mTitleLeftView"
         android:layout_width="60px"
         android:layout_height="60px"
-        android:id="@+id/mTitleLeftView"
         android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
-        android:background="@mipmap/left_gray" />
+        android:background="@mipmap/left_gray"
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/mTitleView"
@@ -27,5 +28,5 @@
         android:id="@+id/mTitleRightView"
         style="@style/rightImageStyle"
         android:background="@mipmap/add_gray"
-        android:visibility="visible" />
+        android:visibility="invisible" />
 </RelativeLayout>
