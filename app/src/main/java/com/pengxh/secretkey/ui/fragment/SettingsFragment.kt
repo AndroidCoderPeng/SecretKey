@@ -65,6 +65,19 @@ class SettingsFragment : BaseFragment() {
         }
 
         /**
+         * 截屏开关Layout
+         * */
+        captureLayout.setOnClickListener {
+            AlertView("温馨提示",
+                "截屏开关切换后需要重启应用才能生效",
+                null,
+                arrayOf("知道了"),
+                null,
+                context,
+                AlertView.Style.Alert,
+                null).setCancelable(false).show()
+        }
+        /**
          * 截屏开关状态管理
          * */
         captureSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
