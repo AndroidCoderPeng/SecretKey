@@ -14,7 +14,7 @@ class SQLiteUtilHelper internal constructor(context: Context?,
     companion object {
         private const val Tag = "SQLiteUtilHelper"
         private const val SQL_SECRET =
-            "create table SecretTable(id integer primary key autoincrement,secretTitle text,secretAccount text,secretPassword text,recoverable text)"
+            "create table SecretTable(id integer primary key autoincrement,secretCategory text,secretTitle text,secretAccount text,secretPassword text,recoverable text)"
     }
 
     override fun onCreate(db: SQLiteDatabase) {

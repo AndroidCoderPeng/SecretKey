@@ -7,6 +7,8 @@ package com.pengxh.secretkey.bean
  * @date: 2020/7/24 14:48
  */
 class SecretBean {
+    lateinit var secretCategory: String //密码所在的分类
+
     lateinit var secretTitle: String //密码所对应的站名或者应用名
 
     lateinit var secretAccount: String //账号

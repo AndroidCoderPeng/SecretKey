@@ -45,13 +45,15 @@ class SQLiteUtil private constructor() {
         fun instance() = sqLiteUtil
     }
 
-    fun saveSecret(secretTitle: String,
+    fun saveSecret(secretCategory: String,
+        secretTitle: String,
         secretAccount: String,
         secretPassword: String,
         recoverable: String) {
         if (!isSecretExist(secretTitle)) {
             //需要双重判断，title和account都相同才认为是同一个账号修改密码，否则认为是新增账号密码
             val values = ContentValues()
+            values.put("secretCategory", secretCategory)
             values.put("secretTitle", secretTitle)
             values.put("secretAccount", secretAccount)
             values.put("secretPassword", secretPassword)
@@ -63,11 +65,12 @@ class SQLiteUtil private constructor() {
     }
 
     fun loadAllSecret(): List<SecretBean> {
-        val list: MutableList<SecretBean> = ArrayList<SecretBean>()
+        val list: MutableList<SecretBean> = ArrayList()
         val cursor = db.query(SECRET, null, null, null, null, null, "id DESC") //倒序
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
             val resultBean = SecretBean()
+            resultBean.secretCategory = cursor.getString(cursor.getColumnIndex("secretCategory"))
             resultBean.secretTitle = cursor.getString(cursor.getColumnIndex("secretTitle"))
             resultBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
             resultBean.secretPassword = cursor.getString(cursor.getColumnIndex("secretPassword"))
@@ -89,7 +92,7 @@ class SQLiteUtil private constructor() {
         var cursor: Cursor? = null
         try {
             cursor =
-                db.query(SECRET, null, "starName = ?", arrayOf(selectionArgs), null, null, null)
+                db.query(SECRET, null, "secretTitle = ?", arrayOf(selectionArgs), null, null, null)
             result = null != cursor && cursor.moveToFirst()
         } catch (e: Exception) {
             e.printStackTrace()
