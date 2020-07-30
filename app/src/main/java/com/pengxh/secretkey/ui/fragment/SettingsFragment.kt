@@ -6,6 +6,7 @@ import com.aihook.alertview.library.OnItemClickListener
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseFragment
 import com.pengxh.app.multilib.utils.FileUtil
+import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.ui.AboutActivity
@@ -16,6 +17,7 @@ import com.pengxh.secretkey.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.fragment_settings.*
 import kotlinx.android.synthetic.main.include_title_main.*
 import java.io.File
+import kotlin.properties.Delegates
 
 
 /**
@@ -30,6 +32,8 @@ class SettingsFragment : BaseFragment() {
         private const val Tag = "SettingsFragment"
     }
 
+    private var captureSwitchStatus by Delegates.notNull<Boolean>()
+
     override fun initLayoutView(): Int = R.layout.fragment_settings
 
     override fun initData() {
@@ -39,6 +43,9 @@ class SettingsFragment : BaseFragment() {
         ImmersionBar.with(this).init()
 
         mTitleView.text = "设置中心"
+
+        captureSwitchStatus = SaveKeyValues.getValue("captureSwitchStatus", true) as Boolean
+        captureSwitch.isChecked = captureSwitchStatus
     }
 
     override fun initEvent() {
@@ -54,6 +61,17 @@ class SettingsFragment : BaseFragment() {
          * */
         aboutLayout.setOnClickListener {
             OtherUtils.intentActivity(AboutActivity::class.java)
+        }
+
+        /**
+         * 关于Layout
+         * */
+        captureSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                SaveKeyValues.putValue("captureSwitchStatus", true)
+            } else {
+                SaveKeyValues.putValue("captureSwitchStatus", false)
+            }
         }
 
         /**

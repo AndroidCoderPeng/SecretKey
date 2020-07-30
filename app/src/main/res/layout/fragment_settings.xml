@@ -75,7 +75,6 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/captureLayout"
             style="@style/itemLayoutStyle"
             android:layout_marginTop="15dp">
 
@@ -88,7 +87,7 @@
                 android:text="允许截图" />
 
             <Switch
-                android:id="@+id/numberSwitch"
+                android:id="@+id/captureSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
