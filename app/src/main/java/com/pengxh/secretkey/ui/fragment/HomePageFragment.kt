@@ -3,9 +3,10 @@ package com.pengxh.secretkey.ui.fragment
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseFragment
 import com.pengxh.secretkey.R
+import com.pengxh.secretkey.adapter.SecretCategoryAdapter
 import com.pengxh.secretkey.utils.ColorHelper
 import com.pengxh.secretkey.utils.StatusBarColorUtil
-import kotlinx.android.synthetic.main.include_title_main.*
+import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
  * @author: Pengxh
@@ -26,11 +27,9 @@ class HomePageFragment : BaseFragment() {
             StatusBarColorUtil.setColor(it, ColorHelper.getXmlColor(it, R.color.colorAccent))
         }
         ImmersionBar.with(this).init()
-
-        mTitleView.text = "密码箱"
     }
 
     override fun initEvent() {
-
+        secretGridView.adapter = context?.let { SecretCategoryAdapter(it) }
     }
 }

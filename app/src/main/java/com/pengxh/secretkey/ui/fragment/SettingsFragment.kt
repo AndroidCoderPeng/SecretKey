@@ -15,7 +15,6 @@ import com.pengxh.secretkey.utils.ColorHelper
 import com.pengxh.secretkey.utils.OtherUtils
 import com.pengxh.secretkey.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.fragment_settings.*
-import kotlinx.android.synthetic.main.include_title_main.*
 import java.io.File
 import kotlin.properties.Delegates
 
@@ -42,7 +41,7 @@ class SettingsFragment : BaseFragment() {
         }
         ImmersionBar.with(this).init()
 
-        mTitleView.text = "设置中心"
+        settingsTitle.text = "设置中心"
 
         //默认不让截屏
         captureSwitchStatus = SaveKeyValues.getValue("captureSwitchStatus", false) as Boolean
