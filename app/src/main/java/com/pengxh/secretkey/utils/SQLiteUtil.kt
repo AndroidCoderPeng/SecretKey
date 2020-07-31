@@ -69,13 +69,13 @@ class SQLiteUtil private constructor() {
         val cursor = db.query(SECRET, null, null, null, null, null, "id DESC") //倒序
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
-            val resultBean = SecretBean()
-            resultBean.secretCategory = cursor.getString(cursor.getColumnIndex("secretCategory"))
-            resultBean.secretTitle = cursor.getString(cursor.getColumnIndex("secretTitle"))
-            resultBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
-            resultBean.secretPassword = cursor.getString(cursor.getColumnIndex("secretPassword"))
-            resultBean.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
-            list.add(resultBean)
+            val secretBean = SecretBean()
+            secretBean.secretCategory = cursor.getString(cursor.getColumnIndex("secretCategory"))
+            secretBean.secretTitle = cursor.getString(cursor.getColumnIndex("secretTitle"))
+            secretBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
+            secretBean.secretPassword = cursor.getString(cursor.getColumnIndex("secretPassword"))
+            secretBean.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
+            list.add(secretBean)
             //下一次循环开始
             cursor.moveToNext()
         }

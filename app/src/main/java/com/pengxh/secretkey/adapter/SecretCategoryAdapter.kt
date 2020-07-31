@@ -20,7 +20,7 @@ class SecretCategoryAdapter(ctx: Context) : BaseAdapter() {
     companion object {
         val images = arrayOf(R.drawable.ic_web,
             R.drawable.ic_app,
-            R.drawable.ic_games,
+            R.drawable.ic_game,
             R.drawable.ic_card,
             R.drawable.ic_work,
             R.drawable.ic_email,

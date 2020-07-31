@@ -10,6 +10,7 @@ import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.SecretCategoryAdapter
 import com.pengxh.secretkey.utils.ColorHelper
+import com.pengxh.secretkey.utils.OtherUtils
 import com.pengxh.secretkey.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.fragment_home.*
 import java.util.*
@@ -22,9 +23,7 @@ import java.util.*
  */
 class HomePageFragment : BaseFragment() {
 
-    companion object {
-        private const val Tag = "HomePageFragment"
-    }
+    private var length = 0 //进度条初始值
 
     override fun initLayoutView(): Int = R.layout.fragment_home
 
@@ -36,6 +35,8 @@ class HomePageFragment : BaseFragment() {
     }
 
     override fun initEvent() {
+        //进页面首先生成一次随机密码
+        resetSecretNumber()
 
         //进度条
         initProgressBar()
@@ -47,22 +48,34 @@ class HomePageFragment : BaseFragment() {
 
         //密码分类九宫格
         secretGridView.adapter = context?.let { SecretCategoryAdapter(it) }
-    }
+        secretGridView.setOnItemClickListener { parent, view, position, id ->
 
-    private var length = 0
+        }
+    }
 
     private fun initProgressBar() {
         val timer = object : Timer() {}
         timer.schedule(object : TimerTask() {
             override fun run() {
                 length++
-                if (length > 60001) {
+                if (length == 60000) {
                     length = 0
+                    //重置随机密码
+                    resetSecretNumber()
                 } else {
                     minuteProgressBar.progress = length
                 }
             }
         }, 0, 1) //间隔调最小，这样进度条前进比较平滑
+    }
+
+    private fun resetSecretNumber() {
+        firstView.text = OtherUtils.randomNumber().toString()
+        secondView.text = OtherUtils.randomNumber().toString()
+        thirdView.text = OtherUtils.randomNumber().toString()
+        fourthView.text = OtherUtils.randomNumber().toString()
+        fifthView.text = OtherUtils.randomNumber().toString()
+        sixthView.text = OtherUtils.randomNumber().toString()
     }
 
     private fun initScanner() {

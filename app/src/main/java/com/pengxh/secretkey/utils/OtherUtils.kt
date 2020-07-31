@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.widgets.FingerprintDialog
 import java.security.KeyStore
+import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
@@ -94,5 +95,10 @@ class OtherUtils {
                 throw java.lang.RuntimeException(e)
             }
         }
+
+        /**
+         * 生成[0,9]以内的随机数
+         * */
+        fun randomNumber(): Int = Random().nextInt(10)
     }
 }
