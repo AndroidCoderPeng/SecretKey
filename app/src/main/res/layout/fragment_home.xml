@@ -8,14 +8,84 @@
     <include layout="@layout/include_title_main" />
 
     <!--随机密码生成器-->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         android:layout_marginHorizontal="15dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/bg_layout">
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/scanView"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/scoreViewStyle"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_textview"
+                    android:text="1" />
+
+                <TextView
+                    style="@style/scoreViewStyle"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_textview"
+                    android:text="2" />
+
+                <TextView
+                    style="@style/scoreViewStyle"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_textview"
+                    android:text="3" />
+
+                <TextView
+                    style="@style/scoreViewStyle"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_textview"
+                    android:text="4" />
+
+                <TextView
+                    style="@style/scoreViewStyle"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_textview"
+                    android:text="5" />
+
+                <TextView
+                    style="@style/scoreViewStyle"
+                    android:background="@drawable/bg_textview"
+                    android:text="6" />
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/minuteProgressBar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:indeterminateTint="@color/colorAccent"
+                android:indeterminateTintMode="src_atop"
+                android:max="60000"
+                android:progressDrawable="@drawable/progress" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/scanView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/ic_scan" />
+    </RelativeLayout>
 
     <!--用户自己保存的密码，分类以九宫格形式展示-->
     <GridView

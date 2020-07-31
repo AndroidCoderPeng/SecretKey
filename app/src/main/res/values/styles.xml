@@ -1,4 +1,14 @@
 <resources>
+
+    <style name="scoreViewStyle">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">40sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="DialogStyle">
         <!-- Dialog的windowFrame框为无 -->
         <item name="android:windowFrame">@null</item>
