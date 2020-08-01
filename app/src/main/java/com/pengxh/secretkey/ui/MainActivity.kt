@@ -3,13 +3,13 @@ package com.pengxh.secretkey.ui
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.ViewPagerAdapter
 import com.pengxh.secretkey.ui.fragment.EmptyFragment
 import com.pengxh.secretkey.ui.fragment.HomePageFragment
 import com.pengxh.secretkey.ui.fragment.SettingsFragment
+import com.pengxh.secretkey.utils.OtherUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
@@ -60,7 +60,7 @@ class MainActivity : BaseActivity() {
         })
 
         outlineFab.setOnClickListener {
-            EasyToast.showToast("setOnClickListener", EasyToast.SUCCESS)
+            OtherUtils.intentActivity(AddSecretActivity::class.java)
         }
     }
 }

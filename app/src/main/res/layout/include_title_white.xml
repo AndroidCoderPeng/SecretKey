@@ -21,7 +21,7 @@
         android:gravity="center"
         android:singleLine="true"
         android:text="这是标题"
-        android:textColor="@color/colorText"
+        android:textColor="@color/black"
         android:textSize="18sp" />
 
     <ImageView

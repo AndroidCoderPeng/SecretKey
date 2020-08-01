@@ -1,6 +1,5 @@
 package com.pengxh.secretkey.utils
 
-import android.R
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,7 @@ class StatusBarColorUtil {
             decorView.addView(statusView)
             // 设置根布局的参数
             val rootView =
-                (activity.findViewById<View>(R.id.content) as ViewGroup).getChildAt(0) as ViewGroup
+                (activity.findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0) as ViewGroup
             rootView.fitsSystemWindows = true
             rootView.clipToPadding = true
         }
