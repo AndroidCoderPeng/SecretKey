@@ -8,6 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.pengxh.secretkey.R
+import com.pengxh.secretkey.utils.Constant
 
 /**
  * @author: Pengxh
@@ -17,18 +18,6 @@ import com.pengxh.secretkey.R
  */
 class SecretCategoryAdapter(ctx: Context) : BaseAdapter() {
 
-    companion object {
-        val images = arrayOf(R.drawable.ic_web,
-            R.drawable.ic_app,
-            R.drawable.ic_game,
-            R.drawable.ic_card,
-            R.drawable.ic_work,
-            R.drawable.ic_email,
-            R.drawable.ic_chat,
-            R.mipmap.other)
-        val title = arrayOf("网站", "APP", "游戏", "银行卡", "工作", "邮件", "聊天", "其他")
-    }
-
     private var context: Context = ctx
     private var inflater: LayoutInflater
 
@@ -36,9 +25,9 @@ class SecretCategoryAdapter(ctx: Context) : BaseAdapter() {
         inflater = LayoutInflater.from(context)
     }
 
-    override fun getCount(): Int = images.size
+    override fun getCount(): Int = Constant.images.size
 
-    override fun getItem(position: Int): Any = images[position]
+    override fun getItem(position: Int): Any = Constant.images[position]
 
     override fun getItemId(position: Int): Long = position.toLong()
 
@@ -53,8 +42,8 @@ class SecretCategoryAdapter(ctx: Context) : BaseAdapter() {
             view = convertView
             itemViewHolder = view.tag as ItemViewHolder
         }
-        itemViewHolder.secretCover.setImageResource(images[position])
-        itemViewHolder.secretCategory.text = title[position]
+        itemViewHolder.secretCover.setImageResource(Constant.images[position])
+        itemViewHolder.secretCategory.text = Constant.title[position]
         itemViewHolder.secretCount.text = "($position)"
         return view
     }

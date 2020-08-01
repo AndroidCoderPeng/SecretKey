@@ -10,6 +10,12 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/nav_empty"
+        android:enabled="false"
+        android:title=""
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/nav_settings"
         android:enabled="true"
         android:icon="@mipmap/settings"

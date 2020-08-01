@@ -99,6 +99,6 @@ class OtherUtils {
         /**
          * 生成[0,9]以内的随机数
          * */
-        fun randomNumber(): Int = Random().nextInt(10)
+        fun randomNumber(): String = Random().nextInt(10).toString()
     }
 }

@@ -15,71 +15,7 @@
         android:layout_marginTop="15dp"
         android:background="@drawable/bg_layout">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@id/scanView"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/firstView"
-                    style="@style/scoreViewStyle"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/bg_textview"
-                    android:text="1" />
-
-                <TextView
-                    android:id="@+id/secondView"
-                    style="@style/scoreViewStyle"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/bg_textview"
-                    android:text="2" />
-
-                <TextView
-                    android:id="@+id/thirdView"
-                    style="@style/scoreViewStyle"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/bg_textview"
-                    android:text="3" />
-
-                <TextView
-                    android:id="@+id/fourthView"
-                    style="@style/scoreViewStyle"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/bg_textview"
-                    android:text="4" />
-
-                <TextView
-                    android:id="@+id/fifthView"
-                    style="@style/scoreViewStyle"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/bg_textview"
-                    android:text="5" />
-
-                <TextView
-                    android:id="@+id/sixthView"
-                    style="@style/scoreViewStyle"
-                    android:background="@drawable/bg_textview"
-                    android:text="6" />
-            </LinearLayout>
-
-            <ProgressBar
-                android:id="@+id/minuteProgressBar"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:max="60000"
-                android:progressDrawable="@drawable/progress" />
-        </LinearLayout>
+        <include layout="@layout/include_secret_number" />
 
         <ImageView
             android:id="@+id/scanView"

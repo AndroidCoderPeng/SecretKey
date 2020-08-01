@@ -1,6 +1,7 @@
 package com.pengxh.secretkey.ui.fragment
 
 import android.graphics.Color
+import android.util.Log
 import cn.bertsir.zbar.QrConfig
 import cn.bertsir.zbar.QrManager
 import cn.bertsir.zbar.view.ScanLineView
@@ -10,9 +11,11 @@ import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.SecretCategoryAdapter
 import com.pengxh.secretkey.utils.ColorHelper
+import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.OtherUtils
 import com.pengxh.secretkey.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.include_secret_number.*
 import java.util.*
 
 /**
@@ -22,6 +25,10 @@ import java.util.*
  * @date: 2020年7月24日12:41:36
  */
 class HomePageFragment : BaseFragment() {
+
+    companion object {
+        private const val Tag: String = "HomePageFragment"
+    }
 
     private var length = 0 //进度条初始值
 
@@ -49,7 +56,8 @@ class HomePageFragment : BaseFragment() {
         //密码分类九宫格
         secretGridView.adapter = context?.let { SecretCategoryAdapter(it) }
         secretGridView.setOnItemClickListener { parent, view, position, id ->
-
+            val category = Constant.title[position]
+            Log.d(Tag, ": $category")
         }
     }
 
@@ -70,12 +78,24 @@ class HomePageFragment : BaseFragment() {
     }
 
     private fun resetSecretNumber() {
-        firstView.text = OtherUtils.randomNumber().toString()
-        secondView.text = OtherUtils.randomNumber().toString()
-        thirdView.text = OtherUtils.randomNumber().toString()
-        fourthView.text = OtherUtils.randomNumber().toString()
-        fifthView.text = OtherUtils.randomNumber().toString()
-        sixthView.text = OtherUtils.randomNumber().toString()
+        if (firstView != null) {
+            firstView.text = OtherUtils.randomNumber()
+        }
+        if (secondView != null) {
+            secondView.text = OtherUtils.randomNumber()
+        }
+        if (thirdView != null) {
+            thirdView.text = OtherUtils.randomNumber()
+        }
+        if (fourthView != null) {
+            fourthView.text = OtherUtils.randomNumber()
+        }
+        if (fifthView != null) {
+            fifthView.text = OtherUtils.randomNumber()
+        }
+        if (sixthView != null) {
+            sixthView.text = OtherUtils.randomNumber()
+        }
     }
 
     private fun initScanner() {
