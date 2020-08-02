@@ -4,7 +4,6 @@ import android.app.Application
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.utils.OtherUtils
-import com.pengxh.secretkey.utils.SQLiteUtil
 import kotlin.properties.Delegates
 
 /**
@@ -20,7 +19,6 @@ class BaseApplication : Application() {
         application = this
         SaveKeyValues.initSharedPreferences(this)
         EasyToast.init(this)
-        SQLiteUtil.initDataBase(this)
         OtherUtils.init(this)
     }
 

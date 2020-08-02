@@ -10,10 +10,7 @@ import com.pengxh.app.multilib.base.BaseFragment
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.SecretCategoryAdapter
-import com.pengxh.secretkey.utils.ColorHelper
-import com.pengxh.secretkey.utils.Constant
-import com.pengxh.secretkey.utils.OtherUtils
-import com.pengxh.secretkey.utils.StatusBarColorUtil
+import com.pengxh.secretkey.utils.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.include_secret_number.*
 import java.util.*
@@ -31,6 +28,7 @@ class HomePageFragment : BaseFragment() {
     }
 
     private var length = 0 //进度条初始值
+    private var sqLiteUtil: SQLiteUtil? = null
 
     override fun initLayoutView(): Int = R.layout.fragment_home
 
@@ -39,6 +37,7 @@ class HomePageFragment : BaseFragment() {
             StatusBarColorUtil.setColor(it, ColorHelper.getXmlColor(it, R.color.colorAccent))
         }
         ImmersionBar.with(this).init()
+        sqLiteUtil = SQLiteUtil(context!!)
     }
 
     override fun initEvent() {
@@ -52,9 +51,13 @@ class HomePageFragment : BaseFragment() {
         scanView.setOnClickListener {
             initScanner()
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
         //密码分类九宫格
-        secretGridView.adapter = context?.let { SecretCategoryAdapter(it) }
+        secretGridView.adapter =
+            context?.let { SecretCategoryAdapter(it, sqLiteUtil!!.loadAllSecret()) }
         secretGridView.setOnItemClickListener { parent, view, position, id ->
             val category = Constant.title[position]
             Log.d(Tag, ": $category")
@@ -62,8 +65,7 @@ class HomePageFragment : BaseFragment() {
     }
 
     private fun initProgressBar() {
-        val timer = object : Timer() {}
-        timer.schedule(object : TimerTask() {
+        object : Timer() {}.schedule(object : TimerTask() {
             override fun run() {
                 length++
                 if (length == 60000) {

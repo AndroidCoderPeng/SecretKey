@@ -6,43 +6,34 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import com.pengxh.secretkey.bean.SecretBean
 import java.util.*
-import kotlin.properties.Delegates
 
-class SQLiteUtil private constructor() {
-
-    private val db: SQLiteDatabase
-
-    init {
-        val mSqLiteUtilHelper = SQLiteUtilHelper(context, DB_NAME, null, VERSION)
-        db = mSqLiteUtilHelper.writableDatabase
-    }
+class SQLiteUtil(mContext: Context) {
 
     companion object {
         private const val Tag = "SQLiteUtil"
-        private var context: Context? = null
+    }
 
-        /**
-         * 数据库名
-         */
-        private const val DB_NAME = "SecretKey.db"
+    private val db: SQLiteDatabase
+    private var context: Context = mContext
 
-        /**
-         * 数据库表名
-         */
-        private const val SECRET = "SecretTable"
+    /**
+     * 数据库名
+     */
+    private val databaseName = "SecretKey.db"
 
-        /**
-         * 数据库版本
-         */
-        private const val VERSION = 1
+    /**
+     * 数据库表名
+     */
+    private val tableName = "SecretTable"
 
-        private var sqLiteUtil: SQLiteUtil by Delegates.notNull() //委托模式单例
+    /**
+     * 数据库版本
+     */
+    private val databaseVersion = 1
 
-        fun initDataBase(mContext: Context) {
-            context = mContext.applicationContext
-        }
-
-        fun instance() = sqLiteUtil
+    init {
+        val mSqLiteUtilHelper = SQLiteUtilHelper(context, databaseName, null, databaseVersion)
+        db = mSqLiteUtilHelper.writableDatabase
     }
 
     fun saveSecret(secretCategory: String,
@@ -58,7 +49,7 @@ class SQLiteUtil private constructor() {
             values.put("secretAccount", secretAccount)
             values.put("secretPassword", secretPassword)
             values.put("recoverable", recoverable)
-            db.insert(SECRET, null, values)
+            db.insert(tableName, null, values)
         } else {
 
         }
@@ -66,15 +57,19 @@ class SQLiteUtil private constructor() {
 
     fun loadAllSecret(): List<SecretBean> {
         val list: MutableList<SecretBean> = ArrayList()
-        val cursor = db.query(SECRET, null, null, null, null, null, "id DESC") //倒序
+        val cursor = db.query(tableName, null, null, null, null, null, "id DESC") //倒序
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
             val secretBean = SecretBean()
-            secretBean.secretCategory = cursor.getString(cursor.getColumnIndex("secretCategory"))
-            secretBean.secretTitle = cursor.getString(cursor.getColumnIndex("secretTitle"))
-            secretBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
-            secretBean.secretPassword = cursor.getString(cursor.getColumnIndex("secretPassword"))
-            secretBean.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
+            secretBean.category = cursor.getString(cursor.getColumnIndex("category"))
+
+            val secret = SecretBean.Secret()
+            secret.secretTitle = cursor.getString(cursor.getColumnIndex("secretTitle"))
+            secret.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
+            secret.secretPassword = cursor.getString(cursor.getColumnIndex("secretPassword"))
+            secret.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
+            secretBean.secret = listOf(secret)
+
             list.add(secretBean)
             //下一次循环开始
             cursor.moveToNext()
@@ -84,15 +79,20 @@ class SQLiteUtil private constructor() {
     }
 
     fun deleteAll() {
-        db.delete(SECRET, null, null)
+        db.delete(tableName, null, null)
     }
 
     private fun isSecretExist(selectionArgs: String): Boolean {
         var result = false
         var cursor: Cursor? = null
         try {
-            cursor =
-                db.query(SECRET, null, "secretTitle = ?", arrayOf(selectionArgs), null, null, null)
+            cursor = db.query(tableName,
+                null,
+                "secretTitle = ?",
+                arrayOf(selectionArgs),
+                null,
+                null,
+                null)
             result = null != cursor && cursor.moveToFirst()
         } catch (e: Exception) {
             e.printStackTrace()

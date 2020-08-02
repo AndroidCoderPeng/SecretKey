@@ -1,5 +1,6 @@
 package com.pengxh.secretkey.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.pengxh.secretkey.R
+import com.pengxh.secretkey.bean.SecretBean
 import com.pengxh.secretkey.utils.Constant
 
 /**
@@ -16,13 +18,15 @@ import com.pengxh.secretkey.utils.Constant
  * @description: TODO
  * @date: 2020/7/1 15:10
  */
-class SecretCategoryAdapter(ctx: Context) : BaseAdapter() {
+class SecretCategoryAdapter(ctx: Context, list: List<SecretBean>?) : BaseAdapter() {
 
     private var context: Context = ctx
     private var inflater: LayoutInflater
+    private var beanList: List<SecretBean>? = null
 
     init {
         inflater = LayoutInflater.from(context)
+        beanList = list
     }
 
     override fun getCount(): Int = Constant.images.size
@@ -31,6 +35,7 @@ class SecretCategoryAdapter(ctx: Context) : BaseAdapter() {
 
     override fun getItemId(position: Int): Long = position.toLong()
 
+    @SuppressLint("SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View
         val itemViewHolder: ItemViewHolder
@@ -44,7 +49,17 @@ class SecretCategoryAdapter(ctx: Context) : BaseAdapter() {
         }
         itemViewHolder.secretCover.setImageResource(Constant.images[position])
         itemViewHolder.secretCategory.text = Constant.title[position]
-        itemViewHolder.secretCount.text = "($position)"
+        if (beanList!!.isEmpty()) {
+            //整张表都为空
+            itemViewHolder.secretCount.text = "(0)"
+        } else {
+            val secret = beanList!![position].secret
+            if (secret!!.isEmpty()) {
+                itemViewHolder.secretCount.text = "(0)"
+            } else {
+                itemViewHolder.secretCount.text = "(${secret.size})"
+            }
+        }
         return view
     }
 

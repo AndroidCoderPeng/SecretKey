@@ -6,6 +6,7 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import com.gyf.immersionbar.ImmersionBar
+import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.Constant
@@ -26,10 +27,10 @@ class AddSecretActivity : BaseActivity() {
         private const val Tag: String = "AddSecretActivity"
     }
 
-    private lateinit var category: String
-    private lateinit var title: String
-    private lateinit var account: String
-    private lateinit var password: String
+    private var category: String? = null
+    private var title: String? = null
+    private var account: String? = null
+    private var password: String? = null
 
     override fun initLayoutView(): Int = R.layout.activity_secret_add
 
@@ -58,6 +59,28 @@ class AddSecretActivity : BaseActivity() {
         }
 
         mTitleRightView.setOnClickListener {
+            if (category == null) {
+                EasyToast.showToast("类别未选，请选择", EasyToast.WARING)
+                return@setOnClickListener
+            }
+
+            title = inputTitle.text.toString().trim()
+            if (title == null || title == "") {
+                EasyToast.showToast("标题未填写，请检查", EasyToast.WARING)
+                return@setOnClickListener
+            }
+
+            account = inputAccount.text.toString().trim()
+            if (account == null || account == "") {
+                EasyToast.showToast("账号未填写，请检查", EasyToast.WARING)
+                return@setOnClickListener
+            }
+
+            password = inputPassword.text.toString().trim()
+            if (password == null || password == "") {
+                EasyToast.showToast("密码未填写，请检查", EasyToast.WARING)
+                return@setOnClickListener
+            }
             //将数据存数据库，然后结束当前页面
             this.finish()
         }
