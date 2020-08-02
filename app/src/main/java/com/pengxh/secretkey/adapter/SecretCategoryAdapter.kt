@@ -20,6 +20,10 @@ import com.pengxh.secretkey.utils.Constant
  */
 class SecretCategoryAdapter(ctx: Context, list: List<SecretBean>?) : BaseAdapter() {
 
+    companion object {
+        private const val Tag: String = "SecretCategoryAdapter"
+    }
+
     private var context: Context = ctx
     private var inflater: LayoutInflater
     private var beanList: List<SecretBean>? = null
@@ -53,12 +57,10 @@ class SecretCategoryAdapter(ctx: Context, list: List<SecretBean>?) : BaseAdapter
             //整张表都为空
             itemViewHolder.secretCount.text = "(0)"
         } else {
-            val secret = beanList!![position].secret
-            if (secret!!.isEmpty()) {
-                itemViewHolder.secretCount.text = "(0)"
-            } else {
-                itemViewHolder.secretCount.text = "(${secret.size})"
-            }
+            /**
+             * [{"recoverable":"1","secretAccount":"ABC","secretCategory":"网站","secretPassword":"123456789","secretTitle":"淘宝网"}]
+             * */
+
         }
         return view
     }

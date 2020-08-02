@@ -46,4 +46,6 @@ dependencies {
     implementation 'com.aihook:alertview:1.0.0'
     //ZBar扫一扫(综合Java和C++扫码)
     implementation 'cn.bertsir.zbarLibary:zbarlibary:1.4.2'
+    //官方Json解析库
+    implementation 'com.google.code.gson:gson:2.8.5'
 }

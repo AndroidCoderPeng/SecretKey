@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import com.pengxh.secretkey.bean.SecretBean
 import java.util.*
 
@@ -36,13 +37,15 @@ class SQLiteUtil(mContext: Context) {
         db = mSqLiteUtilHelper.writableDatabase
     }
 
+    /**
+     * 保存账号密码
+     * */
     fun saveSecret(secretCategory: String,
         secretTitle: String,
         secretAccount: String,
         secretPassword: String,
         recoverable: String) {
-        if (!isSecretExist(secretTitle)) {
-            //需要双重判断，title和account都相同才认为是同一个账号修改密码，否则认为是新增账号密码
+        if (!isSecretExist(secretTitle, secretAccount)) {
             val values = ContentValues()
             values.put("secretCategory", secretCategory)
             values.put("secretTitle", secretTitle)
@@ -51,25 +54,25 @@ class SQLiteUtil(mContext: Context) {
             values.put("recoverable", recoverable)
             db.insert(tableName, null, values)
         } else {
-
+            Log.d(Tag, "『$secretTitle』已存在")
         }
     }
 
+    /**
+     * 加载数据库所有数据
+     * TODO 逻辑需要修改
+     * */
     fun loadAllSecret(): List<SecretBean> {
         val list: MutableList<SecretBean> = ArrayList()
         val cursor = db.query(tableName, null, null, null, null, null, "id DESC") //倒序
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
             val secretBean = SecretBean()
-            secretBean.category = cursor.getString(cursor.getColumnIndex("category"))
-
-            val secret = SecretBean.Secret()
-            secret.secretTitle = cursor.getString(cursor.getColumnIndex("secretTitle"))
-            secret.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
-            secret.secretPassword = cursor.getString(cursor.getColumnIndex("secretPassword"))
-            secret.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
-            secretBean.secret = listOf(secret)
-
+            secretBean.secretCategory = cursor.getString(cursor.getColumnIndex("secretCategory"))
+            secretBean.secretTitle = cursor.getString(cursor.getColumnIndex("secretTitle"))
+            secretBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
+            secretBean.secretPassword = cursor.getString(cursor.getColumnIndex("secretPassword"))
+            secretBean.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
             list.add(secretBean)
             //下一次循环开始
             cursor.moveToNext()
@@ -82,14 +85,15 @@ class SQLiteUtil(mContext: Context) {
         db.delete(tableName, null, null)
     }
 
-    private fun isSecretExist(selectionArgs: String): Boolean {
+    /**
+     * 双重判断，title和account都相同才认为是同一个账号修改密码，否则认为是新增账号密码
+     * */
+    private fun isSecretExist(title: String, account: String): Boolean {
         var result = false
         var cursor: Cursor? = null
         try {
             cursor = db.query(tableName,
-                null,
-                "secretTitle = ?",
-                arrayOf(selectionArgs),
+                null, "secretTitle = ? and secretAccount = ?", arrayOf(title, account),
                 null,
                 null,
                 null)

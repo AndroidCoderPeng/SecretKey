@@ -10,6 +10,7 @@ import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.Constant
+import com.pengxh.secretkey.utils.SQLiteUtil
 import com.pengxh.secretkey.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.activity_secret_add.*
 import kotlinx.android.synthetic.main.include_title_white.*
@@ -39,8 +40,6 @@ class AddSecretActivity : BaseActivity() {
         ImmersionBar.with(this).statusBarDarkFont(true).init()
 
         mTitleView.text = "添加密码"
-        mTitleRightView.visibility = View.VISIBLE
-        mTitleRightView.setBackgroundResource(R.mipmap.all_right)
     }
 
     override fun initEvent() {
@@ -58,7 +57,7 @@ class AddSecretActivity : BaseActivity() {
             }
         }
 
-        mTitleRightView.setOnClickListener {
+        saveButton.setOnClickListener {
             if (category == null) {
                 EasyToast.showToast("类别未选，请选择", EasyToast.WARING)
                 return@setOnClickListener
@@ -82,6 +81,7 @@ class AddSecretActivity : BaseActivity() {
                 return@setOnClickListener
             }
             //将数据存数据库，然后结束当前页面
+            SQLiteUtil(this).saveSecret(category!!, title!!, account!!, password!!, "1")
             this.finish()
         }
     }
