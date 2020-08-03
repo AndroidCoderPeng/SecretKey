@@ -45,16 +45,19 @@ class SQLiteUtil(mContext: Context) {
         secretAccount: String,
         secretPassword: String,
         recoverable: String) {
+        val values = ContentValues()
+        values.put("secretCategory", secretCategory)
+        values.put("secretTitle", secretTitle)
+        values.put("secretAccount", secretAccount)
+        values.put("secretPassword", secretPassword)
+        values.put("recoverable", recoverable)
         if (!isSecretExist(secretTitle, secretAccount)) {
-            val values = ContentValues()
-            values.put("secretCategory", secretCategory)
-            values.put("secretTitle", secretTitle)
-            values.put("secretAccount", secretAccount)
-            values.put("secretPassword", secretPassword)
-            values.put("recoverable", recoverable)
+            Log.d(Tag, secretAccount + "保存密码")
             db.insert(tableName, null, values)
         } else {
-            Log.d(Tag, "『$secretTitle』已存在")
+            //更新密码
+            Log.d(Tag, secretAccount + "更新密码")
+            db.update(tableName, values, "secretAccount = ?", arrayOf(secretAccount))
         }
     }
 
