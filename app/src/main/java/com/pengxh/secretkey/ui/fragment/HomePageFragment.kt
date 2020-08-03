@@ -1,7 +1,6 @@
 package com.pengxh.secretkey.ui.fragment
 
 import android.graphics.Color
-import android.util.Log
 import cn.bertsir.zbar.QrConfig
 import cn.bertsir.zbar.QrManager
 import cn.bertsir.zbar.view.ScanLineView
@@ -10,6 +9,7 @@ import com.pengxh.app.multilib.base.BaseFragment
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.SecretCategoryAdapter
+import com.pengxh.secretkey.ui.SecretDetailActivity
 import com.pengxh.secretkey.utils.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.include_secret_number.*
@@ -56,11 +56,9 @@ class HomePageFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         //密码分类九宫格
-        secretGridView.adapter =
-            context?.let { SecretCategoryAdapter(it, sqLiteUtil!!.loadAllSecret()) }
+        secretGridView.adapter = context?.let { SecretCategoryAdapter(it) }
         secretGridView.setOnItemClickListener { parent, view, position, id ->
-            val category = Constant.title[position]
-            Log.d(Tag, ": $category")
+            OtherUtils.intentActivity(SecretDetailActivity::class.java, Constant.category[position])
         }
     }
 

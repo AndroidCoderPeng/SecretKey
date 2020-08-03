@@ -9,8 +9,8 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.pengxh.secretkey.R
-import com.pengxh.secretkey.bean.SecretBean
 import com.pengxh.secretkey.utils.Constant
+import com.pengxh.secretkey.utils.SQLiteUtil
 
 /**
  * @author: Pengxh
@@ -18,19 +18,15 @@ import com.pengxh.secretkey.utils.Constant
  * @description: TODO
  * @date: 2020/7/1 15:10
  */
-class SecretCategoryAdapter(ctx: Context, list: List<SecretBean>?) : BaseAdapter() {
-
-    companion object {
-        private const val Tag: String = "SecretCategoryAdapter"
-    }
+class SecretCategoryAdapter(ctx: Context) : BaseAdapter() {
 
     private var context: Context = ctx
     private var inflater: LayoutInflater
-    private var beanList: List<SecretBean>? = null
+    private var sqLiteUtil: SQLiteUtil
 
     init {
         inflater = LayoutInflater.from(context)
-        beanList = list
+        sqLiteUtil = SQLiteUtil(context)
     }
 
     override fun getCount(): Int = Constant.images.size
@@ -52,16 +48,9 @@ class SecretCategoryAdapter(ctx: Context, list: List<SecretBean>?) : BaseAdapter
             itemViewHolder = view.tag as ItemViewHolder
         }
         itemViewHolder.secretCover.setImageResource(Constant.images[position])
-        itemViewHolder.secretCategory.text = Constant.title[position]
-        if (beanList!!.isEmpty()) {
-            //整张表都为空
-            itemViewHolder.secretCount.text = "(0)"
-        } else {
-            /**
-             * [{"recoverable":"1","secretAccount":"ABC","secretCategory":"网站","secretPassword":"123456789","secretTitle":"淘宝网"}]
-             * */
-
-        }
+        itemViewHolder.secretCategory.text = Constant.category[position]
+        itemViewHolder.secretCount.text =
+            "(${sqLiteUtil.loadCategory(Constant.category[position]).size})"
         return view
     }
 

@@ -17,5 +17,5 @@ object Constant {
         R.drawable.ic_email,
         R.drawable.ic_chat,
         R.mipmap.other)
-    val title = arrayOf("网站", "APP", "游戏", "银行卡", "工作", "邮件", "聊天", "其他")
+    val category = arrayOf("网站", "APP", "游戏", "银行卡", "工作", "邮件", "聊天", "其他")
 }

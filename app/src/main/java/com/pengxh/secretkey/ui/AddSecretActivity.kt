@@ -44,12 +44,12 @@ class AddSecretActivity : BaseActivity() {
 
     override fun initEvent() {
         val adapter: ArrayAdapter<String> =
-            ArrayAdapter(this, android.R.layout.simple_spinner_item, Constant.title)
+            ArrayAdapter(this, android.R.layout.simple_spinner_item, Constant.category)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         categorySpinner.adapter = adapter
         categorySpinner.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, pos: Int, id: Long) {
-                category = Constant.title[pos]
+                category = Constant.category[pos]
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
