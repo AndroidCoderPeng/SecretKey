@@ -59,21 +59,26 @@ class SQLiteUtil(mContext: Context) {
     }
 
     /**
-     * 加载数据库所有数据
-     * TODO 逻辑需要修改
+     * 加载某个分类的数据
      * */
-    fun loadAllSecret(): List<SecretBean> {
+    fun loadCategory(category: String): List<SecretBean> {
         val list: MutableList<SecretBean> = ArrayList()
-        val cursor = db.query(tableName, null, null, null, null, null, "id DESC") //倒序
+        val cursor = db.query(tableName,
+            null,
+            "secretCategory = ?",
+            arrayOf(category),
+            null,
+            null,
+            "id DESC") //倒序
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
-            val secretBean = SecretBean()
-            secretBean.secretCategory = cursor.getString(cursor.getColumnIndex("secretCategory"))
-            secretBean.secretTitle = cursor.getString(cursor.getColumnIndex("secretTitle"))
-            secretBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
-            secretBean.secretPassword = cursor.getString(cursor.getColumnIndex("secretPassword"))
-            secretBean.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
-            list.add(secretBean)
+            val resultBean = SecretBean()
+            resultBean.secretCategory = cursor.getString(cursor.getColumnIndex("secretCategory"))
+            resultBean.secretTitle = cursor.getString(cursor.getColumnIndex("secretTitle"))
+            resultBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
+            resultBean.secretPassword = cursor.getString(cursor.getColumnIndex("secretPassword"))
+            resultBean.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
+            list.add(resultBean)
             //下一次循环开始
             cursor.moveToNext()
         }
@@ -93,7 +98,9 @@ class SQLiteUtil(mContext: Context) {
         var cursor: Cursor? = null
         try {
             cursor = db.query(tableName,
-                null, "secretTitle = ? and secretAccount = ?", arrayOf(title, account),
+                null,
+                "secretTitle = ? and secretAccount = ?",
+                arrayOf(title, account),
                 null,
                 null,
                 null)
