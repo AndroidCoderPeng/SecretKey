@@ -1,11 +1,13 @@
 package com.pengxh.secretkey.adapter
 
 import android.content.Context
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
+import android.widget.ToggleButton
 import androidx.recyclerview.widget.RecyclerView
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.bean.SecretBean
@@ -16,11 +18,11 @@ import com.pengxh.secretkey.bean.SecretBean
  * @description: TODO
  * @date: 2020/8/3 12:35
  */
-class SecretDetailAdapter(ctx: Context, list: List<SecretBean>) :
+class SecretDetailAdapter(ctx: Context, list: MutableList<SecretBean>) :
     RecyclerView.Adapter<SecretDetailAdapter.ItemViewHolder>() {
 
     private var context: Context = ctx
-    private var beanList: List<SecretBean> = list
+    private var beanList: MutableList<SecretBean> = list
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(LayoutInflater.from(context)
@@ -45,8 +47,14 @@ class SecretDetailAdapter(ctx: Context, list: List<SecretBean>) :
         holder.deleteTextView.setOnClickListener {
             itemClickListener!!.onDeleteViewClickListener(position)
         }
-        holder.visibleView.setOnClickListener {
-            itemClickListener!!.onVisibleViewClickListener(position)
+        holder.visibleView.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                holder.secretPassword.transformationMethod =
+                    HideReturnsTransformationMethod.getInstance()
+            } else {
+                holder.secretPassword.transformationMethod =
+                    PasswordTransformationMethod.getInstance()
+            }
         }
     }
 
@@ -59,17 +67,15 @@ class SecretDetailAdapter(ctx: Context, list: List<SecretBean>) :
         var shareTextView: TextView = itemView!!.findViewById(R.id.shareTextView)
         var copyTextView: TextView = itemView!!.findViewById(R.id.copyTextView)
         var deleteTextView: TextView = itemView!!.findViewById(R.id.deleteTextView)
-        var visibleView: ImageView = itemView!!.findViewById(R.id.visibleView)
+        var visibleView: ToggleButton = itemView!!.findViewById(R.id.visibleView)
     }
 
     interface OnChildViewClickListener {
-        fun onShareViewClickListener(position: Int)
+        fun onShareViewClickListener(index: Int)
 
-        fun onCopyViewClickListener(position: Int)
+        fun onCopyViewClickListener(index: Int)
 
-        fun onDeleteViewClickListener(position: Int)
-
-        fun onVisibleViewClickListener(position: Int)
+        fun onDeleteViewClickListener(index: Int)
     }
 
     fun setOnItemClickListener(listener: OnChildViewClickListener) {
