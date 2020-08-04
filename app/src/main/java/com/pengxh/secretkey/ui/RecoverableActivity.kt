@@ -1,13 +1,22 @@
 package com.pengxh.secretkey.ui
 
+import android.annotation.SuppressLint
 import android.graphics.Color
-import android.util.Log
-import com.google.gson.Gson
+import android.graphics.drawable.ColorDrawable
+import android.view.View
+import com.aihook.alertview.library.AlertView
+import com.aihook.alertview.library.OnItemClickListener
 import com.gyf.immersionbar.ImmersionBar
+import com.pengxh.app.multilib.utils.DensityUtil
+import com.pengxh.app.multilib.widget.swipemenu.SwipeMenuItem
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
+import com.pengxh.secretkey.adapter.RecoverableAdapter
+import com.pengxh.secretkey.bean.SecretBean
+import com.pengxh.secretkey.utils.ColorHelper
 import com.pengxh.secretkey.utils.SQLiteUtil
 import com.pengxh.secretkey.utils.StatusBarColorUtil
+import kotlinx.android.synthetic.main.activity_recoverable.*
 import kotlinx.android.synthetic.main.include_title_white.*
 
 /**
@@ -22,6 +31,8 @@ class RecoverableActivity : BaseActivity() {
         private const val Tag = "RecoverableActivity"
     }
 
+    private lateinit var loadRecoverableData: MutableList<SecretBean>
+
     override fun initLayoutView(): Int = R.layout.activity_recoverable
 
     override fun initData() {
@@ -31,7 +42,73 @@ class RecoverableActivity : BaseActivity() {
         mTitleView.text = "数据恢复"
     }
 
+    @SuppressLint("SetTextI18n")
     override fun initEvent() {
-        Log.d(Tag, Gson().toJson(SQLiteUtil(this).loadRecoverableData()))
+        loadRecoverableData = SQLiteUtil(this).loadRecoverableData()
+        recoverableSize.text = "共" + loadRecoverableData.size + "条数据可被恢复"
+        initUI(loadRecoverableData)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //侧滑菜单
+        recoverableListView.adapter = RecoverableAdapter(this, loadRecoverableData)
+        recoverableListView.setMenuCreator { menu ->
+            val reBindItem = SwipeMenuItem(this)
+            reBindItem.background =
+                ColorDrawable(ColorHelper.getXmlColor(this, R.color.colorAccent))
+            reBindItem.width = DensityUtil.dp2px(this, 70.0f)
+            reBindItem.title = "恢复"
+            reBindItem.titleSize = 18
+            reBindItem.titleColor = Color.WHITE
+            menu.addMenuItem(reBindItem)
+
+            val deleteItem = SwipeMenuItem(this)
+            deleteItem.background = ColorDrawable(Color.rgb(251, 81, 81))
+            deleteItem.width = DensityUtil.dp2px(this, 70.0f)
+            deleteItem.title = "删除"
+            deleteItem.titleSize = 18
+            deleteItem.titleColor = Color.WHITE
+            menu.addMenuItem(deleteItem)
+        }
+        recoverableListView.setOnMenuItemClickListener { position, menu, index ->
+            when (index) {
+                0 -> AlertView("温馨提示",
+                    "是否恢复此条数据",
+                    "取消",
+                    arrayOf("确定"),
+                    null,
+                    this,
+                    AlertView.Style.Alert,
+                    OnItemClickListener { o: Any?, i: Int ->
+                        if (i == 0) {
+
+                        }
+                    }).setCancelable(false).show()
+                1 -> AlertView("温馨提示",
+                    "此次删除后将无法恢复，是否确定继续？",
+                    "容我想想",
+                    arrayOf("已经想好"),
+                    null,
+                    this,
+                    AlertView.Style.Alert,
+                    OnItemClickListener { o: Any?, i: Int ->
+                        if (i == 0) {
+
+                        }
+                    }).setCancelable(false).show()
+            }
+            false
+        }
+    }
+
+    private fun initUI(list: MutableList<SecretBean>) {
+        if (list.size > 0) {
+            recoverableLayout.visibility = View.VISIBLE
+            emptyLayout.visibility = View.GONE
+        } else {
+            emptyLayout.visibility = View.VISIBLE
+            recoverableLayout.visibility = View.GONE
+        }
     }
 }
