@@ -11,6 +11,7 @@ import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.ui.AboutActivity
 import com.pengxh.secretkey.ui.PasswordModeActivity
+import com.pengxh.secretkey.ui.RecoverableActivity
 import com.pengxh.secretkey.utils.ColorHelper
 import com.pengxh.secretkey.utils.OtherUtils
 import com.pengxh.secretkey.utils.StatusBarColorUtil
@@ -54,6 +55,13 @@ class SettingsFragment : BaseFragment() {
          * */
         passwordLayout.setOnClickListener {
             OtherUtils.intentActivity(PasswordModeActivity::class.java)
+        }
+
+        /**
+         * 数据恢复Layout
+         * */
+        recoverableLayout.setOnClickListener {
+            OtherUtils.intentActivity(RecoverableActivity::class.java)
         }
 
         /**

@@ -98,8 +98,8 @@ class SecretDetailActivity : BaseActivity() {
                         if (position == 0) {
                             //先删除数据库数据，再删除List，不然会出现角标越界
                             val secretBean = secretList[index]
-                            sqLiteUtil.deleteSecret(secretBean.secretCategory!!,
-                                secretBean.secretTitle!!)
+                            sqLiteUtil.deleteSecret(secretBean.secretTitle!!,
+                                secretBean.secretAccount!!)
                             secretList.removeAt(index)
                             secretDetailAdapter.notifyDataSetChanged()
                             initUI(secretList)

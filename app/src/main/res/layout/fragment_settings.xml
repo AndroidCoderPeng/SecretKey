@@ -38,6 +38,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/recoverableLayout"
             style="@style/itemLayoutStyle"
             android:layout_marginTop="15dp">
 

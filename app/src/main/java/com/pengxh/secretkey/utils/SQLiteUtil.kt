@@ -62,14 +62,37 @@ class SQLiteUtil(mContext: Context) {
     }
 
     /**
+     * 加载可恢复的数据
+     * */
+    fun loadRecoverableData(): MutableList<SecretBean> {
+        val list: MutableList<SecretBean> = ArrayList()
+        val cursor =
+            db.query(tableName, null, "recoverable = ?", arrayOf("0"), null, null, "id DESC") //倒序
+        cursor.moveToFirst()
+        while (!cursor.isAfterLast) {
+            val resultBean = SecretBean()
+            resultBean.secretCategory = cursor.getString(cursor.getColumnIndex("secretCategory"))
+            resultBean.secretTitle = cursor.getString(cursor.getColumnIndex("secretTitle"))
+            resultBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
+            resultBean.secretPassword = cursor.getString(cursor.getColumnIndex("secretPassword"))
+            resultBean.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
+            list.add(resultBean)
+            //下一次循环开始
+            cursor.moveToNext()
+        }
+        cursor.close()
+        return list
+    }
+
+    /**
      * 加载某个分类的数据
      * */
-    fun loadCategory(category: String): List<SecretBean> {
+    fun loadCategory(category: String): MutableList<SecretBean> {
         val list: MutableList<SecretBean> = ArrayList()
         val cursor = db.query(tableName,
             null,
-            "secretCategory = ?",
-            arrayOf(category),
+            "secretCategory = ? and recoverable = ?",
+            arrayOf(category, "1"),
             null,
             null,
             "id DESC") //倒序
@@ -89,8 +112,53 @@ class SQLiteUtil(mContext: Context) {
         return list
     }
 
-    fun deleteAll() {
-        db.delete(tableName, null, null)
+    /**
+     * 双重判断，title和account都相同才认为是同一个账号，否则认为是同一个账号密码
+     *
+     * 普通删除只是更改标志位
+     * */
+    fun deleteSecret(title: String, account: String) {
+        val values = ContentValues()
+        values.put("recoverable", "0")
+        db.update(tableName,
+            values,
+            "secretTitle = ? and secretAccount = ?",
+            arrayOf(title, account))
+
+    }
+
+    /**
+     * 真正删除数据
+     * */
+    fun realDeleteSecret(title: String, account: String) {
+        db.delete(tableName, "secretTitle = ? and secretAccount = ?", arrayOf(title, account))
+    }
+
+    /**
+     * 查询某个实体
+     * */
+    @Deprecated("查询某个实体")
+    private fun loadSecretBean(title: String, account: String): SecretBean {
+        val resultBean = SecretBean()
+        val cursor = db.query(tableName,
+            null,
+            "secretTitle = ? and secretAccount = ?",
+            arrayOf(title, account),
+            null,
+            null,
+            "id DESC") //倒序
+        cursor.moveToFirst()
+        while (!cursor.isAfterLast) {
+            resultBean.secretCategory = cursor.getString(cursor.getColumnIndex("secretCategory"))
+            resultBean.secretTitle = cursor.getString(cursor.getColumnIndex("secretTitle"))
+            resultBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
+            resultBean.secretPassword = cursor.getString(cursor.getColumnIndex("secretPassword"))
+            resultBean.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
+            //下一次循环开始
+            cursor.moveToNext()
+        }
+        cursor.close()
+        return resultBean
     }
 
     /**
