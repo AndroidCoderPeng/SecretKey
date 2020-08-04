@@ -7,6 +7,7 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import androidx.fragment.app.FragmentManager
 import com.pengxh.secretkey.BaseActivity
+import com.pengxh.secretkey.R
 import com.pengxh.secretkey.widgets.FingerprintDialog
 import java.security.KeyStore
 import java.util.*
@@ -100,5 +101,17 @@ class OtherUtils {
          * 生成[0,9]以内的随机数
          * */
         fun randomNumber(): String = Random().nextInt(10).toString()
+
+        /**
+         * 根据index得到图片
+         * */
+        fun getImageResource(category: String?): Int {
+            for (i in 0..Constant.category.size) {
+                if (Constant.category[i] == category) {
+                    return Constant.images[i]
+                }
+            }
+            return R.mipmap.other
+        }
     }
 }

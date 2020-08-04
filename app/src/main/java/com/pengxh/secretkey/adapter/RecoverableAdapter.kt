@@ -4,9 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import com.pengxh.app.multilib.widget.swipemenu.BaseSwipeListAdapter
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.bean.SecretBean
+import com.pengxh.secretkey.utils.OtherUtils
 
 /**
  * @author: Pengxh
@@ -41,16 +44,18 @@ class RecoverableAdapter(ctx: Context, list: MutableList<SecretBean>) : BaseSwip
             view = convertView
             itemViewHolder = view.tag as ItemViewHolder
         }
-        itemViewHolder.secretCover.setImageResource(Constant.images[position])
-        itemViewHolder.secretCategory.text = Constant.category[position]
-        itemViewHolder.secretCount.text =
-            "(${sqLiteUtil.loadCategory(Constant.category[position]).size})"
+        val secretBean = beanList[position]
+        itemViewHolder.recoverableView.setImageResource(OtherUtils.getImageResource(secretBean.secretCategory))
+        itemViewHolder.secretTitle.text = secretBean.secretTitle
+        itemViewHolder.secretAccount.text = secretBean.secretAccount
+        itemViewHolder.deleteDateView.text = secretBean.deleteTime
         return view
     }
 
     class ItemViewHolder(v: View) {
-        var secretCover: ImageView = v.findViewById(R.id.secretCover)
-        var secretCategory: TextView = v.findViewById(R.id.secretCategory)
-        var secretCount: TextView = v.findViewById(R.id.secretCount)
+        var recoverableView: ImageView = v.findViewById(R.id.recoverableView)
+        var secretTitle: TextView = v.findViewById(R.id.secretTitle)
+        var secretAccount: TextView = v.findViewById(R.id.secretAccount)
+        var deleteDateView: TextView = v.findViewById(R.id.deleteDateView)
     }
 }

@@ -23,7 +23,7 @@
 
             <TextView
                 style="@style/textViewStyle"
-                android:text="当前版本号" />
+                android:text="当前版本" />
 
             <TextView
                 android:id="@+id/versionView"

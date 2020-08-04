@@ -54,16 +54,18 @@ class RecoverableActivity : BaseActivity() {
         //侧滑菜单
         recoverableListView.adapter = RecoverableAdapter(this, loadRecoverableData)
         recoverableListView.setMenuCreator { menu ->
-            val reBindItem = SwipeMenuItem(this)
-            reBindItem.background =
+            val recoverItem = SwipeMenuItem(this)
+            recoverItem.setIcon(R.drawable.ic_recover)
+            recoverItem.background =
                 ColorDrawable(ColorHelper.getXmlColor(this, R.color.colorAccent))
-            reBindItem.width = DensityUtil.dp2px(this, 70.0f)
-            reBindItem.title = "恢复"
-            reBindItem.titleSize = 18
-            reBindItem.titleColor = Color.WHITE
-            menu.addMenuItem(reBindItem)
+            recoverItem.width = DensityUtil.dp2px(this, 70.0f)
+            recoverItem.title = "恢复"
+            recoverItem.titleSize = 18
+            recoverItem.titleColor = Color.WHITE
+            menu.addMenuItem(recoverItem)
 
             val deleteItem = SwipeMenuItem(this)
+            deleteItem.setIcon(R.drawable.ic_delete_white)
             deleteItem.background = ColorDrawable(Color.rgb(251, 81, 81))
             deleteItem.width = DensityUtil.dp2px(this, 70.0f)
             deleteItem.title = "删除"
@@ -85,8 +87,7 @@ class RecoverableActivity : BaseActivity() {
 
                         }
                     }).setCancelable(false).show()
-                1 -> AlertView("温馨提示",
-                    "此次删除后将无法恢复，是否确定继续？",
+                1 -> AlertView("温馨提示", "此次删除后将无法恢复，是否继续？",
                     "容我想想",
                     arrayOf("已经想好"),
                     null,

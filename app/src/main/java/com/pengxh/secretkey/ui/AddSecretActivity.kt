@@ -6,6 +6,7 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import com.gyf.immersionbar.ImmersionBar
+import com.pengxh.app.multilib.utils.TimeUtil
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
@@ -81,7 +82,12 @@ class AddSecretActivity : BaseActivity() {
                 return@setOnClickListener
             }
             //将数据存数据库，然后结束当前页面
-            SQLiteUtil(this).saveSecret(category!!, title!!, account!!, password!!, "1")
+            SQLiteUtil(this).saveSecret(category!!,
+                title!!,
+                account!!,
+                password!!,
+                "1",
+                TimeUtil.timestampToTime(System.currentTimeMillis(), TimeUtil.TIME))
             this.finish()
         }
     }

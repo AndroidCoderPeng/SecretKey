@@ -43,14 +43,14 @@ class SQLiteUtil(mContext: Context) {
     fun saveSecret(secretCategory: String,
         secretTitle: String,
         secretAccount: String,
-        secretPassword: String,
-        recoverable: String) {
+        secretPassword: String, recoverable: String, deleteTime: String) {
         val values = ContentValues()
         values.put("secretCategory", secretCategory)
         values.put("secretTitle", secretTitle)
         values.put("secretAccount", secretAccount)
         values.put("secretPassword", secretPassword)
         values.put("recoverable", recoverable)
+        values.put("deleteTime", deleteTime)
         if (!isSecretExist(secretTitle, secretAccount)) {
             Log.d(Tag, secretAccount + "保存密码")
             db.insert(tableName, null, values)
@@ -76,6 +76,7 @@ class SQLiteUtil(mContext: Context) {
             resultBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
             resultBean.secretPassword = cursor.getString(cursor.getColumnIndex("secretPassword"))
             resultBean.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
+            resultBean.deleteTime = cursor.getString(cursor.getColumnIndex("deleteTime"))
             list.add(resultBean)
             //下一次循环开始
             cursor.moveToNext()
@@ -104,6 +105,7 @@ class SQLiteUtil(mContext: Context) {
             resultBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
             resultBean.secretPassword = cursor.getString(cursor.getColumnIndex("secretPassword"))
             resultBean.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
+            resultBean.deleteTime = cursor.getString(cursor.getColumnIndex("deleteTime"))
             list.add(resultBean)
             //下一次循环开始
             cursor.moveToNext()
@@ -154,6 +156,7 @@ class SQLiteUtil(mContext: Context) {
             resultBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
             resultBean.secretPassword = cursor.getString(cursor.getColumnIndex("secretPassword"))
             resultBean.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
+            resultBean.deleteTime = cursor.getString(cursor.getColumnIndex("deleteTime"))
             //下一次循环开始
             cursor.moveToNext()
         }

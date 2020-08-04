@@ -12,4 +12,5 @@ class SecretBean {
     var secretAccount: String? = null
     var secretPassword: String? = null
     var recoverable: String? = null
+    var deleteTime: String? = null
 }
