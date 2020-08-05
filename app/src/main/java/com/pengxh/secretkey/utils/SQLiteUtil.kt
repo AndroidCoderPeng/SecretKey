@@ -50,7 +50,7 @@ class SQLiteUtil(mContext: Context) {
         values.put("secretCategory", secretCategory)
         values.put("secretTitle", secretTitle)
         values.put("secretAccount", secretAccount)
-        values.put("secretPassword", secretPassword)
+        values.put("secretPassword", SecretHelper.encode(secretPassword))
         values.put("recoverable", recoverable)
         values.put("deleteTime", deleteTime)
         if (!isSecretExist(secretTitle, secretAccount)) {
@@ -75,7 +75,8 @@ class SQLiteUtil(mContext: Context) {
             resultBean.secretCategory = cursor.getString(cursor.getColumnIndex("secretCategory"))
             resultBean.secretTitle = cursor.getString(cursor.getColumnIndex("secretTitle"))
             resultBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
-            resultBean.secretPassword = cursor.getString(cursor.getColumnIndex("secretPassword"))
+            resultBean.secretPassword =
+                SecretHelper.decode(cursor.getString(cursor.getColumnIndex("secretPassword")))
             resultBean.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
             resultBean.deleteTime = cursor.getString(cursor.getColumnIndex("deleteTime"))
             list.add(resultBean)
@@ -104,7 +105,8 @@ class SQLiteUtil(mContext: Context) {
             resultBean.secretCategory = cursor.getString(cursor.getColumnIndex("secretCategory"))
             resultBean.secretTitle = cursor.getString(cursor.getColumnIndex("secretTitle"))
             resultBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
-            resultBean.secretPassword = cursor.getString(cursor.getColumnIndex("secretPassword"))
+            resultBean.secretPassword =
+                SecretHelper.decode(cursor.getString(cursor.getColumnIndex("secretPassword")))
             resultBean.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
             resultBean.deleteTime = cursor.getString(cursor.getColumnIndex("deleteTime"))
             list.add(resultBean)
@@ -128,7 +130,6 @@ class SQLiteUtil(mContext: Context) {
             values,
             "secretTitle = ? and secretAccount = ?",
             arrayOf(title, account))
-
     }
 
     /**
@@ -169,7 +170,8 @@ class SQLiteUtil(mContext: Context) {
             resultBean.secretCategory = cursor.getString(cursor.getColumnIndex("secretCategory"))
             resultBean.secretTitle = cursor.getString(cursor.getColumnIndex("secretTitle"))
             resultBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
-            resultBean.secretPassword = cursor.getString(cursor.getColumnIndex("secretPassword"))
+            resultBean.secretPassword =
+                SecretHelper.decode(cursor.getString(cursor.getColumnIndex("secretPassword")))
             resultBean.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
             resultBean.deleteTime = cursor.getString(cursor.getColumnIndex("deleteTime"))
             list.add(resultBean)

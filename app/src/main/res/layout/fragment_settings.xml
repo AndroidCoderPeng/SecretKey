@@ -54,21 +54,6 @@
         </RelativeLayout>
 
         <RelativeLayout
-            style="@style/itemLayoutStyle"
-            android:layout_marginTop="15dp">
-
-            <ImageView
-                style="@style/leftImageStyle"
-                android:background="@mipmap/change" />
-
-            <TextView
-                style="@style/textViewStyle"
-                android:text="一键换肤" />
-
-            <ImageView style="@style/rightImageStyle" />
-        </RelativeLayout>
-
-        <RelativeLayout
             android:id="@+id/aboutLayout"
             style="@style/itemLayoutStyle"
             android:layout_marginTop="15dp">
@@ -82,6 +67,30 @@
                 android:text="关于应用" />
 
             <ImageView style="@style/rightImageStyle" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/nightSwitchLayout"
+            style="@style/itemLayoutStyle"
+            android:layout_marginTop="15dp">
+
+            <ImageView
+                style="@style/leftImageStyle"
+                android:background="@mipmap/change" />
+
+            <TextView
+                style="@style/textViewStyle"
+                android:text="夜间模式" />
+
+            <Switch
+                android:id="@+id/nightSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="10dp"
+                android:thumb="@drawable/select_switch_circle"
+                android:track="@drawable/select_switch_background" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -108,10 +117,12 @@
                 android:track="@drawable/select_switch_background" />
         </RelativeLayout>
 
+        <!--单机应用不需要清除缓存，功能保存，界面暂时隐藏，后续有需求再放开注释-->
         <RelativeLayout
             android:id="@+id/cacheSizeLayout"
             style="@style/itemLayoutStyle"
-            android:layout_marginTop="15dp">
+            android:layout_marginTop="15dp"
+            android:visibility="gone">
 
             <ImageView
                 style="@style/leftImageStyle"
