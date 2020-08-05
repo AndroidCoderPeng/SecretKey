@@ -151,31 +151,34 @@ class SQLiteUtil(mContext: Context) {
     }
 
     /**
-     * 查询某个实体
+     * 查询账号下所有的数据，不包括可恢复的
      * */
-    @Deprecated("查询某个实体")
-    private fun loadSecretBean(title: String, account: String): SecretBean {
-        val resultBean = SecretBean()
+    fun loadAccountSecret(account: String): MutableList<SecretBean> {
+        Log.d(Tag, "查询账号: $account" + "所有数据")
+        val list: MutableList<SecretBean> = ArrayList()
         val cursor = db.query(tableName,
             null,
-            "secretTitle = ? and secretAccount = ?",
-            arrayOf(title, account),
+            "secretAccount = ? and recoverable = ?",
+            arrayOf(account, "1"),
             null,
             null,
-            "id DESC") //倒序
+            null)
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
+            val resultBean = SecretBean()
             resultBean.secretCategory = cursor.getString(cursor.getColumnIndex("secretCategory"))
             resultBean.secretTitle = cursor.getString(cursor.getColumnIndex("secretTitle"))
             resultBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
             resultBean.secretPassword = cursor.getString(cursor.getColumnIndex("secretPassword"))
             resultBean.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
             resultBean.deleteTime = cursor.getString(cursor.getColumnIndex("deleteTime"))
+            list.add(resultBean)
+
             //下一次循环开始
             cursor.moveToNext()
         }
         cursor.close()
-        return resultBean
+        return list
     }
 
     /**

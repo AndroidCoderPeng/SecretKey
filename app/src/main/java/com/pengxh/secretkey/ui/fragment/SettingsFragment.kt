@@ -1,6 +1,5 @@
 package com.pengxh.secretkey.ui.fragment
 
-import android.util.Log
 import com.aihook.alertview.library.AlertView
 import com.aihook.alertview.library.OnItemClickListener
 import com.gyf.immersionbar.ImmersionBar
@@ -100,7 +99,6 @@ class SettingsFragment : BaseFragment() {
          * */
         val file = File(context!!.cacheDir.absolutePath)
         val fileSize = FileUtil.getFileSize(file)
-        Log.d(Tag, ": $fileSize")
         cacheSizeView.text = FileUtil.formatFileSize(fileSize)
         cacheSizeLayout.setOnClickListener {
             AlertView("温馨提示",

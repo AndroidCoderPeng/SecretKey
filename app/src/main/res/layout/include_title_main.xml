@@ -14,6 +14,7 @@
         android:layout_marginVertical="8dp"
         android:layout_toStartOf="@id/mTitleRightView"
         android:background="@drawable/bg_edittext"
+        android:hint="请输入账号或者标题"
         android:paddingStart="10dp"
         android:singleLine="true"
         android:textSize="14sp"

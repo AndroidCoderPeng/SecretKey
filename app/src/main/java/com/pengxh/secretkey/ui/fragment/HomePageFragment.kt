@@ -4,15 +4,18 @@ import android.graphics.Color
 import cn.bertsir.zbar.QrConfig
 import cn.bertsir.zbar.QrManager
 import cn.bertsir.zbar.view.ScanLineView
+import com.aihook.alertview.library.AlertView
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseFragment
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.SecretCategoryAdapter
+import com.pengxh.secretkey.ui.SearchEventActivity
 import com.pengxh.secretkey.ui.SecretDetailActivity
 import com.pengxh.secretkey.utils.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.include_secret_number.*
+import kotlinx.android.synthetic.main.include_title_main.*
 import java.util.*
 
 /**
@@ -28,7 +31,7 @@ class HomePageFragment : BaseFragment() {
     }
 
     private var length = 0 //进度条初始值
-    private var sqLiteUtil: SQLiteUtil? = null
+    private lateinit var sqLiteUtil: SQLiteUtil
 
     override fun initLayoutView(): Int = R.layout.fragment_home
 
@@ -41,6 +44,16 @@ class HomePageFragment : BaseFragment() {
     }
 
     override fun initEvent() {
+        //搜索
+        mTitleRightView.setOnClickListener {
+            val key = searchView.text.toString().trim()
+            if (key == "") {
+                EasyToast.showToast("您什么都还没输入呢~", EasyToast.WARING)
+                return@setOnClickListener
+            }
+            OtherUtils.intentActivity(SearchEventActivity::class.java, key)
+        }
+
         //进页面首先生成一次随机密码
         resetSecretNumber()
 
@@ -66,7 +79,7 @@ class HomePageFragment : BaseFragment() {
         object : Timer() {}.schedule(object : TimerTask() {
             override fun run() {
                 length++
-                if (length == 60000) {
+                if (length == 50000) {
                     length = 0
                     //重置随机密码
                     resetSecretNumber()
@@ -99,7 +112,7 @@ class HomePageFragment : BaseFragment() {
     }
 
     private fun initScanner() {
-        val qrConfig = QrConfig.Builder().setTitleText("扫一扫") //设置Tilte文字
+        val qrConfig = QrConfig.Builder().setTitleText("扫一扫") //设置Title文字
             .setShowLight(true) //显示手电筒按钮
             .setShowTitle(true) //显示Title
             .setShowAlbum(false) //显示从相册选择按钮
@@ -118,7 +131,14 @@ class HomePageFragment : BaseFragment() {
             .setShowVibrator(true) //是否震动提醒
             .create()
         QrManager.getInstance().init(qrConfig).startScan(activity) { result ->
-            EasyToast.showToast(result.content, EasyToast.SUCCESS)
+            AlertView("扫描结果",
+                result.content,
+                null,
+                arrayOf("知道了"),
+                null,
+                context,
+                AlertView.Style.Alert,
+                null).setCancelable(false).show()
         }
     }
 }
