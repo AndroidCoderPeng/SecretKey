@@ -12,6 +12,7 @@ import com.aihook.alertview.library.AlertView
 import com.aihook.alertview.library.OnItemClickListener
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.utils.DensityUtil.dp2px
+import com.pengxh.app.multilib.utils.TimeUtil
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
@@ -99,7 +100,8 @@ class SecretDetailActivity : BaseActivity() {
                             //先删除数据库数据，再删除List，不然会出现角标越界
                             val secretBean = secretList[index]
                             sqLiteUtil.deleteSecret(secretBean.secretTitle!!,
-                                secretBean.secretAccount!!)
+                                secretBean.secretAccount!!,
+                                TimeUtil.timestampToTime(System.currentTimeMillis(), TimeUtil.TIME))
                             secretList.removeAt(index)
                             secretDetailAdapter.notifyDataSetChanged()
                             initUI(secretList)

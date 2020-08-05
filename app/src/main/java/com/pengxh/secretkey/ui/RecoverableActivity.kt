@@ -31,6 +31,7 @@ class RecoverableActivity : BaseActivity() {
         private const val Tag = "RecoverableActivity"
     }
 
+    private lateinit var sqLiteUtil: SQLiteUtil
     private lateinit var loadRecoverableData: MutableList<SecretBean>
 
     override fun initLayoutView(): Int = R.layout.activity_recoverable
@@ -42,17 +43,17 @@ class RecoverableActivity : BaseActivity() {
         mTitleView.text = "数据恢复"
     }
 
-    @SuppressLint("SetTextI18n")
     override fun initEvent() {
-        loadRecoverableData = SQLiteUtil(this).loadRecoverableData()
-        recoverableSize.text = "共" + loadRecoverableData.size + "条数据可被恢复"
+        sqLiteUtil = SQLiteUtil(this)
+        loadRecoverableData = sqLiteUtil.loadRecoverableData()
         initUI(loadRecoverableData)
     }
 
     override fun onResume() {
         super.onResume()
         //侧滑菜单
-        recoverableListView.adapter = RecoverableAdapter(this, loadRecoverableData)
+        val recoverableAdapter = RecoverableAdapter(this, loadRecoverableData)
+        recoverableListView.adapter = recoverableAdapter
         recoverableListView.setMenuCreator { menu ->
             val recoverItem = SwipeMenuItem(this)
             recoverItem.setIcon(R.drawable.ic_recover)
@@ -74,6 +75,7 @@ class RecoverableActivity : BaseActivity() {
             menu.addMenuItem(deleteItem)
         }
         recoverableListView.setOnMenuItemClickListener { position, menu, index ->
+            val secretBean = loadRecoverableData[position]
             when (index) {
                 0 -> AlertView("温馨提示",
                     "是否恢复此条数据",
@@ -84,10 +86,15 @@ class RecoverableActivity : BaseActivity() {
                     AlertView.Style.Alert,
                     OnItemClickListener { o: Any?, i: Int ->
                         if (i == 0) {
-
+                            sqLiteUtil.recoverSecret(secretBean.secretTitle!!,
+                                secretBean.secretAccount!!)
+                            loadRecoverableData.removeAt(position)
+                            recoverableAdapter.notifyDataSetChanged()
+                            initUI(loadRecoverableData)
                         }
                     }).setCancelable(false).show()
-                1 -> AlertView("温馨提示", "此次删除后将无法恢复，是否继续？",
+                1 -> AlertView("温馨提示",
+                    "此次删除后将无法恢复，是否继续？",
                     "容我想想",
                     arrayOf("已经想好"),
                     null,
@@ -95,7 +102,11 @@ class RecoverableActivity : BaseActivity() {
                     AlertView.Style.Alert,
                     OnItemClickListener { o: Any?, i: Int ->
                         if (i == 0) {
-
+                            sqLiteUtil.realDeleteSecret(secretBean.secretTitle!!,
+                                secretBean.secretAccount!!)
+                            loadRecoverableData.removeAt(position)
+                            recoverableAdapter.notifyDataSetChanged()
+                            initUI(loadRecoverableData)
                         }
                     }).setCancelable(false).show()
             }
@@ -103,10 +114,12 @@ class RecoverableActivity : BaseActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initUI(list: MutableList<SecretBean>) {
         if (list.size > 0) {
             recoverableLayout.visibility = View.VISIBLE
             emptyLayout.visibility = View.GONE
+            recoverableSize.text = "共" + list.size + "条数据可被恢复"
         } else {
             emptyLayout.visibility = View.VISIBLE
             recoverableLayout.visibility = View.GONE

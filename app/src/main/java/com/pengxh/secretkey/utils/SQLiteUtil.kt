@@ -43,7 +43,9 @@ class SQLiteUtil(mContext: Context) {
     fun saveSecret(secretCategory: String,
         secretTitle: String,
         secretAccount: String,
-        secretPassword: String, recoverable: String, deleteTime: String) {
+        secretPassword: String,
+        recoverable: String,
+        deleteTime: String) {
         val values = ContentValues()
         values.put("secretCategory", secretCategory)
         values.put("secretTitle", secretTitle)
@@ -66,8 +68,7 @@ class SQLiteUtil(mContext: Context) {
      * */
     fun loadRecoverableData(): MutableList<SecretBean> {
         val list: MutableList<SecretBean> = ArrayList()
-        val cursor =
-            db.query(tableName, null, "recoverable = ?", arrayOf("0"), null, null, "id DESC") //倒序
+        val cursor = db.query(tableName, null, "recoverable = ?", arrayOf("0"), null, null, null)
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
             val resultBean = SecretBean()
@@ -119,14 +120,27 @@ class SQLiteUtil(mContext: Context) {
      *
      * 普通删除只是更改标志位
      * */
-    fun deleteSecret(title: String, account: String) {
+    fun deleteSecret(title: String, account: String, time: String) {
         val values = ContentValues()
         values.put("recoverable", "0")
+        values.put("deleteTime", time)
         db.update(tableName,
             values,
             "secretTitle = ? and secretAccount = ?",
             arrayOf(title, account))
 
+    }
+
+    /**
+     * 恢复数据
+     * */
+    fun recoverSecret(title: String, account: String) {
+        val values = ContentValues()
+        values.put("recoverable", "1")
+        db.update(tableName,
+            values,
+            "secretTitle = ? and secretAccount = ?",
+            arrayOf(title, account))
     }
 
     /**
