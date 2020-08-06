@@ -70,30 +70,6 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/nightSwitchLayout"
-            style="@style/itemLayoutStyle"
-            android:layout_marginTop="15dp">
-
-            <ImageView
-                style="@style/leftImageStyle"
-                android:background="@mipmap/change" />
-
-            <TextView
-                style="@style/textViewStyle"
-                android:text="夜间模式" />
-
-            <Switch
-                android:id="@+id/nightSwitch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="10dp"
-                android:thumb="@drawable/select_switch_circle"
-                android:track="@drawable/select_switch_background" />
-        </RelativeLayout>
-
-        <RelativeLayout
             android:id="@+id/captureLayout"
             style="@style/itemLayoutStyle"
             android:layout_marginTop="15dp">

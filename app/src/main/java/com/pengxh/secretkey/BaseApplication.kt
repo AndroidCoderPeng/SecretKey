@@ -4,7 +4,6 @@ import android.app.Application
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.utils.OtherUtils
-import kotlin.properties.Delegates
 
 /**
  * @author: Pengxh
@@ -16,17 +15,8 @@ class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        application = this
         SaveKeyValues.initSharedPreferences(this)
         EasyToast.init(this)
         OtherUtils.init(this)
-    }
-
-    /**
-     * 委托模式单例化
-     * */
-    companion object {
-        private var application: BaseApplication by Delegates.notNull()
-        fun instance() = application
     }
 }

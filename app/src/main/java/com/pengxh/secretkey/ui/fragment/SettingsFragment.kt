@@ -71,19 +71,6 @@ class SettingsFragment : BaseFragment() {
         }
 
         /**
-         * 夜间模式开关
-         * */
-        nightSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                SaveKeyValues.putValue("nightSwitchStatus", true)
-                EasyToast.showToast("夜间模式打开", EasyToast.DEFAULT)
-            } else {
-                SaveKeyValues.putValue("nightSwitchStatus", false)
-                EasyToast.showToast("夜间模式关闭", EasyToast.DEFAULT)
-            }
-        }
-
-        /**
          * 截屏开关Layout
          * */
         captureLayout.setOnClickListener {
