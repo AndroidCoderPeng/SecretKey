@@ -27,14 +27,33 @@
             android:background="@drawable/ic_scan" />
     </RelativeLayout>
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
-        android:layout_marginTop="15dp"
-        android:text="密码分类"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:id="@+id/v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="密码分类"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/attentionMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:layout_toEndOf="@id/v"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:text="本应用不含任何网络通信功能，密码采用数据库加密存储方式，仅保存在设备上，不会上传到任何网络存储介质，您可以放心使用！如果依旧不放心，可以在您设备飞行模式下使用本应用！" />
+    </RelativeLayout>
 
     <!--用户自己保存的密码，分类以九宫格形式展示-->
     <GridView

@@ -41,6 +41,8 @@ class HomePageFragment : BaseFragment() {
         }
         ImmersionBar.with(this).init()
         sqLiteUtil = SQLiteUtil(context!!)
+
+        attentionMessage.isSelected = true
     }
 
     override fun initEvent() {
