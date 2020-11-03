@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.include_title_white.*
  * @description: TODO
  * @date: 2020/8/4 15:43
  */
+@Deprecated("暂时废弃")
 class RecoverableActivity : BaseActivity() {
 
     companion object {

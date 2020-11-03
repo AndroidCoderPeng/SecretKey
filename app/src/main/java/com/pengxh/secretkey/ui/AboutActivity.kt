@@ -37,5 +37,9 @@ class AboutActivity : BaseActivity() {
         privacyLayout.setOnClickListener {
             OtherUtils.intentActivity(PrivacyActivity::class.java)
         }
+
+        updateLayout.setOnClickListener {
+            OtherUtils.intentActivity(UpdateLogActivity::class.java)
+        }
     }
 }

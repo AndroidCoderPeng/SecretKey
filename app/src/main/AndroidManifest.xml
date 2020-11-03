@@ -38,6 +38,7 @@
         <activity android:name=".ui.SecretDetailActivity" />
         <activity android:name=".ui.RecoverableActivity" />
         <activity android:name=".ui.SearchEventActivity" />
+        <activity android:name=".ui.UpdateLogActivity" />
     </application>
 
 </manifest>

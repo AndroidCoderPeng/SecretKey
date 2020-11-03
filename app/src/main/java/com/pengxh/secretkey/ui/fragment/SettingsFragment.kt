@@ -10,7 +10,6 @@ import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.ui.AboutActivity
 import com.pengxh.secretkey.ui.PasswordModeActivity
-import com.pengxh.secretkey.ui.RecoverableActivity
 import com.pengxh.secretkey.utils.ColorHelper
 import com.pengxh.secretkey.utils.OtherUtils
 import com.pengxh.secretkey.utils.StatusBarColorUtil
@@ -57,10 +56,17 @@ class SettingsFragment : BaseFragment() {
         }
 
         /**
-         * 数据恢复Layout
+         * 数据导出Layout
          * */
-        recoverableLayout.setOnClickListener {
-            OtherUtils.intentActivity(RecoverableActivity::class.java)
+        outputLayout.setOnClickListener {
+
+        }
+
+        /**
+         * 数据导入Layout
+         * */
+        inputLayout.setOnClickListener {
+
         }
 
         /**
