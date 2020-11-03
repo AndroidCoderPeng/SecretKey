@@ -1,6 +1,13 @@
 package com.pengxh.secretkey.ui.fragment
 
+import android.content.Context
 import android.graphics.Color
+import android.util.Log
+import android.view.KeyEvent
+import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import cn.bertsir.zbar.QrConfig
 import cn.bertsir.zbar.QrManager
 import cn.bertsir.zbar.view.ScanLineView
@@ -55,6 +62,19 @@ class HomePageFragment : BaseFragment() {
             }
             OtherUtils.intentActivity(SearchEventActivity::class.java, key)
         }
+        searchView.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    val s = searchView.text.toString().trim()
+                    Log.d(Tag, "onEditorAction: $s")
+                    //点击搜索的时候隐藏软键盘
+                    hideKeyboard(searchView)
+                    OtherUtils.intentActivity(SearchEventActivity::class.java, s)
+                    return true
+                }
+                return false
+            }
+        })
 
         //进页面首先生成一次随机密码
         resetSecretNumber()
@@ -66,6 +86,12 @@ class HomePageFragment : BaseFragment() {
         scanView.setOnClickListener {
             initScanner()
         }
+    }
+
+    private fun hideKeyboard(view: View) {
+        val manager: InputMethodManager =
+            view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        manager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     override fun onResume() {

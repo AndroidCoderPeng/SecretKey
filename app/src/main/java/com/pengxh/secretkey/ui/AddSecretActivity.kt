@@ -6,7 +6,6 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import com.gyf.immersionbar.ImmersionBar
-import com.pengxh.app.multilib.utils.TimeUtil
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
@@ -33,6 +32,7 @@ class AddSecretActivity : BaseActivity() {
     private var title: String? = null
     private var account: String? = null
     private var password: String? = null
+    private var remarks: String? = null
 
     override fun initLayoutView(): Int = R.layout.activity_secret_add
 
@@ -81,13 +81,10 @@ class AddSecretActivity : BaseActivity() {
                 EasyToast.showToast("密码未填写，请检查", EasyToast.WARING)
                 return@setOnClickListener
             }
+            remarks = inputRemarks.text.toString().trim()
+
             //将数据存数据库，然后结束当前页面
-            SQLiteUtil(this).saveSecret(category!!,
-                title!!,
-                account!!,
-                password!!,
-                "1",
-                TimeUtil.timestampToTime(System.currentTimeMillis(), TimeUtil.TIME))
+            SQLiteUtil(this).saveSecret(category!!, title!!, account!!, password!!, remarks)
             this.finish()
         }
     }

@@ -4,16 +4,16 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
 import cn.bertsir.zbar.utils.QRUtils
 import com.aihook.alertview.library.AlertView
 import com.aihook.alertview.library.OnItemClickListener
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.utils.DensityUtil.dp2px
-import com.pengxh.app.multilib.utils.TimeUtil
 import com.pengxh.app.multilib.widget.EasyToast
+import com.pengxh.app.multilib.widget.swipemenu.SwipeMenuItem
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.SecretDetailAdapter
@@ -61,8 +61,7 @@ class SecretDetailActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         val secretDetailAdapter = SecretDetailAdapter(context, secretList)
-        secretRecyclerView.layoutManager = LinearLayoutManager(context)
-        secretRecyclerView.adapter = secretDetailAdapter
+        secretListView.adapter = secretDetailAdapter
         secretDetailAdapter.setOnItemClickListener(object :
             SecretDetailAdapter.OnChildViewClickListener {
             override fun onShareViewClickListener(index: Int) {
@@ -87,37 +86,54 @@ class SecretDetailActivity : BaseActivity() {
                 EasyToast.showToast("密码复制成功", EasyToast.SUCCESS)
             }
 
-            override fun onDeleteViewClickListener(index: Int) {
-                AlertView("温馨提示",
-                    "确定删除此账号密码？",
+            override fun onModifyViewClickListener(index: Int) {
+                val secretBean = secretList[index]
+                sqLiteUtil.updateSecret(secretBean.secretTitle!!,
+                    secretBean.secretAccount!!,
+                    secretBean.secretPassword!!)
+            }
+        })
+        secretListView.setMenuCreator { menu ->
+            val deleteItem = SwipeMenuItem(this)
+            deleteItem.setIcon(R.drawable.ic_delete_white)
+            deleteItem.background = ColorDrawable(Color.rgb(251, 81, 81))
+            deleteItem.width = dp2px(this, 80.0f)
+            deleteItem.title = "删除"
+            deleteItem.titleSize = 18
+            deleteItem.titleColor = Color.WHITE
+            menu.addMenuItem(deleteItem)
+        }
+        secretListView.setOnMenuItemClickListener { position, menu, index ->
+            val secretBean = secretList[position]
+            when (index) {
+                1 -> AlertView("温馨提示",
+                    "删除后将无法恢复，是否继续？",
                     "容我想想",
                     arrayOf("已经想好"),
                     null,
-                    context,
+                    this,
                     AlertView.Style.Alert,
-                    OnItemClickListener { o, position ->
-                        if (position == 0) {
-                            //先删除数据库数据，再删除List，不然会出现角标越界
-                            val secretBean = secretList[index]
+                    OnItemClickListener { o: Any?, i: Int ->
+                        if (i == 0) {
                             sqLiteUtil.deleteSecret(secretBean.secretTitle!!,
-                                secretBean.secretAccount!!,
-                                TimeUtil.timestampToTime(System.currentTimeMillis(), TimeUtil.TIME))
-                            secretList.removeAt(index)
+                                secretBean.secretAccount!!)
+                            secretList.removeAt(position)
                             secretDetailAdapter.notifyDataSetChanged()
                             initUI(secretList)
                         }
                     }).setCancelable(false).show()
             }
-        })
+            false
+        }
     }
 
     private fun initUI(list: MutableList<SecretBean>) {
         if (list.size > 0) {
-            secretRecyclerView.visibility = View.VISIBLE
+            secretListView.visibility = View.VISIBLE
             emptyLayout.visibility = View.GONE
         } else {
             emptyLayout.visibility = View.VISIBLE
-            secretRecyclerView.visibility = View.GONE
+            secretListView.visibility = View.GONE
         }
     }
 }

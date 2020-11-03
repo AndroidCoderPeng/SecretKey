@@ -7,15 +7,12 @@ import android.graphics.Color
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.bertsir.zbar.utils.QRUtils
-import com.aihook.alertview.library.AlertView
-import com.aihook.alertview.library.OnItemClickListener
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.utils.DensityUtil
-import com.pengxh.app.multilib.utils.TimeUtil
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
-import com.pengxh.secretkey.adapter.SecretDetailAdapter
+import com.pengxh.secretkey.adapter.SearchSecretAdapter
 import com.pengxh.secretkey.bean.SecretBean
 import com.pengxh.secretkey.utils.SQLiteUtil
 import com.pengxh.secretkey.utils.StatusBarColorUtil
@@ -49,11 +46,10 @@ class SearchEventActivity : BaseActivity() {
         val keyWords = intent.getStringExtra("mode")
         val beanList = sqLiteUtil.loadAccountSecret(keyWords!!)
         initUI(beanList)
-        val secretDetailAdapter = SecretDetailAdapter(this, beanList)
+        val adapter = SearchSecretAdapter(this, beanList)
         searchRecyclerView.layoutManager = LinearLayoutManager(this)
-        searchRecyclerView.adapter = secretDetailAdapter
-        secretDetailAdapter.setOnItemClickListener(object :
-            SecretDetailAdapter.OnChildViewClickListener {
+        searchRecyclerView.adapter = adapter
+        adapter.setOnItemClickListener(object : SearchSecretAdapter.OnChildViewClickListener {
             override fun onShareViewClickListener(index: Int) {
                 val secretBean = beanList[index]
                 val data = secretBean.secretAccount + "\r\n" + secretBean.secretPassword
@@ -74,28 +70,6 @@ class SearchEventActivity : BaseActivity() {
                 // 将ClipData内容放到系统剪贴板里。
                 clipboard.setPrimaryClip(cipData);
                 EasyToast.showToast("密码复制成功", EasyToast.SUCCESS)
-            }
-
-            override fun onDeleteViewClickListener(index: Int) {
-                AlertView("温馨提示",
-                    "确定删除此账号密码？",
-                    "容我想想",
-                    arrayOf("已经想好"),
-                    null,
-                    context,
-                    AlertView.Style.Alert,
-                    OnItemClickListener { o, position ->
-                        if (position == 0) {
-                            //先删除数据库数据，再删除List，不然会出现角标越界
-                            val secretBean = beanList[index]
-                            sqLiteUtil.deleteSecret(secretBean.secretTitle!!,
-                                secretBean.secretAccount!!,
-                                TimeUtil.timestampToTime(System.currentTimeMillis(), TimeUtil.TIME))
-                            beanList.removeAt(index)
-                            secretDetailAdapter.notifyDataSetChanged()
-                            initUI(beanList)
-                        }
-                    }).setCancelable(false).show()
             }
         })
     }

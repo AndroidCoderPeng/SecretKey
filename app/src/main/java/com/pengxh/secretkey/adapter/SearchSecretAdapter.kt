@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.ToggleButton
-import com.pengxh.app.multilib.widget.swipemenu.BaseSwipeListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.bean.SecretBean
 
@@ -18,33 +18,20 @@ import com.pengxh.secretkey.bean.SecretBean
  * @description: TODO
  * @date: 2020/8/3 12:35
  */
-class SecretDetailAdapter(ctx: Context, list: MutableList<SecretBean>) : BaseSwipeListAdapter() {
+class SearchSecretAdapter(ctx: Context, list: MutableList<SecretBean>) :
+    RecyclerView.Adapter<SearchSecretAdapter.ItemViewHolder>() {
 
     private var context: Context = ctx
     private var beanList: MutableList<SecretBean> = list
-    private var inflater: LayoutInflater
 
-    init {
-        inflater = LayoutInflater.from(context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+        return ItemViewHolder(LayoutInflater.from(context)
+            .inflate(R.layout.item_search_recycleview, parent, false))
     }
 
-    override fun getCount(): Int = beanList.size
+    override fun getItemCount(): Int = beanList.size
 
-    override fun getItem(position: Int): Any = beanList[position]
-
-    override fun getItemId(position: Int): Long = position.toLong()
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view: View
-        val holder: ItemViewHolder
-        if (convertView == null) {
-            view = inflater.inflate(R.layout.item_secret_listview, null)
-            holder = ItemViewHolder(view)
-            view.tag = holder
-        } else {
-            view = convertView
-            holder = view.tag as ItemViewHolder
-        }
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val secretBean = beanList[position]
         holder.secretTitle.text = secretBean.secretTitle
         holder.secretAccount.text = secretBean.secretAccount
@@ -58,9 +45,6 @@ class SecretDetailAdapter(ctx: Context, list: MutableList<SecretBean>) : BaseSwi
         holder.copyTextView.setOnClickListener {
             itemClickListener!!.onCopyViewClickListener(position)
         }
-        holder.modifyTextView.setOnClickListener {
-            itemClickListener!!.onModifyViewClickListener(position)
-        }
         holder.visibleView.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 holder.secretPassword.transformationMethod =
@@ -70,28 +54,24 @@ class SecretDetailAdapter(ctx: Context, list: MutableList<SecretBean>) : BaseSwi
                     PasswordTransformationMethod.getInstance()
             }
         }
-        return view
     }
 
-    class ItemViewHolder(itemView: View) {
-        var secretTitle: TextView = itemView.findViewById(R.id.secretTitle)
-        var secretAccount: TextView = itemView.findViewById(R.id.secretAccount)
-        var secretPassword: TextView = itemView.findViewById(R.id.secretPassword)
-        var secretRemarks: TextView = itemView.findViewById(R.id.secretRemarks)
+    class ItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView!!) {
+        var secretTitle: TextView = itemView!!.findViewById(R.id.secretTitle)
+        var secretAccount: TextView = itemView!!.findViewById(R.id.secretAccount)
+        var secretPassword: TextView = itemView!!.findViewById(R.id.secretPassword)
+        var secretRemarks: TextView = itemView!!.findViewById(R.id.secretRemarks)
 
         //以下控件需要绑定点击事件
-        var shareTextView: TextView = itemView.findViewById(R.id.shareTextView)
-        var copyTextView: TextView = itemView.findViewById(R.id.copyTextView)
-        var modifyTextView: TextView = itemView.findViewById(R.id.modifyTextView)
-        var visibleView: ToggleButton = itemView.findViewById(R.id.visibleView)
+        var shareTextView: TextView = itemView!!.findViewById(R.id.shareTextView)
+        var copyTextView: TextView = itemView!!.findViewById(R.id.copyTextView)
+        var visibleView: ToggleButton = itemView!!.findViewById(R.id.visibleView)
     }
 
     interface OnChildViewClickListener {
         fun onShareViewClickListener(index: Int)
 
         fun onCopyViewClickListener(index: Int)
-
-        fun onModifyViewClickListener(index: Int)
     }
 
     fun setOnItemClickListener(listener: OnChildViewClickListener) {

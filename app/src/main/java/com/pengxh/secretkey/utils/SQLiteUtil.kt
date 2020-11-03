@@ -30,7 +30,7 @@ class SQLiteUtil(mContext: Context) {
     /**
      * 数据库版本
      */
-    private val databaseVersion = 1
+    private val databaseVersion = 2
 
     init {
         val mSqLiteUtilHelper = SQLiteUtilHelper(context, databaseName, null, databaseVersion)
@@ -44,47 +44,30 @@ class SQLiteUtil(mContext: Context) {
         secretTitle: String,
         secretAccount: String,
         secretPassword: String,
-        recoverable: String,
-        deleteTime: String) {
+        secretRemarks: String?) {
         val values = ContentValues()
         values.put("secretCategory", secretCategory)
         values.put("secretTitle", secretTitle)
         values.put("secretAccount", secretAccount)
         values.put("secretPassword", SecretHelper.encode(secretPassword))
-        values.put("recoverable", recoverable)
-        values.put("deleteTime", deleteTime)
+        values.put("secretRemarks", secretRemarks)
         if (!isSecretExist(secretTitle, secretAccount)) {
             Log.d(Tag, secretAccount + "保存密码")
             db.insert(tableName, null, values)
-        } else {
-            //更新密码
-            Log.d(Tag, secretAccount + "更新密码")
-            db.update(tableName, values, "secretAccount = ?", arrayOf(secretAccount))
         }
     }
 
     /**
-     * 加载可恢复的数据
+     * 更新密码
      * */
-    fun loadRecoverableData(): MutableList<SecretBean> {
-        val list: MutableList<SecretBean> = ArrayList()
-        val cursor = db.query(tableName, null, "recoverable = ?", arrayOf("0"), null, null, null)
-        cursor.moveToFirst()
-        while (!cursor.isAfterLast) {
-            val resultBean = SecretBean()
-            resultBean.secretCategory = cursor.getString(cursor.getColumnIndex("secretCategory"))
-            resultBean.secretTitle = cursor.getString(cursor.getColumnIndex("secretTitle"))
-            resultBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
-            resultBean.secretPassword =
-                SecretHelper.decode(cursor.getString(cursor.getColumnIndex("secretPassword")))
-            resultBean.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
-            resultBean.deleteTime = cursor.getString(cursor.getColumnIndex("deleteTime"))
-            list.add(resultBean)
-            //下一次循环开始
-            cursor.moveToNext()
+    fun updateSecret(secretTitle: String, secretAccount: String, secretPassword: String) {
+        val values = ContentValues()
+        values.put("secretPassword", SecretHelper.encode(secretPassword))
+        if (isSecretExist(secretTitle, secretAccount)) {
+            //更新密码
+            Log.d(Tag, secretAccount + "更新密码")
+            db.update(tableName, values, "secretAccount = ?", arrayOf(secretAccount))
         }
-        cursor.close()
-        return list
     }
 
     /**
@@ -94,8 +77,8 @@ class SQLiteUtil(mContext: Context) {
         val list: MutableList<SecretBean> = ArrayList()
         val cursor = db.query(tableName,
             null,
-            "secretCategory = ? and recoverable = ?",
-            arrayOf(category, "1"),
+            "secretCategory = ?",
+            arrayOf(category),
             null,
             null,
             "id DESC") //倒序
@@ -107,8 +90,7 @@ class SQLiteUtil(mContext: Context) {
             resultBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
             resultBean.secretPassword =
                 SecretHelper.decode(cursor.getString(cursor.getColumnIndex("secretPassword")))
-            resultBean.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
-            resultBean.deleteTime = cursor.getString(cursor.getColumnIndex("deleteTime"))
+            resultBean.secretRemarks = cursor.getString(cursor.getColumnIndex("secretRemarks"))
             list.add(resultBean)
             //下一次循环开始
             cursor.moveToNext()
@@ -118,49 +100,22 @@ class SQLiteUtil(mContext: Context) {
     }
 
     /**
-     * 双重判断，title和account都相同才认为是同一个账号，否则认为是同一个账号密码
-     *
-     * 普通删除只是更改标志位
+     * 删除数据
      * */
-    fun deleteSecret(title: String, account: String, time: String) {
-        val values = ContentValues()
-        values.put("recoverable", "0")
-        values.put("deleteTime", time)
-        db.update(tableName,
-            values,
-            "secretTitle = ? and secretAccount = ?",
-            arrayOf(title, account))
-    }
-
-    /**
-     * 恢复数据
-     * */
-    fun recoverSecret(title: String, account: String) {
-        val values = ContentValues()
-        values.put("recoverable", "1")
-        db.update(tableName,
-            values,
-            "secretTitle = ? and secretAccount = ?",
-            arrayOf(title, account))
-    }
-
-    /**
-     * 真正删除数据
-     * */
-    fun realDeleteSecret(title: String, account: String) {
+    fun deleteSecret(title: String, account: String) {
         db.delete(tableName, "secretTitle = ? and secretAccount = ?", arrayOf(title, account))
     }
 
     /**
-     * 查询账号下所有的数据，不包括可恢复的
+     * 查询账号下所有的数据
      * */
     fun loadAccountSecret(account: String): MutableList<SecretBean> {
         Log.d(Tag, "查询账号: $account" + "所有数据")
         val list: MutableList<SecretBean> = ArrayList()
         val cursor = db.query(tableName,
             null,
-            "secretAccount = ? and recoverable = ?",
-            arrayOf(account, "1"),
+            "secretAccount = ?",
+            arrayOf(account),
             null,
             null,
             null)
@@ -172,8 +127,7 @@ class SQLiteUtil(mContext: Context) {
             resultBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
             resultBean.secretPassword =
                 SecretHelper.decode(cursor.getString(cursor.getColumnIndex("secretPassword")))
-            resultBean.recoverable = cursor.getString(cursor.getColumnIndex("recoverable"))
-            resultBean.deleteTime = cursor.getString(cursor.getColumnIndex("deleteTime"))
+            resultBean.secretRemarks = cursor.getString(cursor.getColumnIndex("secretRemarks"))
             list.add(resultBean)
 
             //下一次循环开始
