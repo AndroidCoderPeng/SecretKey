@@ -50,7 +50,7 @@ class SearchEventActivity : BaseActivity() {
         searchRecyclerView.layoutManager = LinearLayoutManager(this)
         searchRecyclerView.adapter = adapter
         adapter.setOnItemClickListener(object : SearchSecretAdapter.OnChildViewClickListener {
-            override fun onShareViewClickListener(index: Int) {
+            override fun onShareViewClicked(index: Int) {
                 val secretBean = beanList[index]
                 val data = secretBean.secretAccount + "\r\n" + secretBean.secretPassword
                 val createCodeBitmap = QRUtils.getInstance().createQRCode(data,
@@ -60,7 +60,7 @@ class SearchEventActivity : BaseActivity() {
                     .setDialogBitmap(createCodeBitmap).build().show()
             }
 
-            override fun onCopyViewClickListener(index: Int) {
+            override fun onCopyViewClicked(index: Int) {
                 //复制的数据需要精练
                 val secretBean = beanList[index]
                 val data = secretBean.secretAccount + "\r\n" + secretBean.secretPassword

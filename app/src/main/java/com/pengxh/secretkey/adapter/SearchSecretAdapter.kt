@@ -40,10 +40,10 @@ class SearchSecretAdapter(ctx: Context, list: MutableList<SecretBean>) :
 
         //点击事件
         holder.shareTextView.setOnClickListener {
-            itemClickListener!!.onShareViewClickListener(position)
+            itemClickListener!!.onShareViewClicked(position)
         }
         holder.copyTextView.setOnClickListener {
-            itemClickListener!!.onCopyViewClickListener(position)
+            itemClickListener!!.onCopyViewClicked(position)
         }
         holder.visibleView.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
@@ -69,9 +69,9 @@ class SearchSecretAdapter(ctx: Context, list: MutableList<SecretBean>) :
     }
 
     interface OnChildViewClickListener {
-        fun onShareViewClickListener(index: Int)
+        fun onShareViewClicked(index: Int)
 
-        fun onCopyViewClickListener(index: Int)
+        fun onCopyViewClicked(index: Int)
     }
 
     fun setOnItemClickListener(listener: OnChildViewClickListener) {

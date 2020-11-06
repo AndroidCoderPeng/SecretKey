@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp"
+    app:cardCornerRadius="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFF"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/mDialogTitle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#000"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/mInputHint"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_edittext2"
+            android:gravity="center"
+            android:singleLine="true" />
+
+        <View
+            android:id="@+id/v"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="10dp"
+            android:background="#CCC" />
+
+        <TextView
+            android:id="@+id/mDialogConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button"
+            android:gravity="center"
+            android:text="@string/confirm"
+            android:textColor="#0094FF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

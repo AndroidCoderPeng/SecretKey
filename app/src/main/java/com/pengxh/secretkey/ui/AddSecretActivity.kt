@@ -24,10 +24,6 @@ import kotlinx.android.synthetic.main.include_title_white.*
  */
 class AddSecretActivity : BaseActivity() {
 
-    companion object {
-        private const val Tag: String = "AddSecretActivity"
-    }
-
     private var category: String? = null
     private var title: String? = null
     private var account: String? = null

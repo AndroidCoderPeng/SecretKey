@@ -25,7 +25,7 @@ class SQLiteUtil(mContext: Context) {
     /**
      * 数据库表名
      */
-    private val tableName = "SecretTable"
+    private val tableName = "NewSecretTable"
 
     /**
      * 数据库版本

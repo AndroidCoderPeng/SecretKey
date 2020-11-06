@@ -1,5 +1,10 @@
 <resources>
 
+    <style name="InputDialogStyle" parent="android:Theme.Holo.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@null</item>
+    </style>
+
     <style name="editTextStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
