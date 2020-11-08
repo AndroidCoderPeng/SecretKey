@@ -1,0 +1,28 @@
+p {
+	font-size: 1.1rem;
+}
+
+img {
+	width: 100%;
+	height: auto;
+}
+
+div {
+	float: left;
+	width: 100%;
+	margin: auto;
+}
+
+.modify {
+	width: 49%;
+	height: auto;
+}
+
+#search {
+	display: inline-block;
+	vertical-align: middle;
+	width: 1.25rem;
+	height: 1.25rem;
+	padding: 0.3125rem;
+	background-color: #03DAC5;
+}

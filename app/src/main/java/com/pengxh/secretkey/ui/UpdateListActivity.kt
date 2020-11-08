@@ -32,7 +32,7 @@ class UpdateListActivity : BaseActivity() {
         updateListView.adapter = updateViewAdapter
         updateListView.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(this, UpdateLogActivity::class.java)
-            intent.putStringArrayListExtra("updateLogs", data[position].updateLogs)
+            intent.putExtra("message", data[position].message)
             startActivity(intent)
         }
     }
