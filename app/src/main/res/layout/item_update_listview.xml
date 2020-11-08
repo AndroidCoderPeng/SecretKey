@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/updateLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingVertical="5dp">
+
+    <TextView
+        android:id="@+id/updateMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="立项"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/updateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/updateMessage"
+        android:text="2020-11-5"
+        android:textColor="@color/lightGray"
+        android:textSize="14sp" />
+
+    <ImageView style="@style/rightImageStyle" />
+</RelativeLayout>

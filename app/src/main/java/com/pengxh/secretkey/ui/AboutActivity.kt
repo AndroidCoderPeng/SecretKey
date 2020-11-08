@@ -39,7 +39,7 @@ class AboutActivity : BaseActivity() {
         }
 
         updateLayout.setOnClickListener {
-            OtherUtils.intentActivity(UpdateLogActivity::class.java)
+            OtherUtils.intentActivity(UpdateListActivity::class.java)
         }
     }
 }
