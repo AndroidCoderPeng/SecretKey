@@ -1,6 +1,7 @@
 package com.pengxh.secretkey.ui
 
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
@@ -47,6 +48,12 @@ class AddSecretActivity : BaseActivity() {
         categorySpinner.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, pos: Int, id: Long) {
                 category = Constant.category[pos]
+                if (category.equals("银行卡")) {
+                    Log.d("AddSecretActivity", "initEvent: 银行卡")
+                    codeScannerView.visibility = View.VISIBLE
+                } else {
+                    codeScannerView.visibility = View.GONE
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -54,12 +61,11 @@ class AddSecretActivity : BaseActivity() {
             }
         }
 
-        saveButton.setOnClickListener {
-            if (category == null) {
-                EasyToast.showToast("类别未选，请选择", EasyToast.WARING)
-                return@setOnClickListener
-            }
+        codeScannerView.setOnClickListener {
+            EasyToast.showToast("OCR", EasyToast.DEFAULT)
+        }
 
+        saveButton.setOnClickListener {
             title = inputTitle.text.toString().trim()
             if (title == null || title == "") {
                 EasyToast.showToast("标题未填写，请检查", EasyToast.WARING)
