@@ -7,7 +7,7 @@ import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.ColorHelper
-import com.pengxh.secretkey.utils.OtherUtils
+import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.StatusBarColorUtil
 import com.pengxh.secretkey.widgets.gesture.GestureLockLayout
 import com.pengxh.secretkey.widgets.gesture.GestureLockLayout.OnLockResetListener
@@ -65,7 +65,7 @@ class GestureSetActivity : BaseActivity() {
                 if (isMatched) {
                     //两次答案一致，保存
                     SaveKeyValues.putValue("gesturePassword", answerList.toString())
-                    OtherUtils.intentActivity(PasswordModeActivity::class.java, "gestureSwitch")
+                    SaveKeyValues.putValue(Constant.PASSWORD_MODE, "gestureSwitch")
                     finish()
                 } else {
                     resetGesture()

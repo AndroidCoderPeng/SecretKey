@@ -59,7 +59,7 @@ class PasswordDoubleCheckActivity : BaseActivity(), DigitKeyboard.DigitKeyboardC
         if (password != null || password != "") {
             val firstPassword = SaveKeyValues.getValue("firstPassword", "") as String
             if (password == firstPassword) {
-                OtherUtils.intentActivity(PasswordModeActivity::class.java, "numberSwitch")
+                OtherUtils.intentActivity(MainActivity::class.java)
                 finish()
             } else {
                 EasyToast.showToast("两次密码不一致，请重新设置", EasyToast.ERROR)

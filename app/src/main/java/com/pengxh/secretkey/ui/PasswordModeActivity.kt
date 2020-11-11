@@ -7,6 +7,7 @@ import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
+import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.OtherUtils
 import com.pengxh.secretkey.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.activity_password_mode.*
@@ -27,38 +28,18 @@ class PasswordModeActivity : BaseActivity() {
         ImmersionBar.with(this).statusBarDarkFont(true).init()
 
         mTitleView.text = "设置解锁方式"
-        selectMode()
-    }
-
-    override fun initEvent() {
-        when (SaveKeyValues.getValue("mode", "numberSwitch") as String) {
-            "numberSwitch" -> {
-                numberSwitch.isChecked = true
-                gestureSwitch.isChecked = false
-                fingerprintSwitch.isChecked = false
-            }
-            "gestureSwitch" -> {
-                numberSwitch.isChecked = false
-                gestureSwitch.isChecked = true
-                fingerprintSwitch.isChecked = false
-            }
-            "fingerprintSwitch" -> {
-                numberSwitch.isChecked = false
-                gestureSwitch.isChecked = false
-                fingerprintSwitch.isChecked = true
-            }
-        }
     }
 
     /**
      * 解锁方式切换，事件相互独立，有且只能有一种解锁方式
      * */
-    private fun selectMode() {
+    override fun initEvent() {
         numberSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 gestureSwitch.isChecked = false
                 fingerprintSwitch.isChecked = false
-                SaveKeyValues.putValue("mode", "numberSwitch")
+                closePasswordSwitch.isChecked = false
+                SaveKeyValues.putValue(Constant.PASSWORD_MODE, "numberSwitch")
             }
         }
 
@@ -67,12 +48,12 @@ class PasswordModeActivity : BaseActivity() {
             if (gesturePassword == "") {
                 buttonView.isChecked = false
                 startActivity(Intent(this, GestureSetActivity::class.java))
-                finish()
             } else {
                 if (isChecked) {
                     numberSwitch.isChecked = false
                     fingerprintSwitch.isChecked = false
-                    SaveKeyValues.putValue("mode", "gestureSwitch")
+                    closePasswordSwitch.isChecked = false
+                    SaveKeyValues.putValue(Constant.PASSWORD_MODE, "gestureSwitch")
                 }
             }
         }
@@ -85,8 +66,48 @@ class PasswordModeActivity : BaseActivity() {
                 if (isChecked) {
                     numberSwitch.isChecked = false
                     gestureSwitch.isChecked = false
-                    SaveKeyValues.putValue("mode", "fingerprintSwitch")
+                    closePasswordSwitch.isChecked = false
+                    SaveKeyValues.putValue(Constant.PASSWORD_MODE, "fingerprintSwitch")
                 }
+            }
+        }
+
+        closePasswordSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                numberSwitch.isChecked = false
+                gestureSwitch.isChecked = false
+                fingerprintSwitch.isChecked = false
+                SaveKeyValues.putValue(Constant.PASSWORD_MODE, "closePassword")
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        when (SaveKeyValues.getValue(Constant.PASSWORD_MODE, "numberSwitch") as String) {
+            "numberSwitch" -> {
+                numberSwitch.isChecked = true
+                gestureSwitch.isChecked = false
+                fingerprintSwitch.isChecked = false
+                closePasswordSwitch.isChecked = false
+            }
+            "gestureSwitch" -> {
+                numberSwitch.isChecked = false
+                gestureSwitch.isChecked = true
+                fingerprintSwitch.isChecked = false
+                closePasswordSwitch.isChecked = false
+            }
+            "fingerprintSwitch" -> {
+                numberSwitch.isChecked = false
+                gestureSwitch.isChecked = false
+                fingerprintSwitch.isChecked = true
+                closePasswordSwitch.isChecked = false
+            }
+            "closePassword" -> {
+                numberSwitch.isChecked = false
+                gestureSwitch.isChecked = false
+                fingerprintSwitch.isChecked = false
+                closePasswordSwitch.isChecked = true
             }
         }
     }

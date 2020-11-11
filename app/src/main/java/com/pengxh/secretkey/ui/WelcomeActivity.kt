@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
+import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.OtherUtils
 import com.pengxh.secretkey.widgets.AgreementDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -56,7 +57,7 @@ class WelcomeActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks
     }
 
     private fun startMainActivity() {
-        when (SaveKeyValues.getValue("mode", "numberSwitch") as String) {
+        when (SaveKeyValues.getValue(Constant.PASSWORD_MODE, "numberSwitch") as String) {
             "numberSwitch" -> {
                 val firstPassword = SaveKeyValues.getValue("firstPassword", "") as String
                 if (firstPassword == "") {
@@ -83,6 +84,10 @@ class WelcomeActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks
                 } else {
                     EasyToast.showToast("设备不支持指纹识别或者未录入指纹", EasyToast.ERROR)
                 }
+            }
+            "closePassword" -> {
+                OtherUtils.intentActivity(MainActivity::class.java)
+                finish()
             }
         }
     }
