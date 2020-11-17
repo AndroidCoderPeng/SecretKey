@@ -1,6 +1,11 @@
 package com.pengxh.secretkey
 
 import android.app.Application
+import android.util.Log
+import com.baidu.ocr.sdk.OCR
+import com.baidu.ocr.sdk.OnResultListener
+import com.baidu.ocr.sdk.exception.OCRError
+import com.baidu.ocr.sdk.model.AccessToken
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.utils.OtherUtils
@@ -13,10 +18,24 @@ import com.pengxh.secretkey.utils.OtherUtils
  */
 class BaseApplication : Application() {
 
+    companion object {
+        private const val TAG = "BaseApplication"
+    }
+
     override fun onCreate() {
         super.onCreate()
         SaveKeyValues.initSharedPreferences(this)
         EasyToast.init(this)
         OtherUtils.init(this)
+        //百度OCR初始化
+        OCR.getInstance(this).initAccessToken(object : OnResultListener<AccessToken> {
+            override fun onResult(result: AccessToken?) {
+                Log.d(TAG, "onResult: ${result?.tokenJson}")
+            }
+
+            override fun onError(ocrError: OCRError?) {
+
+            }
+        }, this)
     }
 }

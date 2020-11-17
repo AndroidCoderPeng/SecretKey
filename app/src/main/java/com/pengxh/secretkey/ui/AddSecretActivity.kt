@@ -1,5 +1,6 @@
 package com.pengxh.secretkey.ui
 
+import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import android.view.View
@@ -62,7 +63,8 @@ class AddSecretActivity : BaseActivity() {
         }
 
         codeScannerView.setOnClickListener {
-            EasyToast.showToast("OCR", EasyToast.DEFAULT)
+            startActivity(Intent(this, OcrBankCardActivity::class.java))
+            //            startActivityForResult(Intent(this, OcrBankCardActivity::class.java), 777)
         }
 
         saveButton.setOnClickListener {
@@ -88,6 +90,16 @@ class AddSecretActivity : BaseActivity() {
             //将数据存数据库，然后结束当前页面
             SQLiteUtil(this).saveSecret(category!!, title!!, account!!, password!!, remarks)
             this.finish()
+        }
+    }
+
+    /**
+     * 接收OCR银行卡识别结果
+     * */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 777 && resultCode == OcrBankCardActivity.resultCode) {
+            inputAccount.setText(data?.getStringExtra("bankCardNumber"))
         }
     }
 }
