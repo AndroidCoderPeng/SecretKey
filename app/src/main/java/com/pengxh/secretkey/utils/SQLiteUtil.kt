@@ -138,19 +138,45 @@ class SQLiteUtil(mContext: Context) {
     }
 
     /**
+     * 查询所有的数据
+     * */
+    fun loadAllSecret(): MutableList<SecretBean> {
+        val list: MutableList<SecretBean> = ArrayList()
+        val cursor = db.query(tableName, null, null, null, null, null, "id DESC")
+        cursor.moveToFirst()
+        while (!cursor.isAfterLast) {
+            val resultBean = SecretBean()
+            resultBean.secretCategory = cursor.getString(cursor.getColumnIndex("secretCategory"))
+            resultBean.secretTitle = cursor.getString(cursor.getColumnIndex("secretTitle"))
+            resultBean.secretAccount = cursor.getString(cursor.getColumnIndex("secretAccount"))
+            resultBean.secretPassword =
+                SecretHelper.decode(cursor.getString(cursor.getColumnIndex("secretPassword")))
+            resultBean.secretRemarks = cursor.getString(cursor.getColumnIndex("secretRemarks"))
+            list.add(resultBean)
+
+            //下一次循环开始
+            cursor.moveToNext()
+        }
+        cursor.close()
+        return list
+    }
+
+    /**
      * 双重判断，title和account都相同才认为是同一个账号修改密码，否则认为是新增账号密码
      * */
     private fun isSecretExist(title: String, account: String): Boolean {
         var result = false
         var cursor: Cursor? = null
         try {
-            cursor = db.query(tableName,
+            cursor = db.query(
+                tableName,
                 null,
                 "secretTitle = ? and secretAccount = ?",
                 arrayOf(title, account),
                 null,
                 null,
-                null)
+                null
+            )
             result = null != cursor && cursor.moveToFirst()
         } catch (e: Exception) {
             e.printStackTrace()

@@ -1,7 +1,10 @@
 package com.pengxh.secretkey.ui.fragment
 
+import android.os.Environment
+import android.util.Log
 import com.aihook.alertview.library.AlertView
 import com.aihook.alertview.library.OnItemClickListener
+import com.google.gson.Gson
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseFragment
 import com.pengxh.app.multilib.utils.FileUtil
@@ -10,9 +13,7 @@ import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.ui.AboutActivity
 import com.pengxh.secretkey.ui.PasswordModeActivity
-import com.pengxh.secretkey.utils.ColorHelper
-import com.pengxh.secretkey.utils.OtherUtils
-import com.pengxh.secretkey.utils.StatusBarColorUtil
+import com.pengxh.secretkey.utils.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 import java.io.File
 import kotlin.properties.Delegates
@@ -28,6 +29,7 @@ class SettingsFragment : BaseFragment() {
 
     companion object {
         private const val Tag = "SettingsFragment"
+        private val excelTitle = arrayOf("类别", "标题", "账号", "密码", "备注")
     }
 
     private var captureSwitchStatus by Delegates.notNull<Boolean>()
@@ -59,7 +61,21 @@ class SettingsFragment : BaseFragment() {
          * 数据导出Layout
          * */
         outputLayout.setOnClickListener {
+            context?.let {
+                val allSecret = SQLiteUtil(it).loadAllSecret()
 
+                //写入到excel
+                Log.d(Tag, Gson().toJson(allSecret))
+                val dir =
+                    File(Environment.getExternalStorageDirectory(), "SecretKey")
+                if (!dir.exists()) {
+                    dir.mkdir()
+                }
+                Log.d(Tag, "initEvent: 写入表格-开始")
+                ExcelHelper.initExcel("$dir/密码管家数据.xls", excelTitle)
+                ExcelHelper.writeSecretToExcel(allSecret)
+                Log.d(Tag, "initEvent: 写入表格-结束")
+            }
         }
 
         /**
