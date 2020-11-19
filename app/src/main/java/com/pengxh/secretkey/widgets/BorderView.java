@@ -21,7 +21,6 @@ import androidx.appcompat.widget.AppCompatImageView;
  */
 public class BorderView extends AppCompatImageView {
 
-    private static final String TAG = "BorderView";
     private static final String TEXT = "请将银行卡置于方框内，便于识别卡号";
     private Paint borderPaint, textPaint;
     private float centerX, centerY;
@@ -49,7 +48,7 @@ public class BorderView extends AppCompatImageView {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         centerX = w >> 1;
-        centerY = h >> 2;
+        centerY = h / 3;
     }
 
     @SuppressLint("DrawAllocation")

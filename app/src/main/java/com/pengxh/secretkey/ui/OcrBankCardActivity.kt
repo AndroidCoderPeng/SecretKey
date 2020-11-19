@@ -1,9 +1,10 @@
 package com.pengxh.secretkey.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.util.Log
+import android.view.MotionEvent
 import com.baidu.ocr.sdk.OCR
 import com.baidu.ocr.sdk.OnResultListener
 import com.baidu.ocr.sdk.exception.OCRError
@@ -15,7 +16,6 @@ import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.CameraPreviewHelper
-import com.pengxh.secretkey.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.activity_ocr.*
 import java.io.File
 
@@ -37,20 +37,33 @@ class OcrBankCardActivity : BaseNormalActivity(), CameraPreviewHelper.OnCaptureI
     override fun initLayoutView(): Int = R.layout.activity_ocr
 
     override fun initData() {
-        StatusBarColorUtil.setColor(this, Color.WHITE)
-        ImmersionBar.with(this).statusBarDarkFont(true).init()
+        ImmersionBar.with(this).init()
     }
 
     override fun initEvent() {
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onResume() {
         super.onResume()
         cameraPreviewHelper = CameraPreviewHelper(this, targetPreView)
         cameraPreviewHelper.setImageCallback(this)
-        recognizeButton.setOnClickListener {
-            cameraPreviewHelper.takePicture()
+        //按钮缩小效果
+        recognizeButton.setOnTouchListener { v, event ->
+            when (event!!.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    recognizeButton.animate().scaleX(0.75f).scaleY(0.75f)
+                        .setDuration(100).start()
+                }
+                MotionEvent.ACTION_UP -> {
+                    recognizeButton.animate().scaleX(1.0f).scaleY(1.0f)
+                        .setDuration(100).start()
+                    //拍照
+                    cameraPreviewHelper.takePicture()
+                }
+            }
+            true
         }
     }
 
@@ -60,18 +73,21 @@ class OcrBankCardActivity : BaseNormalActivity(), CameraPreviewHelper.OnCaptureI
         OCR.getInstance(this).recognizeBankCard(param, object : OnResultListener<BankCardResult> {
             override fun onResult(bankCardResult: BankCardResult?) {
                 Log.d(TAG, "onResult: " + Gson().toJson(bankCardResult))
-                EasyToast.showToast("识别成功", EasyToast.SUCCESS)
-                val intent = Intent()
-                intent.putExtra("bankName", bankCardResult?.bankName)
-                intent.putExtra("bankCardNumber", bankCardResult?.bankCardNumber)
-                setResult(888, intent)
-                finish()
+                val bankCardNumber = bankCardResult?.bankCardNumber
+                if (bankCardNumber == "") {
+                    EasyToast.showToast("识别失败", EasyToast.ERROR)
+                } else {
+                    EasyToast.showToast("识别成功", EasyToast.SUCCESS)
+                    val intent = Intent()
+                    intent.putExtra("bankName", bankCardResult?.bankName)
+                    intent.putExtra("bankCardNumber", bankCardNumber)
+                    setResult(resultCode, intent)
+                    finish()
+                }
             }
 
             override fun onError(ocrError: OCRError?) {
-                if (ocrError != null) {
-                    EasyToast.showToast("识别失败，请重试", EasyToast.WARING)
-                }
+                Log.e(TAG, "onError: ${ocrError?.cause}")
             }
         })
     }

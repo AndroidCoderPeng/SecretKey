@@ -26,6 +26,10 @@ import kotlinx.android.synthetic.main.include_title_white.*
  */
 class AddSecretActivity : BaseActivity() {
 
+    companion object {
+        const val requestCode = 777
+    }
+
     private var category: String? = null
     private var title: String? = null
     private var account: String? = null
@@ -95,9 +99,9 @@ class AddSecretActivity : BaseActivity() {
     /**
      * 接收OCR银行卡识别结果
      * */
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 777 && resultCode == OcrBankCardActivity.resultCode) {
+    override fun onActivityResult(reqCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(reqCode, resultCode, data)
+        if (reqCode == requestCode && resultCode == OcrBankCardActivity.resultCode) {
             inputTitle.setText(data?.getStringExtra("bankName"))
             inputAccount.setText(data?.getStringExtra("bankCardNumber"))
         }
