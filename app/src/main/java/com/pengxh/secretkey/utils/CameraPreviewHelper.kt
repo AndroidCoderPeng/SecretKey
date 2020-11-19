@@ -19,11 +19,12 @@ import android.view.Surface
 import android.view.TextureView
 import android.view.TextureView.SurfaceTextureListener
 import androidx.core.content.ContextCompat
-import com.pengxh.app.multilib.utils.DensityUtil
 import com.pengxh.app.multilib.widget.EasyToast
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * @author: Pengxh
@@ -42,10 +43,8 @@ class CameraPreviewHelper(private val mContext: Context, textureView: TextureVie
     private var mCaptureSession: CameraCaptureSession? = null
     private var canTakePic = false
     private var imageCallback: OnCaptureImageCallback? = null
-    private var mPreviewSize = Size(
-        DensityUtil.getDisplaySize(mContext)["HorizontalPixels"]!!,
-        DensityUtil.getDisplaySize(mContext)["VerticalPixels"]!!
-    )
+    private var mPreviewSize = Size(PREVIEW_WIDTH, PREVIEW_HEIGHT) //预览大小
+    private var mSavePicSize = Size(SAVE_WIDTH, SAVE_HEIGHT)       //保存图片大小
 
     fun setImageCallback(callback: OnCaptureImageCallback?) {
         imageCallback = callback
@@ -54,6 +53,10 @@ class CameraPreviewHelper(private val mContext: Context, textureView: TextureVie
     companion object {
         private const val TAG = "CameraPreviewHelper"
         private const val mCameraFacing = CameraCharacteristics.LENS_FACING_BACK //默认使用后置摄像头
+        const val PREVIEW_WIDTH = 720        //预览的宽度
+        const val PREVIEW_HEIGHT = 1280      //预览的高度
+        const val SAVE_WIDTH = 720           //保存图片的宽度
+        const val SAVE_HEIGHT = 1280         //保存图片的高度
     }
 
     init {
@@ -62,11 +65,9 @@ class CameraPreviewHelper(private val mContext: Context, textureView: TextureVie
         mPreviewThread.start()
         mPreviewHandler = Handler(mPreviewThread.looper)
         mTextureView.surfaceTextureListener = object : SurfaceTextureListener {
-            override fun onSurfaceTextureAvailable(
-                surface: SurfaceTexture,
+            override fun onSurfaceTextureAvailable(surface: SurfaceTexture,
                 width: Int,
-                height: Int
-            ) {
+                height: Int) {
                 try {
                     initCamera()
                 } catch (e: CameraAccessException) {
@@ -74,11 +75,9 @@ class CameraPreviewHelper(private val mContext: Context, textureView: TextureVie
                 }
             }
 
-            override fun onSurfaceTextureSizeChanged(
-                surface: SurfaceTexture,
+            override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture,
                 width: Int,
-                height: Int
-            ) {
+                height: Int) {
             }
 
             override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean {
@@ -112,16 +111,29 @@ class CameraPreviewHelper(private val mContext: Context, textureView: TextureVie
         }
         //获取摄像头方向
         mSensorOrientation = mCharacteristics!!.get(CameraCharacteristics.SENSOR_ORIENTATION)
+        val configurationMap =
+            mCharacteristics!!.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+        val savePicSize = configurationMap?.getOutputSizes(ImageFormat.JPEG)          //保存照片尺寸
+        val previewSize = configurationMap?.getOutputSizes(SurfaceTexture::class.java) //预览尺寸
+        mSavePicSize = obtainBestSize(mSavePicSize.height,
+            mSavePicSize.width,
+            mSavePicSize.height,
+            mSavePicSize.width,
+            savePicSize!!.toList())
+
+        mPreviewSize = obtainBestSize(mPreviewSize.height,
+            mPreviewSize.width,
+            mTextureView.height,
+            mTextureView.width,
+            previewSize!!.toList())
+
         mTextureView.surfaceTexture.setDefaultBufferSize(mPreviewSize.width, mPreviewSize.height)
         mImageReader =
-            ImageReader.newInstance(mPreviewSize.width, mPreviewSize.height, ImageFormat.JPEG, 1)
+            ImageReader.newInstance(mSavePicSize.width, mSavePicSize.height, ImageFormat.JPEG, 1)
         mImageReader?.setOnImageAvailableListener(mImageAvailableListener, mPreviewHandler)
         //打开箱机
-        if (ContextCompat.checkSelfPermission(
-                mContext,
-                Manifest.permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        if (ContextCompat.checkSelfPermission(mContext,
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             EasyToast.showToast("没有相机权限", EasyToast.WARING)
             return
         }
@@ -148,6 +160,48 @@ class CameraPreviewHelper(private val mContext: Context, textureView: TextureVie
     }
 
     /**
+     * 根据提供的参数值返回与指定宽高相等或最接近的尺寸
+     *
+     * @param targetWidth   目标宽度
+     * @param targetHeight  目标高度
+     * @param maxWidth      最大宽度(即TextureView的宽度)
+     * @param maxHeight     最大高度(即TextureView的高度)
+     * @param sizeList      支持的Size列表
+     *
+     * @return  返回与指定宽高相等或最接近的尺寸
+     */
+    private fun obtainBestSize(targetWidth: Int,
+        targetHeight: Int,
+        maxWidth: Int,
+        maxHeight: Int,
+        sizeList: List<Size>): Size {
+        val biggerTargetSizeList = ArrayList<Size>()     //比指定宽高大的Size列表
+        val littleTargetSizeList = ArrayList<Size>()  //比指定宽高小的Size列表
+
+        for (size in sizeList) {
+            //宽<=最大宽度  &&  高<=最大高度  &&  宽高比 == 目标值宽高比
+            if (size.width <= maxWidth && size.height <= maxHeight && size.width == size.height * targetWidth / targetHeight) {
+                if (size.width >= targetWidth && size.height >= targetHeight) biggerTargetSizeList.add(
+                    size)
+                else littleTargetSizeList.add(size)
+            }
+            Log.d(TAG,
+                "系统支持的尺寸: ${size.width} * ${size.height} ,  比例 ：${size.width.toFloat() / size.height}")
+        }
+        Log.d(TAG, "最大尺寸 ：$maxWidth * $maxHeight, 比例 ：${targetWidth.toFloat() / targetHeight}")
+        Log.d(TAG,
+            "目标尺寸 ：$targetWidth * $targetHeight, 比例 ：${targetWidth.toFloat() / targetHeight}")
+        //选择biggerTargetSizeList中最小的值 或littleTargetSizeList中最大的值
+        return when {
+            biggerTargetSizeList.size > 0 -> Collections.min(biggerTargetSizeList,
+                CompareSizesByArea())
+            littleTargetSizeList.size > 0 -> Collections.min(littleTargetSizeList,
+                CompareSizesByArea())
+            else -> sizeList[0]
+        }
+    }
+
+    /**
      * 创建预览会话
      */
     @Throws(CameraAccessException::class)
@@ -155,14 +209,10 @@ class CameraPreviewHelper(private val mContext: Context, textureView: TextureVie
         val captureRequestBuilder = camera.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW) //预览
         val surface = Surface(mTextureView.surfaceTexture)
         captureRequestBuilder.addTarget(surface) //将CaptureRequest的构建器与Surface对象绑定在一起
-        captureRequestBuilder.set(
-            CaptureRequest.CONTROL_AE_MODE,
-            CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH
-        ) // 闪光灯
-        captureRequestBuilder.set(
-            CaptureRequest.CONTROL_AF_MODE,
-            CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE
-        ) // 自动对焦
+        captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,
+            CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH) // 闪光灯
+        captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
+            CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE) // 自动对焦
 
         //为相机预览，创建一个CameraCaptureSession对象
         val surfaceList = listOf(surface, mImageReader!!.surface) //画面帧集合
@@ -170,11 +220,9 @@ class CameraPreviewHelper(private val mContext: Context, textureView: TextureVie
             override fun onConfigured(session: CameraCaptureSession) {
                 mCaptureSession = session
                 try {
-                    session.setRepeatingRequest(
-                        captureRequestBuilder.build(),
+                    session.setRepeatingRequest(captureRequestBuilder.build(),
                         mCaptureCallBack,
-                        mPreviewHandler
-                    )
+                        mPreviewHandler)
                 } catch (e: CameraAccessException) {
                     e.printStackTrace()
                 }
@@ -190,20 +238,16 @@ class CameraPreviewHelper(private val mContext: Context, textureView: TextureVie
      * 预览回调
      */
     private val mCaptureCallBack: CaptureCallback = object : CaptureCallback() {
-        override fun onCaptureCompleted(
-            session: CameraCaptureSession,
+        override fun onCaptureCompleted(session: CameraCaptureSession,
             request: CaptureRequest,
-            result: TotalCaptureResult
-        ) {
+            result: TotalCaptureResult) {
             super.onCaptureCompleted(session, request, result)
             canTakePic = true
         }
 
-        override fun onCaptureFailed(
-            session: CameraCaptureSession,
+        override fun onCaptureFailed(session: CameraCaptureSession,
             request: CaptureRequest,
-            failure: CaptureFailure
-        ) {
+            failure: CaptureFailure) {
             super.onCaptureFailed(session, request, failure)
             Log.d(TAG, "onCaptureFailed: $failure")
             EasyToast.showToast("开启预览失败！", EasyToast.ERROR)
@@ -222,18 +266,12 @@ class CameraPreviewHelper(private val mContext: Context, textureView: TextureVie
                 val captureRequestBuilder =
                     mCameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE) //拍照
                 captureRequestBuilder.addTarget(mImageReader!!.surface)
-                captureRequestBuilder.set(
-                    CaptureRequest.CONTROL_AF_MODE,
-                    CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE
-                ) // 自动对焦
-                captureRequestBuilder.set(
-                    CaptureRequest.CONTROL_AE_MODE,
-                    CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH
-                ) // 闪光灯
-                captureRequestBuilder.set(
-                    CaptureRequest.JPEG_ORIENTATION,
-                    mSensorOrientation
-                ) ////根据摄像头方向对保存的照片进行旋转，使其为"自然方向"
+                captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
+                    CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE) // 自动对焦
+                captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,
+                    CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH) // 闪光灯
+                captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION,
+                    mSensorOrientation) ////根据摄像头方向对保存的照片进行旋转，使其为"自然方向"
                 mCaptureSession!!.capture(captureRequestBuilder.build(), null, mPreviewHandler)
             } catch (e: CameraAccessException) {
                 e.printStackTrace()
@@ -301,6 +339,12 @@ class CameraPreviewHelper(private val mContext: Context, textureView: TextureVie
         if (mImageReader != null) {
             mImageReader!!.close()
             mImageReader = null
+        }
+    }
+
+    private class CompareSizesByArea : Comparator<Size> {
+        override fun compare(size1: Size, size2: Size): Int {
+            return java.lang.Long.signum(size1.width.toLong() * size1.height - size2.width.toLong() * size2.height)
         }
     }
 }

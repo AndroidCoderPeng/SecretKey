@@ -26,7 +26,7 @@ class WelcomeActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks
         private const val PERMISSIONS_CODE = 999
         private val USER_PERMISSIONS = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.USE_FINGERPRINT)
+            Manifest.permission.CAMERA)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

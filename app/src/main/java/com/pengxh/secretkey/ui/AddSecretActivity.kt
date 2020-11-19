@@ -63,8 +63,7 @@ class AddSecretActivity : BaseActivity() {
         }
 
         codeScannerView.setOnClickListener {
-            startActivity(Intent(this, OcrBankCardActivity::class.java))
-            //            startActivityForResult(Intent(this, OcrBankCardActivity::class.java), 777)
+            startActivityForResult(Intent(this, OcrBankCardActivity::class.java), 777)
         }
 
         saveButton.setOnClickListener {
@@ -99,6 +98,7 @@ class AddSecretActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 777 && resultCode == OcrBankCardActivity.resultCode) {
+            inputTitle.setText(data?.getStringExtra("bankName"))
             inputAccount.setText(data?.getStringExtra("bankCardNumber"))
         }
     }

@@ -1,6 +1,8 @@
 package com.pengxh.secretkey.ui
 
+import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.util.Log
 import com.baidu.ocr.sdk.OCR
 import com.baidu.ocr.sdk.OnResultListener
@@ -8,10 +10,12 @@ import com.baidu.ocr.sdk.exception.OCRError
 import com.baidu.ocr.sdk.model.BankCardParams
 import com.baidu.ocr.sdk.model.BankCardResult
 import com.google.gson.Gson
+import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.CameraPreviewHelper
+import com.pengxh.secretkey.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.activity_ocr.*
 import java.io.File
 
@@ -33,7 +37,8 @@ class OcrBankCardActivity : BaseNormalActivity(), CameraPreviewHelper.OnCaptureI
     override fun initLayoutView(): Int = R.layout.activity_ocr
 
     override fun initData() {
-
+        StatusBarColorUtil.setColor(this, Color.WHITE)
+        ImmersionBar.with(this).statusBarDarkFont(true).init()
     }
 
     override fun initEvent() {
@@ -45,7 +50,6 @@ class OcrBankCardActivity : BaseNormalActivity(), CameraPreviewHelper.OnCaptureI
         cameraPreviewHelper = CameraPreviewHelper(this, targetPreView)
         cameraPreviewHelper.setImageCallback(this)
         recognizeButton.setOnClickListener {
-            Log.d(TAG, "initEvent: ")
             cameraPreviewHelper.takePicture()
         }
     }
@@ -56,6 +60,12 @@ class OcrBankCardActivity : BaseNormalActivity(), CameraPreviewHelper.OnCaptureI
         OCR.getInstance(this).recognizeBankCard(param, object : OnResultListener<BankCardResult> {
             override fun onResult(bankCardResult: BankCardResult?) {
                 Log.d(TAG, "onResult: " + Gson().toJson(bankCardResult))
+                EasyToast.showToast("识别成功", EasyToast.SUCCESS)
+                val intent = Intent()
+                intent.putExtra("bankName", bankCardResult?.bankName)
+                intent.putExtra("bankCardNumber", bankCardResult?.bankCardNumber)
+                setResult(888, intent)
+                finish()
             }
 
             override fun onError(ocrError: OCRError?) {
