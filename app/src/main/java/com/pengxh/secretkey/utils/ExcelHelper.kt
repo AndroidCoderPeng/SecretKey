@@ -8,8 +8,6 @@ import jxl.format.Colour
 import jxl.write.*
 import java.io.File
 import java.io.FileInputStream
-import java.io.IOException
-import java.io.InputStream
 
 /**
  * @author: Pengxh
@@ -27,45 +25,7 @@ class ExcelHelper {
         private lateinit var arial10format: WritableCellFormat
         private lateinit var arial12font: WritableFont
         private lateinit var arial12format: WritableCellFormat
-        private lateinit var fileName: String
-
-        /**
-         * 初始化Excel
-         *
-         * @param fileName
-         * @param colName
-         */
-        fun initExcel(fileName: String, colName: Array<String>) {
-            this.fileName = fileName
-
-            format()
-            var workbook: WritableWorkbook? = null
-            try {
-                val file = File(fileName)
-                if (!file.exists()) {
-                    file.createNewFile()
-                }
-                workbook = Workbook.createWorkbook(file)
-                val sheet: WritableSheet = workbook.createSheet("密码管家", 0)
-                //创建标题栏
-                sheet.addCell(Label(0, 0, fileName, arial14format))
-                for (col in colName.indices) {
-                    sheet.addCell(Label(col, 0, colName[col], arial10format))
-                }
-                sheet.setRowView(0, 340) //设置行高
-                workbook.write()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
-                if (workbook != null) {
-                    try {
-                        workbook.close()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-        }
+        private lateinit var file: File
 
         /**
          * 单元格的格式设置 字体大小 颜色 对齐方式、背景颜色等...
@@ -101,16 +61,51 @@ class ExcelHelper {
             }
         }
 
+        /**
+         * 初始化Excel
+         *
+         * @param fileName
+         * @param colName
+         */
+        fun initExcel(fileName: String, colName: Array<String>) {
+            format()
+            var workbook: WritableWorkbook? = null
+            try {
+                val file = File(fileName)
+                if (!file.exists()) {
+                    file.createNewFile()
+                }
+                this.file = file
+                workbook = Workbook.createWorkbook(file)
+                val sheet: WritableSheet = workbook.createSheet("密码管家", 0)
+                //创建标题栏
+                sheet.addCell(Label(0, 0, fileName, arial14format))
+                for (col in colName.indices) {
+                    sheet.addCell(Label(col, 0, colName[col], arial10format))
+                }
+                sheet.setRowView(0, 340) //设置行高
+                workbook.write()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                if (workbook != null) {
+                    try {
+                        workbook.close()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+        }
+
         fun writeSecretToExcel(list: List<SecretBean>?) {
             if (list != null && list.isNotEmpty()) {
                 var writebook: WritableWorkbook? = null
-                var `in`: InputStream? = null
                 try {
                     val setEncode = WorkbookSettings()
                     setEncode.encoding = UTF8_ENCODING
-                    `in` = FileInputStream(File(fileName))
-                    val workbook: Workbook = Workbook.getWorkbook(`in`)
-                    writebook = Workbook.createWorkbook(File(fileName), workbook)
+                    val workbook: Workbook = Workbook.getWorkbook(FileInputStream(file))
+                    writebook = Workbook.createWorkbook(file, workbook)
                     val sheet: WritableSheet = writebook.getSheet(0)
                     for (j in list.indices) {
                         val secretBean: SecretBean = list[j]
@@ -137,13 +132,6 @@ class ExcelHelper {
                         try {
                             writebook.close()
                         } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    }
-                    if (`in` != null) {
-                        try {
-                            `in`.close()
-                        } catch (e: IOException) {
                             e.printStackTrace()
                         }
                     }
