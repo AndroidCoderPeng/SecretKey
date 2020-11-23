@@ -1,6 +1,7 @@
 package com.pengxh.secretkey.utils
 
 import android.util.Log
+import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.bean.SecretBean
 import jxl.Workbook
 import jxl.WorkbookSettings
@@ -100,13 +101,13 @@ class ExcelHelper {
 
         fun writeSecretToExcel(list: List<SecretBean>?) {
             if (list != null && list.isNotEmpty()) {
-                var writebook: WritableWorkbook? = null
+                var writeBook: WritableWorkbook? = null
                 try {
                     val setEncode = WorkbookSettings()
                     setEncode.encoding = UTF8_ENCODING
                     val workbook: Workbook = Workbook.getWorkbook(FileInputStream(file))
-                    writebook = Workbook.createWorkbook(file, workbook)
-                    val sheet: WritableSheet = writebook.getSheet(0)
+                    writeBook = Workbook.createWorkbook(file, workbook)
+                    val sheet: WritableSheet = writeBook.getSheet(0)
                     for (j in list.indices) {
                         val secretBean: SecretBean = list[j]
                         val secretCategory: String? = secretBean.secretCategory
@@ -122,15 +123,16 @@ class ExcelHelper {
                         sheet.addCell(Label(4, j + 1, secretRemarks, arial12format))
                         sheet.setRowView(j + 1, 350) //设置行高
                     }
-                    writebook.write()
-                    Log.d(TAG, "writeObjListToExcel: 导出表格到本地成功")
+                    writeBook.write()
+                    Log.d(TAG, "writeSecretToExcel: 导出表格到本地成功")
+                    EasyToast.showToast("导出表格到本地成功，文件路径: ${file.absolutePath}", EasyToast.SUCCESS)
                     //然后导出到指定位置
                 } catch (e: Exception) {
                     e.printStackTrace()
                 } finally {
-                    if (writebook != null) {
+                    if (writeBook != null) {
                         try {
-                            writebook.close()
+                            writeBook.close()
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }

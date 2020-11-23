@@ -64,17 +64,21 @@ class SettingsFragment : BaseFragment() {
             context?.let {
                 val allSecret = SQLiteUtil(it).loadAllSecret()
 
-                //写入到excel
-                Log.d(Tag, Gson().toJson(allSecret))
-                val dir =
-                    File(Environment.getExternalStorageDirectory(), "SecretKey")
-                if (!dir.exists()) {
-                    dir.mkdir()
+                if (allSecret.size > 0) {
+                    //写入到excel
+                    Log.d(Tag, "待写入数据: " + Gson().toJson(allSecret))
+                    val dir =
+                        File(Environment.getExternalStorageDirectory(), "SecretKey")
+                    if (!dir.exists()) {
+                        dir.mkdir()
+                    }
+                    Log.d(Tag, "initEvent: 写入表格-开始")
+                    ExcelHelper.initExcel("$dir/密码管家数据.xls", excelTitle)
+                    ExcelHelper.writeSecretToExcel(allSecret)
+                    Log.d(Tag, "initEvent: 写入表格-结束")
+                } else {
+                    EasyToast.showToast("没有数据，无法导出", EasyToast.WARING)
                 }
-                Log.d(Tag, "initEvent: 写入表格-开始")
-                ExcelHelper.initExcel("$dir/密码管家数据.xls", excelTitle)
-                ExcelHelper.writeSecretToExcel(allSecret)
-                Log.d(Tag, "initEvent: 写入表格-结束")
             }
         }
 
@@ -96,14 +100,16 @@ class SettingsFragment : BaseFragment() {
          * 截屏开关Layout
          * */
         captureLayout.setOnClickListener {
-            AlertView("温馨提示",
+            AlertView(
+                "温馨提示",
                 "截屏开关切换后需要重启应用才能生效",
                 null,
                 arrayOf("知道了"),
                 null,
                 context,
                 AlertView.Style.Alert,
-                null).setCancelable(false).show()
+                null
+            ).setCancelable(false).show()
         }
         /**
          * 截屏状态开关
