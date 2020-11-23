@@ -2,6 +2,7 @@ package com.pengxh.secretkey.ui.fragment
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Environment
 import android.util.Log
 import com.google.gson.Gson
@@ -12,6 +13,7 @@ import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.ui.AboutActivity
+import com.pengxh.secretkey.ui.InputDataActivity
 import com.pengxh.secretkey.ui.PasswordModeActivity
 import com.pengxh.secretkey.utils.*
 import kotlinx.android.synthetic.main.fragment_settings.*
@@ -64,25 +66,34 @@ class SettingsFragment : BaseFragment() {
             context?.let {
                 val allSecret = SQLiteUtil(it).loadAllSecret()
 
-                if (allSecret.size > 0) {
-                    //写入到excel
-                    Log.d(Tag, "待写入数据: " + Gson().toJson(allSecret))
-                    val dir =
-                        File(Environment.getExternalStorageDirectory(), "SecretKey")
-                    if (!dir.exists()) {
-                        dir.mkdir()
-                    }
-                    val file = File("$dir/密码管家数据.xls")
-                    if (!file.exists()) {
-                        file.createNewFile()
-                    }
-                    Log.d(Tag, "initEvent: 写入表格-开始")
-                    ExcelHelper.initExcel(file, excelTitle)
-                    ExcelHelper.writeSecretToExcel(allSecret)
-                    Log.d(Tag, "initEvent: 写入表格-结束")
-                    OtherUtils.showAlertDialog(it, "温馨提示", "导出数据到本地成功，文件路径: ${file.absolutePath}")
+                val mode = SaveKeyValues.getValue(Constant.PASSWORD_MODE, "") as String
+                if (mode == "closePassword" || mode == "") {
+                    EasyToast.showToast("没有设置启动密码，无法导出", EasyToast.ERROR)
                 } else {
-                    EasyToast.showToast("没有数据，无法导出", EasyToast.WARING)
+                    if (allSecret.size > 0) {
+                        //写入到excel
+                        Log.d(Tag, "待写入数据: " + Gson().toJson(allSecret))
+                        val dir =
+                            File(Environment.getExternalStorageDirectory(), "SecretKey")
+                        if (!dir.exists()) {
+                            dir.mkdir()
+                        }
+                        val file = File("$dir/密码管家数据.xls")
+                        if (!file.exists()) {
+                            file.createNewFile()
+                        }
+                        Log.d(Tag, "initEvent: 写入表格-开始")
+                        ExcelHelper.initExcel(file, excelTitle)
+                        ExcelHelper.writeSecretToExcel(allSecret)
+                        Log.d(Tag, "initEvent: 写入表格-结束")
+                        OtherUtils.showAlertDialog(
+                            it,
+                            "温馨提示",
+                            "导出数据到本地成功，文件路径: ${file.absolutePath}"
+                        )
+                    } else {
+                        EasyToast.showToast("没有数据，无法导出", EasyToast.WARING)
+                    }
                 }
             }
         }
@@ -91,7 +102,23 @@ class SettingsFragment : BaseFragment() {
          * 数据导入Layout
          * */
         inputLayout.setOnClickListener {
+            context?.let {
+                startActivity(Intent(it, InputDataActivity::class.java))
 
+//                批量导入可能会有重复的，更新数据之前需要提示用户
+//                val inputData = ExcelHelper.transformExcelToJson("")
+//                val type = object : TypeToken<ArrayList<SecretBean>>() {}.type
+//                val data: ArrayList<SecretBean> = Gson().fromJson(inputData, type)
+//                data.forEach { bean ->
+//                    SQLiteUtil(it).saveSecret(
+//                        bean.secretCategory!!,
+//                        bean.secretTitle!!,
+//                        bean.secretAccount!!,
+//                        bean.secretPassword!!,
+//                        bean.secretRemarks!!
+//                    )
+//                }
+            }
         }
 
         /**

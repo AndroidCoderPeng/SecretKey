@@ -54,6 +54,9 @@ class SQLiteUtil(mContext: Context) {
         if (!isSecretExist(secretTitle, secretAccount)) {
             Log.d(Tag, secretAccount + "保存密码")
             db.insert(tableName, null, values)
+        } else {
+            //批量导入可能会有重复的，需要更新数据
+            updateSecret(secretTitle, secretAccount, secretPassword)
         }
     }
 

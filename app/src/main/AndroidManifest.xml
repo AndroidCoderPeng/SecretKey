@@ -45,5 +45,6 @@
         <activity android:name=".ui.UpdateListActivity" />
         <activity android:name=".ui.UpdateLogActivity" />
         <activity android:name=".ui.OcrBankCardActivity" />
+        <activity android:name=".ui.InputDataActivity" />
     </application>
 </manifest>

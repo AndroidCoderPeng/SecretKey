@@ -94,6 +94,9 @@ class ExcelHelper {
             }
         }
 
+        /**
+         * 将数据写入Excel表格
+         * */
         fun writeSecretToExcel(list: List<SecretBean>?) {
             if (list != null && list.isNotEmpty()) {
                 var writeBook: WritableWorkbook? = null
@@ -133,6 +136,14 @@ class ExcelHelper {
                     }
                 }
             }
+        }
+
+        /**
+         * 将Excel表格转化为Json数据
+         * */
+        fun transformExcelToJson(filePath: String): String {
+
+            return ""
         }
     }
 }
