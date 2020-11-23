@@ -46,8 +46,6 @@ dependencies {
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
     //fragment快速实现
     implementation 'com.gyf.immersionbar:immersionbar-components:3.0.0'
-    //仿iOS风格的dialog库
-    implementation 'com.aihook:alertview:1.0.0'
     //ZBar扫一扫(综合Java和C++扫码)
     implementation 'cn.bertsir.zbarLibary:zbarlibary:1.4.2'
     //官方Json解析库

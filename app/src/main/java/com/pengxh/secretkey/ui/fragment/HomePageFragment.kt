@@ -11,7 +11,6 @@ import android.widget.TextView
 import cn.bertsir.zbar.QrConfig
 import cn.bertsir.zbar.QrManager
 import cn.bertsir.zbar.view.ScanLineView
-import com.aihook.alertview.library.AlertView
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseFragment
 import com.pengxh.app.multilib.widget.EasyToast
@@ -159,14 +158,7 @@ class HomePageFragment : BaseFragment() {
             .setShowVibrator(true) //是否震动提醒
             .create()
         QrManager.getInstance().init(qrConfig).startScan(activity) { result ->
-            AlertView("扫描结果",
-                result.content,
-                null,
-                arrayOf("知道了"),
-                null,
-                context,
-                AlertView.Style.Alert,
-                null).setCancelable(false).show()
+            OtherUtils.showAlertDialog(context!!, "扫描结果", result.content)
         }
     }
 }

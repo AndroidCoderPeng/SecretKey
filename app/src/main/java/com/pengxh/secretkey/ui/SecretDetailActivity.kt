@@ -1,15 +1,15 @@
 package com.pengxh.secretkey.ui
 
+import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.View
 import cn.bertsir.zbar.utils.QRUtils
-import com.aihook.alertview.library.AlertView
-import com.aihook.alertview.library.OnItemClickListener
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.utils.DensityUtil
 import com.pengxh.app.multilib.widget.EasyToast
@@ -125,22 +125,23 @@ class SecretDetailActivity : BaseActivity() {
         secretListView.setOnMenuItemClickListener { position, menu, index ->
             val secretBean = secretList[position]
             when (index) {
-                0 -> AlertView("温馨提示",
-                    "删除后将无法恢复，是否继续？",
-                    "容我想想",
-                    arrayOf("已经想好"),
-                    null,
-                    this,
-                    AlertView.Style.Alert,
-                    OnItemClickListener { o: Any?, i: Int ->
-                        if (i == 0) {
-                            sqLiteUtil.deleteSecret(secretBean.secretTitle!!,
-                                secretBean.secretAccount!!)
+                0 -> AlertDialog.Builder(context)
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setTitle("温馨提示")
+                    .setMessage("删除后将无法恢复，是否继续？")
+                    .setCancelable(false)
+                    .setNegativeButton("容我想想", null)
+                    .setPositiveButton("已经想好", object : DialogInterface.OnClickListener {
+                        override fun onClick(dialog: DialogInterface?, which: Int) {
+                            sqLiteUtil.deleteSecret(
+                                secretBean.secretTitle!!,
+                                secretBean.secretAccount!!
+                            )
                             secretList.removeAt(position)
                             secretDetailAdapter.notifyDataSetChanged()
                             initUI(secretList)
                         }
-                    }).setCancelable(false).show()
+                    }).create().show()
             }
             false
         }

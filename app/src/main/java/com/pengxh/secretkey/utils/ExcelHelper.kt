@@ -1,7 +1,6 @@
 package com.pengxh.secretkey.utils
 
 import android.util.Log
-import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.bean.SecretBean
 import jxl.Workbook
 import jxl.WorkbookSettings
@@ -65,22 +64,18 @@ class ExcelHelper {
         /**
          * 初始化Excel
          *
-         * @param fileName
+         * @param file
          * @param colName
          */
-        fun initExcel(fileName: String, colName: Array<String>) {
+        fun initExcel(file: File, colName: Array<String>) {
+            this.file = file
             format()
             var workbook: WritableWorkbook? = null
             try {
-                val file = File(fileName)
-                if (!file.exists()) {
-                    file.createNewFile()
-                }
-                this.file = file
                 workbook = Workbook.createWorkbook(file)
-                val sheet: WritableSheet = workbook.createSheet("密码管家", 0)
+                val sheet: WritableSheet = workbook.createSheet(file.name, 0)
                 //创建标题栏
-                sheet.addCell(Label(0, 0, fileName, arial14format))
+                sheet.addCell(Label(0, 0, file.name, arial14format))
                 for (col in colName.indices) {
                     sheet.addCell(Label(col, 0, colName[col], arial10format))
                 }
@@ -125,7 +120,6 @@ class ExcelHelper {
                     }
                     writeBook.write()
                     Log.d(TAG, "writeSecretToExcel: 导出表格到本地成功")
-                    EasyToast.showToast("导出表格到本地成功，文件路径: ${file.absolutePath}", EasyToast.SUCCESS)
                     //然后导出到指定位置
                 } catch (e: Exception) {
                     e.printStackTrace()

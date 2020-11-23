@@ -1,5 +1,6 @@
 package com.pengxh.secretkey.utils
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.hardware.fingerprint.FingerprintManager
@@ -112,6 +113,16 @@ class OtherUtils {
                 }
             }
             return R.mipmap.other
+        }
+
+        fun showAlertDialog(context: Context, title: String, message: String) {
+            AlertDialog.Builder(context)
+                .setIcon(R.mipmap.ic_launcher)
+                .setTitle(title)
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton("知道了", null)
+                .create().show()
         }
     }
 }

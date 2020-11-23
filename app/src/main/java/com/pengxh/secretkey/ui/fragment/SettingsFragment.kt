@@ -1,9 +1,9 @@
 package com.pengxh.secretkey.ui.fragment
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Environment
 import android.util.Log
-import com.aihook.alertview.library.AlertView
-import com.aihook.alertview.library.OnItemClickListener
 import com.google.gson.Gson
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseFragment
@@ -72,10 +72,15 @@ class SettingsFragment : BaseFragment() {
                     if (!dir.exists()) {
                         dir.mkdir()
                     }
+                    val file = File("$dir/密码管家数据.xls")
+                    if (!file.exists()) {
+                        file.createNewFile()
+                    }
                     Log.d(Tag, "initEvent: 写入表格-开始")
-                    ExcelHelper.initExcel("$dir/密码管家数据.xls", excelTitle)
+                    ExcelHelper.initExcel(file, excelTitle)
                     ExcelHelper.writeSecretToExcel(allSecret)
                     Log.d(Tag, "initEvent: 写入表格-结束")
+                    OtherUtils.showAlertDialog(it, "温馨提示", "导出数据到本地成功，文件路径: ${file.absolutePath}")
                 } else {
                     EasyToast.showToast("没有数据，无法导出", EasyToast.WARING)
                 }
@@ -100,16 +105,13 @@ class SettingsFragment : BaseFragment() {
          * 截屏开关Layout
          * */
         captureLayout.setOnClickListener {
-            AlertView(
-                "温馨提示",
-                "截屏开关切换后需要重启应用才能生效",
-                null,
-                arrayOf("知道了"),
-                null,
-                context,
-                AlertView.Style.Alert,
-                null
-            ).setCancelable(false).show()
+            AlertDialog.Builder(context)
+                .setIcon(R.mipmap.ic_launcher)
+                .setTitle("温馨提示")
+                .setMessage("截屏开关切换后需要重启应用才能生效")
+                .setCancelable(true)
+                .setPositiveButton("知道了", null)
+                .create().show()
         }
         /**
          * 截屏状态开关
@@ -129,20 +131,19 @@ class SettingsFragment : BaseFragment() {
         val fileSize = FileUtil.getFileSize(file)
         cacheSizeView.text = FileUtil.formatFileSize(fileSize)
         cacheSizeLayout.setOnClickListener {
-            AlertView("温馨提示",
-                "确定清除缓存？",
-                "取消",
-                arrayOf("确定"),
-                null,
-                context,
-                AlertView.Style.Alert,
-                OnItemClickListener { o, position ->
-                    if (position == 0) {
+            AlertDialog.Builder(context)
+                .setIcon(R.mipmap.ic_launcher)
+                .setTitle("温馨提示")
+                .setMessage("确定清除缓存？")
+                .setCancelable(false)
+                .setNegativeButton("取消", null)
+                .setPositiveButton("确定", object : DialogInterface.OnClickListener {
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
                         FileUtil.deleteFile(file)
                         cacheSizeView.text = FileUtil.formatFileSize(0)
                         EasyToast.showToast("清理成功", EasyToast.SUCCESS)
                     }
-                }).setCancelable(false).show()
+                }).create().show()
         }
     }
 }
