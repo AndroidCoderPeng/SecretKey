@@ -99,20 +99,6 @@ class SettingsFragment : BaseFragment() {
         inputLayout.setOnClickListener {
             context?.let {
                 startActivity(Intent(it, InputDataActivity::class.java))
-
-//                批量导入可能会有重复的，更新数据之前需要提示用户
-//                val inputData = ExcelHelper.transformExcelToJson("")
-//                val type = object : TypeToken<ArrayList<SecretBean>>() {}.type
-//                val data: ArrayList<SecretBean> = Gson().fromJson(inputData, type)
-//                data.forEach { bean ->
-//                    SQLiteUtil(it).saveSecret(
-//                        bean.secretCategory!!,
-//                        bean.secretTitle!!,
-//                        bean.secretAccount!!,
-//                        bean.secretPassword!!,
-//                        bean.secretRemarks!!
-//                    )
-//                }
             }
         }
 

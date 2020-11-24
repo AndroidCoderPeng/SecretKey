@@ -10,11 +10,15 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.app.multilib.utils.DensityUtil
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.FileManagerAdapter
+import com.pengxh.secretkey.bean.SecretBean
+import com.pengxh.secretkey.utils.ExcelHelper
 import com.pengxh.secretkey.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.activity_file.*
 import java.io.File
@@ -50,9 +54,43 @@ class FileManagerActivity : BaseNormalActivity() {
         fileAdapter.setOnChildViewClickListener(object :
             FileManagerAdapter.OnChildViewClickListener {
             override fun onClicked(index: Int) {
-                Log.d(TAG, "onClicked: ${fileList[index].absoluteFile}")
+                Log.d(TAG, "onClicked: ${fileList[index].absolutePath}")
+                inputData(fileList[index].absolutePath)
             }
         })
+    }
+
+    /**
+     * 导入数据
+     * TODO 解析excel数据，批量导入可能会有重复的，更新数据之前需要提示用户
+     * */
+    private fun inputData(filePath: String) {
+        val data = ExcelHelper.transformExcelToJson(filePath)
+        //{"账号":"ABC","密码":"123456789","备注":"这里是个选填项","标题":"淘宝网","类别":"网站"}
+        Log.d(TAG, "inputData: $data")
+        val type = object : TypeToken<ArrayList<SecretBean>>() {}.type
+        val beanList: ArrayList<SecretBean> = Gson().fromJson(data, type)
+//        AlertDialog.Builder(this@FileManagerActivity)
+//            .setIcon(R.mipmap.ic_launcher)
+//            .setTitle("温馨提示")
+//            .setMessage("可导入${beanList.size}条数据")
+//            .setCancelable(true)
+//            .setPositiveButton(
+//                "确认导入",
+//                object : DialogInterface.OnClickListener {
+//                    override fun onClick(dialog: DialogInterface?, which: Int) {
+//                        beanList.forEach {
+//                            SQLiteUtil(this@FileManagerActivity).saveSecret(
+//                                it.secretCategory!!,
+//                                it.secretTitle!!,
+//                                it.secretAccount!!,
+//                                it.secretPassword!!,
+//                                it.secretRemarks!!
+//                            )
+//                        }
+//                    }
+//                })
+//            .create().show()
     }
 
     //RecyclerView分割线

@@ -1,6 +1,7 @@
 package com.pengxh.secretkey.utils
 
 import android.util.Log
+import com.google.gson.Gson
 import com.pengxh.secretkey.bean.SecretBean
 import jxl.Workbook
 import jxl.WorkbookSettings
@@ -142,8 +143,19 @@ class ExcelHelper {
          * 将Excel表格转化为Json数据
          * */
         fun transformExcelToJson(filePath: String): String {
-
-            return ""
+            var result = ""
+            val workbook = Workbook.getWorkbook(File(filePath))
+            val sheet = workbook.getSheet(0)
+            val header = sheet.getRow(0)
+            for (i in 0 until sheet.rows) {
+                val hashMap = HashMap<String, String>()
+                for (j in 0 until sheet.columns) {
+                    val cell = sheet.getCell(j, i)
+                    hashMap[header[j].contents] = cell.contents
+                }
+                result = Gson().toJson(hashMap)
+            }
+            return result
         }
     }
 }
