@@ -53,7 +53,11 @@ class InputDataActivity : BaseNormalActivity() {
         }
         //选择文件
         selectFile.setOnClickListener {
-
+            //打开自定义文件管理器页面
+            startActivityForResult(
+                Intent(this, FileManagerActivity::class.java),
+                303
+            )
         }
     }
 

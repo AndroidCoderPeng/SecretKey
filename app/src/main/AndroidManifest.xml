@@ -47,5 +47,16 @@
         <activity android:name=".ui.UpdateLogActivity" />
         <activity android:name=".ui.OcrBankCardActivity" />
         <activity android:name=".ui.InputDataActivity" />
+        <activity android:name=".ui.FileManagerActivity" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
     </application>
 </manifest>
