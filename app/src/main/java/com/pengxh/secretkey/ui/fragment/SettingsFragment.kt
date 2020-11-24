@@ -31,7 +31,6 @@ class SettingsFragment : BaseFragment() {
 
     companion object {
         private const val Tag = "SettingsFragment"
-        private val excelTitle = arrayOf("类别", "标题", "账号", "密码", "备注")
     }
 
     private var captureSwitchStatus by Delegates.notNull<Boolean>()
@@ -73,17 +72,13 @@ class SettingsFragment : BaseFragment() {
                     if (allSecret.size > 0) {
                         //写入到excel
                         Log.d(Tag, "待写入数据: " + Gson().toJson(allSecret))
-                        val dir =
-                            File(Environment.getExternalStorageDirectory(), "SecretKey")
-                        if (!dir.exists()) {
-                            dir.mkdir()
-                        }
-                        val file = File("$dir/密码管家数据.xls")
+                        val dir = File(Environment.getExternalStorageDirectory(), "SecretKey")
+                        val file = File("$dir/密码管家.xls")
                         if (!file.exists()) {
                             file.createNewFile()
                         }
                         Log.d(Tag, "initEvent: 写入表格-开始")
-                        ExcelHelper.initExcel(file, excelTitle)
+                        ExcelHelper.initExcel(file, Constant.excelTitle)
                         ExcelHelper.writeSecretToExcel(allSecret)
                         Log.d(Tag, "initEvent: 写入表格-结束")
                         OtherUtils.showAlertDialog(

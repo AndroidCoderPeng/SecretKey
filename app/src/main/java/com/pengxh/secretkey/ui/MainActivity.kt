@@ -1,16 +1,21 @@
 package com.pengxh.secretkey.ui
 
+import android.os.Environment
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.ViewPagerAdapter
+import com.pengxh.secretkey.bean.SecretBean
 import com.pengxh.secretkey.ui.fragment.EmptyFragment
 import com.pengxh.secretkey.ui.fragment.HomePageFragment
 import com.pengxh.secretkey.ui.fragment.SettingsFragment
+import com.pengxh.secretkey.utils.Constant
+import com.pengxh.secretkey.utils.ExcelHelper
 import com.pengxh.secretkey.utils.OtherUtils
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
 
 class MainActivity : BaseActivity() {
 
@@ -24,6 +29,33 @@ class MainActivity : BaseActivity() {
         fragmentList.add(HomePageFragment())
         fragmentList.add(EmptyFragment())
         fragmentList.add(SettingsFragment())
+
+        //初始化数据文件夹和文件
+        initExcelDemo()
+    }
+
+    private fun initExcelDemo() {
+        val dir =
+            File(Environment.getExternalStorageDirectory(), "SecretKey")
+        if (!dir.exists()) {
+            dir.mkdir()
+        }
+        val file = File("$dir/密码管家模板表格.xls")
+        if (!file.exists()) {
+            file.createNewFile()
+        }
+        //写入模板数据
+        ExcelHelper.initExcel(file, Constant.excelTitle)
+        //模拟数据
+        val secretData: MutableList<SecretBean> = java.util.ArrayList()
+        val demoBean = SecretBean()
+        demoBean.secretCategory = "网站"
+        demoBean.secretTitle = "淘宝网"
+        demoBean.secretAccount = "ABC"
+        demoBean.secretPassword = "123456789"
+        demoBean.secretRemarks = "这里是个选填项"
+        secretData.add(demoBean)
+        ExcelHelper.writeSecretToExcel(secretData)
     }
 
     override fun initEvent() {
@@ -42,9 +74,11 @@ class MainActivity : BaseActivity() {
 
             }
 
-            override fun onPageScrolled(position: Int,
+            override fun onPageScrolled(
+                position: Int,
                 positionOffset: Float,
-                positionOffsetPixels: Int) {
+                positionOffsetPixels: Int
+            ) {
 
             }
 
