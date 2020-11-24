@@ -66,7 +66,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:gravity="center_vertical"
-                            android:text="按照提供的模板格式整理数据导入到密码管家中" />
+                            android:text="点击【文件管理】，选择【内部存储】，在列举出来的文件夹列表里面找到【SecretKey】，然后按照提供的模板格式整理数据导入到密码管家中" />
 
                         <TextView
                             android:id="@+id/demoFilePathView"
@@ -75,6 +75,14 @@
                             android:layout_marginTop="10dp"
                             android:gravity="center_vertical"
                             android:text="模板地址：" />
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="550px"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/mainBackground"
+                            android:gravity="center_vertical"
+                            android:src="@mipmap/input_3" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -122,11 +130,12 @@
                             android:textColor="@color/black" />
 
                         <ImageView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:background="@mipmap/ic_launcher"
-                            android:gravity="center_vertical" />
+                            android:background="@color/mainBackground"
+                            android:gravity="center_vertical"
+                            android:src="@mipmap/input_4" />
                     </LinearLayout>
                 </LinearLayout>
 

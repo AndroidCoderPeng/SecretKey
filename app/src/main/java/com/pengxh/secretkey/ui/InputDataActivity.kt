@@ -44,7 +44,7 @@ class InputDataActivity : BaseNormalActivity() {
             val absolutePath = file.absolutePath
             Log.d(TAG, "initData: $absolutePath")
             if (absolutePath.contains("模板")) {
-                val source = "模板地址：$absolutePath"
+                val source = "模板路径：$absolutePath"
                 val spanString = SpannableString(source)
                 val span = ForegroundColorSpan(Color.BLUE)
                 spanString.setSpan(span, 5, source.length, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
