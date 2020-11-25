@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.hardware.fingerprint.FingerprintManager
+import android.net.ConnectivityManager
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import androidx.fragment.app.FragmentManager
@@ -123,6 +124,19 @@ class OtherUtils {
                 .setCancelable(false)
                 .setPositiveButton("知道了", null)
                 .create().show()
+        }
+
+        /**
+         * 检查网络是否可用
+         *
+         * @param context
+         * @return
+         */
+        fun isNetworkAvailable(context: Context): Boolean {
+            val manager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val networkInfo = manager.activeNetworkInfo
+            return !(networkInfo == null || !networkInfo.isAvailable)
         }
     }
 }

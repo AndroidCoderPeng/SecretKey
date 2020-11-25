@@ -16,6 +16,7 @@ import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.CameraPreviewHelper
+import com.pengxh.secretkey.utils.OtherUtils
 import kotlinx.android.synthetic.main.activity_ocr.*
 import java.io.File
 
@@ -60,7 +61,11 @@ class OcrBankCardActivity : BaseNormalActivity(), CameraPreviewHelper.OnCaptureI
                     recognizeButton.animate().scaleX(1.0f).scaleY(1.0f)
                         .setDuration(100).start()
                     //拍照
-                    cameraPreviewHelper.takePicture()
+                    if (OtherUtils.isNetworkAvailable(this)) {
+                        cameraPreviewHelper.takePicture()
+                    } else {
+                        EasyToast.showToast("识别失败", EasyToast.ERROR)
+                    }
                 }
             }
             true

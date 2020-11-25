@@ -86,6 +86,34 @@
                             android:src="@mipmap/input_3" />
                     </LinearLayout>
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_textview_maincolor_2"
+                        android:gravity="center"
+                        android:text="2"
+                        android:textColor="@color/white" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="后续可能会支持从别的密码类APP导入数据..."
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
 
             <TextView
