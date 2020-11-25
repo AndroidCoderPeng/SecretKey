@@ -40,11 +40,13 @@ class SQLiteUtil(mContext: Context) {
     /**
      * 保存账号密码
      * */
-    fun saveSecret(secretCategory: String,
+    fun saveSecret(
+        secretCategory: String,
         secretTitle: String,
         secretAccount: String,
         secretPassword: String,
-        secretRemarks: String?) {
+        secretRemarks: String?
+    ) {
         val values = ContentValues()
         values.put("secretCategory", secretCategory)
         values.put("secretTitle", secretTitle)
@@ -52,10 +54,11 @@ class SQLiteUtil(mContext: Context) {
         values.put("secretPassword", SecretHelper.encode(secretPassword))
         values.put("secretRemarks", secretRemarks)
         if (!isSecretExist(secretTitle, secretAccount)) {
-            Log.d(Tag, secretAccount + "保存密码")
+            Log.d(Tag, secretCategory + "，" + secretAccount + "保存密码")
             db.insert(tableName, null, values)
         } else {
             //批量导入可能会有重复的，需要更新数据
+            Log.d(Tag, secretCategory + "，" + secretAccount + "更新密码")
             updateSecret(secretTitle, secretAccount, secretPassword)
         }
     }
@@ -78,13 +81,15 @@ class SQLiteUtil(mContext: Context) {
      * */
     fun loadCategory(category: String): MutableList<SecretBean> {
         val list: MutableList<SecretBean> = ArrayList()
-        val cursor = db.query(tableName,
+        val cursor = db.query(
+            tableName,
             null,
             "secretCategory = ?",
             arrayOf(category),
             null,
             null,
-            "id DESC") //倒序
+            "id DESC"
+        ) //倒序
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
             val resultBean = SecretBean()
@@ -115,13 +120,15 @@ class SQLiteUtil(mContext: Context) {
     fun loadAccountSecret(account: String): MutableList<SecretBean> {
         Log.d(Tag, "查询账号: $account" + "所有数据")
         val list: MutableList<SecretBean> = ArrayList()
-        val cursor = db.query(tableName,
+        val cursor = db.query(
+            tableName,
             null,
             "secretAccount = ?",
             arrayOf(account),
             null,
             null,
-            null)
+            null
+        )
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
             val resultBean = SecretBean()
