@@ -1,12 +1,13 @@
 package com.pengxh.secretkey.utils
 
 import android.util.Log
-import com.google.gson.Gson
 import com.pengxh.secretkey.bean.SecretBean
 import jxl.Workbook
 import jxl.WorkbookSettings
 import jxl.format.Colour
 import jxl.write.*
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.File
 import java.io.FileInputStream
 
@@ -143,19 +144,27 @@ class ExcelHelper {
          * 将Excel表格转化为Json数据
          * */
         fun transformExcelToJson(filePath: String): String {
-            var result = ""
+            val result = JSONArray()
             val workbook = Workbook.getWorkbook(File(filePath))
             val sheet = workbook.getSheet(0)
-            val header = sheet.getRow(0)
-            for (i in 0 until sheet.rows) {
-                val hashMap = HashMap<String, String>()
-                for (j in 0 until sheet.columns) {
-                    val cell = sheet.getCell(j, i)
-                    hashMap[header[j].contents] = cell.contents
-                }
-                result = Gson().toJson(hashMap)
+            for (i in 1 until sheet.rows) {//第一行是栏目，不读取
+                val cell = sheet.getCell(0, i)
+                val cell1 = sheet.getCell(1, i)
+                val cell2 = sheet.getCell(2, i)
+                val cell3 = sheet.getCell(3, i)
+                val cell4 = sheet.getCell(4, i)
+                //每一行创建一个JSONObject对象
+                val jsonObject = JSONObject()
+                jsonObject.put("secretCategory", cell.contents)
+                jsonObject.put("secretTitle", cell1.contents)
+                jsonObject.put("secretAccount", cell2.contents)
+                jsonObject.put("secretPassword", cell3.contents)
+                jsonObject.put("secretRemarks", cell4.contents)
+                //加入json队列
+                result.put(jsonObject)
             }
-            return result
+            workbook.close()
+            return result.toString()
         }
     }
 }
