@@ -76,7 +76,7 @@ class FileManagerActivity : BaseNormalActivity() {
         AlertDialog.Builder(this)
             .setIcon(R.mipmap.ic_launcher)
             .setTitle("温馨提示")
-            .setMessage("可导入${beanList.size}条数据")
+            .setMessage("可导入${beanList.size}条数据。导入的账号数据如与密码管家已有账号数据重复，将会自动修改原有账号密码，请谨慎操作！")
             .setCancelable(true)
             .setPositiveButton(
                 "确认导入",
