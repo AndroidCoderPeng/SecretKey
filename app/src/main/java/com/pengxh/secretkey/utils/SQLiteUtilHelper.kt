@@ -15,18 +15,20 @@ class SQLiteUtilHelper internal constructor(context: Context?,
         private const val Tag = "SQLiteUtilHelper"
 
         private const val SQL_NEW_SECRET =
-            "create table NewSecretTable(id integer primary key autoincrement,secretCategory text,secretTitle text,secretAccount text,secretPassword text,secretRemarks text)"
+            "create table SecretNewTable(id integer primary key autoincrement,secretCategory text,secretTitle text,secretAccount text,secretPassword text,secretRemarks text)"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(SQL_NEW_SECRET)
-        Log.d(Tag, "2.0数据库创建成功")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         if (oldVersion == 1) {
-            db.execSQL("drop table if exists SecretTable") //老版本的表名是SecretTable
+            //创建新的数据库
+            Log.d(Tag, "onUpgrade: 数据库新表创建-开始")
             db.execSQL(SQL_NEW_SECRET)
+            db.execSQL("drop table if exists SecretTable") //删除旧表，表名是SecretTable
+            Log.d(Tag, "onUpgrade: 数据库新表创建-结束")
         }
     }
 }

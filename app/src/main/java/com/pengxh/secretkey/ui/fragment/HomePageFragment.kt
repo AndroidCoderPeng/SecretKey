@@ -106,7 +106,7 @@ class HomePageFragment : BaseFragment() {
         object : Timer() {}.schedule(object : TimerTask() {
             override fun run() {
                 length++
-                if (length == 50000) {
+                if (length == 30000) {
                     length = 0
                     //重置随机密码
                     resetSecretNumber()
