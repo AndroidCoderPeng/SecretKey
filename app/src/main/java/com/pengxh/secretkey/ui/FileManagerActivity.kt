@@ -92,6 +92,7 @@ class FileManagerActivity : BaseNormalActivity() {
                             )
                         }
                         EasyToast.showToast("导入成功", EasyToast.SUCCESS)
+                        finish()
                     }
                 })
             .create().show()
