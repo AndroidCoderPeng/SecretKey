@@ -21,7 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:text="请验证您的指纹" />
+        android:text="请验证您的指纹"
+        android:textSize="@dimen/textFontSize" />
 
     <View
         android:layout_width="match_parent"
@@ -36,6 +37,6 @@
         android:padding="10dp"
         android:text="取消"
         android:textColor="@color/colorAccent"
-        android:textSize="18sp" />
+        android:textSize="@dimen/titleFontSize" />
 
 </LinearLayout>

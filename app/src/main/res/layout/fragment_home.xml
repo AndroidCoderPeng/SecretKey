@@ -40,7 +40,7 @@
             android:layout_centerVertical="true"
             android:text="密码分类"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="@dimen/titleFontSize" />
 
         <TextView
             android:id="@+id/attentionMessage"

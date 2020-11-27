@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F1F1F1"
@@ -14,7 +15,7 @@
         android:singleLine="true"
         android:text="这是标题"
         android:textColor="@color/white"
-        android:textSize="18sp" />
+        android:textSize="@dimen/titleFontSize" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -118,7 +119,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="10dp"
                 android:thumb="@drawable/select_switch_circle"
-                android:track="@drawable/select_switch_background" />
+                android:track="@drawable/select_switch_background"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
         </RelativeLayout>
 
         <!--单机应用不需要清除缓存，功能保存，界面暂时隐藏，后续有需求再放开注释-->

@@ -9,16 +9,15 @@
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:imeOptions="actionSearch"
         android:layout_centerVertical="true"
         android:layout_marginHorizontal="15dp"
         android:layout_marginVertical="8dp"
         android:layout_toStartOf="@id/mTitleRightView"
         android:background="@drawable/bg_edittext"
         android:hint="请输入账号"
+        android:imeOptions="actionSearch"
         android:paddingStart="10dp"
         android:singleLine="true"
-        android:textSize="14sp"
         tools:ignore="RtlSymmetry" />
 
     <ImageView

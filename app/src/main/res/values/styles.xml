@@ -13,7 +13,7 @@
         <item name="android:gravity">center_vertical|end</item>
         <item name="singleLine">true</item>
         <item name="android:maxLength">20</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/textFontSize</item>
     </style>
 
     <style name="scoreViewStyle">
@@ -45,7 +45,7 @@
         <item name="android:layout_width">80px</item>
         <item name="android:layout_height">80px</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginStart">@dimen/margin_10dp</item>
     </style>
 
     <!--APP内所有右边小箭头样式-->
@@ -54,7 +54,7 @@
         <item name="android:layout_height">64px</item>
         <item name="android:layout_alignParentEnd">true</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginEnd">@dimen/margin_10dp</item>
         <item name="android:background">@mipmap/right</item>
     </style>
 
@@ -72,7 +72,7 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_marginStart">135px</item>
         <item name="android:textColor">@color/colorText</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/titleFontSize</item>
     </style>
 
     <style name="switchStyle">
@@ -80,6 +80,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_alignParentEnd">true</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginEnd">@dimen/margin_10dp</item>
     </style>
 </resources>

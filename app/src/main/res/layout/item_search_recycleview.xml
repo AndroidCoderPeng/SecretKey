@@ -25,7 +25,7 @@
                 android:layout_marginStart="10dp"
                 android:text="标题："
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="@dimen/textFontSize" />
 
             <EditText
                 android:id="@+id/secretTitle"
@@ -39,7 +39,7 @@
                 android:singleLine="true"
                 android:text="淘宝"
                 android:textColor="@color/colorText"
-                android:textSize="16sp" />
+                android:textSize="@dimen/textFontSize" />
 
             <TextView
                 android:id="@+id/copyTextView"
@@ -69,7 +69,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1px"
+            android:layout_height="@dimen/lineViewHeight"
             android:layout_marginHorizontal="10dp"
             android:background="@color/mainBackground" />
 
@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:text="账号："
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="@dimen/textFontSize" />
 
             <EditText
                 android:id="@+id/secretAccount"
@@ -96,12 +96,12 @@
                 android:singleLine="true"
                 android:text="ABC"
                 android:textColor="@color/colorText"
-                android:textSize="16sp" />
+                android:textSize="@dimen/textFontSize" />
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1px"
+            android:layout_height="@dimen/lineViewHeight"
             android:layout_marginHorizontal="10dp"
             android:background="@color/mainBackground" />
 
@@ -117,7 +117,7 @@
                 android:layout_marginStart="10dp"
                 android:text="密码："
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="@dimen/textFontSize" />
 
             <EditText
                 android:id="@+id/secretPassword"
@@ -132,7 +132,7 @@
                 android:singleLine="true"
                 android:text="123456789"
                 android:textColor="@color/colorText"
-                android:textSize="16sp" />
+                android:textSize="@dimen/textFontSize" />
 
             <ToggleButton
                 android:id="@+id/visibleView"
@@ -148,7 +148,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1px"
+            android:layout_height="@dimen/lineViewHeight"
             android:layout_marginHorizontal="10dp"
             android:background="@color/mainBackground" />
 
@@ -164,7 +164,7 @@
                 android:layout_marginStart="10dp"
                 android:text="备注："
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="@dimen/textFontSize" />
 
             <TextView
                 android:id="@+id/secretRemarks"
@@ -177,7 +177,7 @@
                 android:singleLine="true"
                 android:text="淘宝账号"
                 android:textColor="@color/colorText"
-                android:textSize="16sp" />
+                android:textSize="@dimen/textFontSize" />
         </RelativeLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

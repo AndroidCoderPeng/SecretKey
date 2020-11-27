@@ -19,7 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginVertical="30dp"
-        android:text="绘制解锁图案" />
+        android:text="绘制解锁图案"
+        android:textSize="@dimen/textFontSize" />
 
     <com.pengxh.secretkey.widgets.gesture.GestureLockLayout
         android:id="@+id/gestureLockLayout"

@@ -27,7 +27,8 @@
                 android:paddingHorizontal="15dp"
                 android:paddingVertical="5dp"
                 android:text="支持导入"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/textFontSize" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -60,7 +61,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:text="模板导入，适用于自己整理的账号密码数据"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textFontSize" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -111,7 +113,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:text="后续可能会支持从别的密码类APP导入数据..."
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textFontSize" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -123,7 +126,8 @@
                 android:paddingHorizontal="15dp"
                 android:paddingVertical="5dp"
                 android:text="导入方式"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/textFontSize" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -156,7 +160,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:text="点击【选择导入文件】按钮，在筛选出的表格文件中，点击需要导入的文件，按引导流程操作"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textFontSize" />
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -192,7 +197,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:text="点击需要导入的文件，在弹出的对话框选择【确认导入】即可"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textFontSize" />
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -220,6 +226,7 @@
             android:layout_margin="15dp"
             android:background="@drawable/button_selector"
             android:text="选择导入文件"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/textFontSize" />
     </LinearLayout>
 </RelativeLayout>

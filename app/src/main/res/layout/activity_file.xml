@@ -24,7 +24,7 @@
             android:layout_toEndOf="@id/i"
             android:text="选择导入文件"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="@dimen/titleFontSize" />
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView

@@ -22,7 +22,7 @@
         android:singleLine="true"
         android:text="这是标题"
         android:textColor="@color/black"
-        android:textSize="18sp" />
+        android:textSize="@dimen/titleFontSize" />
 
     <ImageView
         android:id="@+id/mTitleRightView"
