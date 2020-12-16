@@ -150,8 +150,8 @@ class SQLiteUtil(mContext: Context) {
     /**
      * 查询所有的数据
      * */
-    fun loadAllSecret(): MutableList<SecretBean> {
-        val list: MutableList<SecretBean> = ArrayList()
+    fun loadAllSecret(): ArrayList<SecretBean> {
+        val list: ArrayList<SecretBean> = ArrayList()
         val cursor = db.query(tableName, null, null, null, null, null, "id DESC")
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {

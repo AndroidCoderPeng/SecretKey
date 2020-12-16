@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="SlideBarView">
+        <attr name="slide_textSize" format="dimension" />
+        <attr name="slide_textColor" format="color" />
+    </declare-styleable>
+
     <declare-styleable name="PasswordEditText">
         <!-- 密码的个数 -->
         <attr name="passwordNumber" format="integer" />

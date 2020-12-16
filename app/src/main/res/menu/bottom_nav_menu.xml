@@ -10,9 +10,10 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/nav_empty"
-        android:enabled="false"
-        android:title=""
+        android:id="@+id/nav_secret"
+        android:enabled="true"
+        android:icon="@mipmap/category"
+        android:title="密码列表"
         app:showAsAction="ifRoom" />
 
     <item

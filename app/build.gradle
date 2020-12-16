@@ -53,4 +53,5 @@ dependencies {
     implementation files('libs/ocr-sdk.jar')
     // https://mvnrepository.com/artifact/net.sourceforge.jexcelapi/jxl
     implementation group: 'net.sourceforge.jexcelapi', name: 'jxl', version: '2.6.12'
+    implementation group: 'com.belerweb', name: 'pinyin4j', version: '2.5.0'
 }

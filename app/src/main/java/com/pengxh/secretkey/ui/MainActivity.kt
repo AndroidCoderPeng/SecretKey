@@ -8,8 +8,8 @@ import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.ViewPagerAdapter
 import com.pengxh.secretkey.bean.SecretBean
-import com.pengxh.secretkey.ui.fragment.EmptyFragment
 import com.pengxh.secretkey.ui.fragment.HomePageFragment
+import com.pengxh.secretkey.ui.fragment.SecretListFragment
 import com.pengxh.secretkey.ui.fragment.SettingsFragment
 import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.ExcelHelper
@@ -27,7 +27,7 @@ class MainActivity : BaseActivity() {
     override fun initData() {
         fragmentList = ArrayList()
         fragmentList.add(HomePageFragment())
-        fragmentList.add(EmptyFragment())
+        fragmentList.add(SecretListFragment())
         fragmentList.add(SettingsFragment())
 
         //初始化数据文件夹和文件
@@ -62,7 +62,7 @@ class MainActivity : BaseActivity() {
         bottomNavigation.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> mainViewPager.currentItem = 0
-                R.id.nav_empty -> mainViewPager.currentItem = 1
+                R.id.nav_secret -> mainViewPager.currentItem = 1
                 R.id.nav_settings -> mainViewPager.currentItem = 2
             }
             false
