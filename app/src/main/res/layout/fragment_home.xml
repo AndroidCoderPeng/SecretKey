@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBackground"
@@ -56,14 +57,33 @@
     </RelativeLayout>
 
     <!--用户自己保存的密码，分类以九宫格形式展示-->
-    <GridView
-        android:id="@+id/secretGridView"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="15dp"
-        android:horizontalSpacing="15dp"
-        android:listSelector="#00000000"
-        android:numColumns="3"
-        android:scrollbars="none"
-        android:verticalSpacing="15dp" />
+        android:layout_height="match_parent">
+
+        <GridView
+            android:id="@+id/secretGridView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="15dp"
+            android:horizontalSpacing="15dp"
+            android:listSelector="#00000000"
+            android:numColumns="3"
+            android:scrollbars="none"
+            android:verticalSpacing="15dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/outlineFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/margin_10dp"
+            android:contentDescription="添加新账号密码"
+            android:src="@mipmap/add_white"
+            app:backgroundTint="@color/colorAccent"
+            app:borderWidth="0dp"
+            app:elevation="10dp"
+            app:fabSize="mini" />
+    </RelativeLayout>
 </LinearLayout>

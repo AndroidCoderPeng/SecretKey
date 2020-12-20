@@ -15,6 +15,7 @@ import com.pengxh.app.multilib.base.BaseFragment
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.SecretCategoryAdapter
+import com.pengxh.secretkey.ui.AddSecretActivity
 import com.pengxh.secretkey.ui.SearchEventActivity
 import com.pengxh.secretkey.ui.SecretDetailActivity
 import com.pengxh.secretkey.utils.ColorHelper
@@ -82,6 +83,11 @@ class HomePageFragment : BaseFragment() {
         //扫一扫
         scanView.setOnClickListener {
             initScanner()
+        }
+
+        //添加密码
+        outlineFab.setOnClickListener {
+            OtherUtils.intentActivity(AddSecretActivity::class.java)
         }
     }
 

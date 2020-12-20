@@ -2,10 +2,7 @@ package com.pengxh.secretkey.widgets
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Rect
-import android.graphics.Typeface
+import android.graphics.*
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -26,12 +23,14 @@ class SlideBarView constructor(context: Context, attrs: AttributeSet? = null) :
     private var centerX = 0f //中心x
     private val textSize: Int
     private val textColor: Int
+    private var backgroundPaint: Paint? = null
     private var textPaint: TextPaint? = null
     private var mHeight = 0 //控件的实际尺寸
     private var touchIndex = -1
     private var letterHeight = 0
     private var showBackground = false
     private val viewWidth = 25
+    private var radius = 0//圆角半径
 
     init {
         val a = context.obtainStyledAttributes(attrs, R.styleable.SlideBarView)
@@ -65,6 +64,11 @@ class SlideBarView constructor(context: Context, attrs: AttributeSet? = null) :
     }
 
     private fun initPaint() {
+        //背景色画笔
+        backgroundPaint = Paint()
+        backgroundPaint!!.color = Color.parseColor("#3F3F3F")
+        backgroundPaint!!.isAntiAlias = true
+
         //文字画笔
         textPaint = TextPaint()
         textPaint!!.isAntiAlias = true
@@ -89,6 +93,7 @@ class SlideBarView constructor(context: Context, attrs: AttributeSet? = null) :
             mHeight = heightSpecSize
         }
         // 设置该view的宽高
+        this.radius = mWidth / 2
         setMeasuredDimension(mWidth, mHeight)
     }
 
@@ -97,7 +102,13 @@ class SlideBarView constructor(context: Context, attrs: AttributeSet? = null) :
         super.onDraw(canvas)
         letterHeight = mHeight / letterArray.size
         if (showBackground) {
-            canvas.drawColor(Color.parseColor("#F1F1F1"))
+            //绘制进度条背景，圆角矩形
+            val bgRectF = RectF()
+            bgRectF.left = (centerX - radius) * 2
+            bgRectF.top = 0f
+            bgRectF.right = centerX * 2
+            bgRectF.bottom = mHeight.toFloat()
+            canvas.drawRoundRect(bgRectF, radius.toFloat(), radius.toFloat(), backgroundPaint!!)
         }
         for (i in letterArray.indices) {
             val y = (i + 1) * letterHeight //每个字母的占位高度(不是字体高度)

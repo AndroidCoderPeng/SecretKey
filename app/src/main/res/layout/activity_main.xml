@@ -17,22 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#FFFFFF"
+        android:background="@color/white"
         app:itemIconTint="@drawable/bottom_text_color"
         app:itemTextColor="@drawable/bottom_text_color"
         app:menu="@menu/bottom_nav_menu" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/outlineFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="@dimen/margin_20dp"
-        android:layout_marginBottom="70dp"
-        android:src="@mipmap/add_white"
-        app:backgroundTint="@color/colorAccent"
-        app:borderWidth="0dp"
-        app:elevation="10dp"
-        app:fabSize="mini" />
 </RelativeLayout>

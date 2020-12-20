@@ -13,7 +13,6 @@ import com.pengxh.secretkey.ui.fragment.SecretListFragment
 import com.pengxh.secretkey.ui.fragment.SettingsFragment
 import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.ExcelHelper
-import com.pengxh.secretkey.utils.OtherUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 
@@ -92,9 +91,5 @@ class MainActivity : BaseActivity() {
                 menuItem!!.isChecked = true
             }
         })
-
-        outlineFab.setOnClickListener {
-            OtherUtils.intentActivity(AddSecretActivity::class.java)
-        }
     }
 }
