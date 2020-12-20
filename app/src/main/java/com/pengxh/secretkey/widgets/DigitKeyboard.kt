@@ -17,9 +17,8 @@ import com.pengxh.secretkey.R
  * @description: TODO
  * @date: 2020/7/28 10:13
  */
-class DigitKeyboard @JvmOverloads constructor(context: Context?,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0) : LinearLayout(context, attrs, defStyleAttr), View.OnClickListener {
+class DigitKeyboard constructor(context: Context?, attrs: AttributeSet? = null) :
+    LinearLayout(context, attrs), View.OnClickListener {
 
     private var mListener: DigitKeyboardClickListener? = null
 

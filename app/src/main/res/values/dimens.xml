@@ -2,6 +2,7 @@
     <!--字体大小-->
     <dimen name="textFontSize">16sp</dimen>
     <dimen name="titleFontSize">18sp</dimen>
+    <dimen name="keyboardFontSize">20sp</dimen>
 
     <!--控件外边距-->
     <dimen name="margin_10dp">10dp</dimen>
