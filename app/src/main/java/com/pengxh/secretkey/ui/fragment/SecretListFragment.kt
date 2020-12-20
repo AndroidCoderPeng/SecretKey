@@ -35,10 +35,6 @@ class SecretListFragment : BaseFragment() {
     override fun initLayoutView(): Int = R.layout.fragment_secretlist
 
     override fun initData() {
-        activity?.let {
-            StatusBarColorUtil.setColor(it, ColorHelper.getXmlColor(it, R.color.colorAccent))
-        }
-        ImmersionBar.with(this).init()
         settingsTitle.text = "密码列表"
     }
 

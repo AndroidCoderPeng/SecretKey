@@ -11,14 +11,16 @@ import android.widget.TextView
 import cn.bertsir.zbar.QrConfig
 import cn.bertsir.zbar.QrManager
 import cn.bertsir.zbar.view.ScanLineView
-import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseFragment
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.SecretCategoryAdapter
 import com.pengxh.secretkey.ui.SearchEventActivity
 import com.pengxh.secretkey.ui.SecretDetailActivity
-import com.pengxh.secretkey.utils.*
+import com.pengxh.secretkey.utils.ColorHelper
+import com.pengxh.secretkey.utils.Constant
+import com.pengxh.secretkey.utils.OtherUtils
+import com.pengxh.secretkey.utils.SQLiteUtil
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.include_secret_number.*
 import kotlinx.android.synthetic.main.include_title_main.*
@@ -42,10 +44,6 @@ class HomePageFragment : BaseFragment() {
     override fun initLayoutView(): Int = R.layout.fragment_home
 
     override fun initData() {
-        activity?.let {
-            StatusBarColorUtil.setColor(it, ColorHelper.getXmlColor(it, R.color.colorAccent))
-        }
-        ImmersionBar.with(this).init()
         sqLiteUtil = SQLiteUtil(context!!)
 
         attentionMessage.isSelected = true
@@ -150,8 +148,12 @@ class HomePageFragment : BaseFragment() {
             .setShowDes(true) //是否显示扫描框下面文字
             .setPlaySound(true) //是否扫描成功后bi~的声音
             .setIsOnlyCenter(true) //是否只识别框中内容(默认为全屏识别)
-            .setTitleBackgroudColor(ColorHelper.getXmlColor(context!!,
-                R.color.colorAccent)) //设置状态栏颜色
+            .setTitleBackgroudColor(
+                ColorHelper.getXmlColor(
+                    context!!,
+                    R.color.colorAccent
+                )
+            ) //设置状态栏颜色
             .setTitleTextColor(Color.WHITE) //设置Title文字颜色
             .setScreenOrientation(QrConfig.SCREEN_PORTRAIT) //设置屏幕方式
             .setScanLineStyle(ScanLineView.style_hybrid) //扫描线样式

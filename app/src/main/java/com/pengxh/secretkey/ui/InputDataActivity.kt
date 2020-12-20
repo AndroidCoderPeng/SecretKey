@@ -7,10 +7,8 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
-import com.gyf.immersionbar.ImmersionBar
-import com.pengxh.app.multilib.base.BaseNormalActivity
+import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
-import com.pengxh.secretkey.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.activity_input.*
 import kotlinx.android.synthetic.main.include_title_white.*
 import java.io.File
@@ -22,7 +20,7 @@ import java.io.File
  * @email: 290677893@qq.com
  * @date: 2020/11/23 23:34
  */
-class InputDataActivity : BaseNormalActivity() {
+class InputDataActivity : BaseActivity() {
 
     companion object {
         private const val TAG = "InputDataActivity"
@@ -31,9 +29,6 @@ class InputDataActivity : BaseNormalActivity() {
     override fun initLayoutView(): Int = R.layout.activity_input
 
     override fun initData() {
-        StatusBarColorUtil.setColor(this, Color.WHITE)
-        ImmersionBar.with(this).statusBarDarkFont(true).init()
-
         mTitleView.text = "导入数据"
     }
 

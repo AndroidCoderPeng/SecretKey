@@ -1,15 +1,12 @@
 package com.pengxh.secretkey.ui
 
 import android.content.Intent
-import android.graphics.Color
-import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.OtherUtils
-import com.pengxh.secretkey.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.activity_password_mode.*
 import kotlinx.android.synthetic.main.include_title_white.*
 
@@ -24,9 +21,6 @@ class PasswordModeActivity : BaseActivity() {
     override fun initLayoutView(): Int = R.layout.activity_password_mode
 
     override fun initData() {
-        StatusBarColorUtil.setColor(this, Color.WHITE)
-        ImmersionBar.with(this).statusBarDarkFont(true).init()
-
         mTitleView.text = "设置解锁方式"
     }
 

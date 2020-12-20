@@ -1,10 +1,7 @@
 package com.pengxh.secretkey.ui
 
-import android.graphics.Color
-import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
-import com.pengxh.secretkey.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.activity_update_log.*
 import kotlinx.android.synthetic.main.include_title_white.*
 
@@ -21,9 +18,6 @@ class UpdateLogActivity : BaseActivity() {
     override fun initLayoutView(): Int = R.layout.activity_update_log
 
     override fun initData() {
-        StatusBarColorUtil.setColor(this, Color.WHITE)
-        ImmersionBar.with(this).statusBarDarkFont(true).init()
-
         mTitleView.text = "更新详情"
 
         updateMessage = intent.getStringExtra("message")!!

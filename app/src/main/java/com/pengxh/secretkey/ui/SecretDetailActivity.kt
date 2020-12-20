@@ -10,7 +10,6 @@ import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.View
 import cn.bertsir.zbar.utils.QRUtils
-import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.utils.DensityUtil
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.app.multilib.widget.swipemenu.SwipeMenuItem
@@ -19,7 +18,6 @@ import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.SecretDetailAdapter
 import com.pengxh.secretkey.bean.SecretBean
 import com.pengxh.secretkey.utils.SQLiteUtil
-import com.pengxh.secretkey.utils.StatusBarColorUtil
 import com.pengxh.secretkey.widgets.InputDialog
 import com.pengxh.secretkey.widgets.ShareDialog
 import kotlinx.android.synthetic.main.activity_secret_detail.*
@@ -45,9 +43,6 @@ class SecretDetailActivity : BaseActivity() {
     override fun initLayoutView(): Int = R.layout.activity_secret_detail
 
     override fun initData() {
-        StatusBarColorUtil.setColor(this, Color.WHITE)
-        ImmersionBar.with(this).statusBarDarkFont(true).init()
-
         val category = intent.getStringExtra("mode")
         mTitleView.text = category
 
@@ -69,9 +64,11 @@ class SecretDetailActivity : BaseActivity() {
             override fun onShareViewClicked(index: Int) {
                 val secretBean = secretList[index]
                 val data = secretBean.secretAccount + "\r\n" + secretBean.secretPassword
-                val createCodeBitmap = QRUtils.getInstance().createQRCode(data,
+                val createCodeBitmap = QRUtils.getInstance().createQRCode(
+                    data,
                     DensityUtil.dp2px(context, 300.0f),
-                    DensityUtil.dp2px(context, 300.0f))
+                    DensityUtil.dp2px(context, 300.0f)
+                )
                 ShareDialog.Builder().setContext(context).setDialogTitle("请不要将此二维码随意泄露给他人")
                     .setDialogBitmap(createCodeBitmap).build().show()
             }
@@ -103,9 +100,11 @@ class SecretDetailActivity : BaseActivity() {
                                 return
                             } else {
                                 val secretBean = secretList[index]
-                                sqLiteUtil.updateSecret(secretBean.secretTitle!!,
+                                sqLiteUtil.updateSecret(
+                                    secretBean.secretTitle!!,
                                     secretBean.secretAccount!!,
-                                    input)
+                                    input
+                                )
                                 finish()
                             }
                         }

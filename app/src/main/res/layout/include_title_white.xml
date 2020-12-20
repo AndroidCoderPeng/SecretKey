@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="46dp"
-    android:background="@color/white">
+    android:background="@color/colorAccent">
 
     <ImageView
         android:id="@+id/mTitleLeftView"
@@ -21,7 +21,7 @@
         android:gravity="center"
         android:singleLine="true"
         android:text="这是标题"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="@dimen/titleFontSize" />
 
     <ImageView

@@ -1,15 +1,12 @@
 package com.pengxh.secretkey.ui
 
 import android.content.Intent
-import android.graphics.Color
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
-import com.pengxh.secretkey.utils.StatusBarColorUtil
 import com.pengxh.secretkey.widgets.DigitKeyboard
 import com.pengxh.secretkey.widgets.PasswordEditText
 import kotlinx.android.synthetic.main.activity_password_set.*
@@ -31,9 +28,6 @@ class PasswordSetActivity : BaseActivity(), DigitKeyboard.DigitKeyboardClickList
     override fun initLayoutView(): Int = R.layout.activity_password_set
 
     override fun initData() {
-        StatusBarColorUtil.setColor(this, Color.WHITE)
-        ImmersionBar.with(this).statusBarDarkFont(true).init()
-
         mTitleView.text = "设置密码"
     }
 

@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Environment
 import android.util.Log
 import com.google.gson.Gson
-import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseFragment
 import com.pengxh.app.multilib.utils.FileUtil
 import com.pengxh.app.multilib.utils.SaveKeyValues
@@ -15,7 +14,10 @@ import com.pengxh.secretkey.R
 import com.pengxh.secretkey.ui.AboutActivity
 import com.pengxh.secretkey.ui.InputDataActivity
 import com.pengxh.secretkey.ui.PasswordModeActivity
-import com.pengxh.secretkey.utils.*
+import com.pengxh.secretkey.utils.Constant
+import com.pengxh.secretkey.utils.ExcelHelper
+import com.pengxh.secretkey.utils.OtherUtils
+import com.pengxh.secretkey.utils.SQLiteUtil
 import kotlinx.android.synthetic.main.fragment_settings.*
 import java.io.File
 import kotlin.properties.Delegates
@@ -38,11 +40,6 @@ class SettingsFragment : BaseFragment() {
     override fun initLayoutView(): Int = R.layout.fragment_settings
 
     override fun initData() {
-        activity?.let {
-            StatusBarColorUtil.setColor(it, ColorHelper.getXmlColor(it, R.color.colorAccent))
-        }
-        ImmersionBar.with(this).init()
-
         settingsTitle.text = "设置中心"
 
         //默认不让截屏

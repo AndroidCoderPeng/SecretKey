@@ -3,11 +3,9 @@ package com.pengxh.secretkey.ui
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.graphics.Color
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.bertsir.zbar.utils.QRUtils
-import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.utils.DensityUtil
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.BaseActivity
@@ -15,7 +13,6 @@ import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.SearchSecretAdapter
 import com.pengxh.secretkey.bean.SecretBean
 import com.pengxh.secretkey.utils.SQLiteUtil
-import com.pengxh.secretkey.utils.StatusBarColorUtil
 import com.pengxh.secretkey.widgets.ShareDialog
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.activity_secret_detail.emptyLayout
@@ -35,9 +32,6 @@ class SearchEventActivity : BaseActivity() {
     override fun initLayoutView(): Int = R.layout.activity_search
 
     override fun initData() {
-        StatusBarColorUtil.setColor(this, Color.WHITE)
-        ImmersionBar.with(this).statusBarDarkFont(true).init()
-
         mTitleView.text = "搜索结果"
         sqLiteUtil = SQLiteUtil(context)
     }
@@ -53,9 +47,11 @@ class SearchEventActivity : BaseActivity() {
             override fun onShareViewClicked(index: Int) {
                 val secretBean = beanList[index]
                 val data = secretBean.secretAccount + "\r\n" + secretBean.secretPassword
-                val createCodeBitmap = QRUtils.getInstance().createQRCode(data,
+                val createCodeBitmap = QRUtils.getInstance().createQRCode(
+                    data,
                     DensityUtil.dp2px(context, 300.0f),
-                    DensityUtil.dp2px(context, 300.0f))
+                    DensityUtil.dp2px(context, 300.0f)
+                )
                 ShareDialog.Builder().setContext(context).setDialogTitle("请不要将此二维码随意泄露给他人")
                     .setDialogBitmap(createCodeBitmap).build().show()
             }

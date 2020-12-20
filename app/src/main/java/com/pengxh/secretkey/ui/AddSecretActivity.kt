@@ -1,19 +1,16 @@
 package com.pengxh.secretkey.ui
 
 import android.content.Intent
-import android.graphics.Color
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
-import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.SQLiteUtil
-import com.pengxh.secretkey.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.activity_secret_add.*
 import kotlinx.android.synthetic.main.include_title_white.*
 
@@ -39,9 +36,6 @@ class AddSecretActivity : BaseActivity() {
     override fun initLayoutView(): Int = R.layout.activity_secret_add
 
     override fun initData() {
-        StatusBarColorUtil.setColor(this, Color.WHITE)
-        ImmersionBar.with(this).statusBarDarkFont(true).init()
-
         mTitleView.text = "添加密码"
     }
 

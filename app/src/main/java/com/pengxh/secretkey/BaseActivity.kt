@@ -3,7 +3,10 @@ package com.pengxh.secretkey
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.utils.SaveKeyValues
+import com.pengxh.secretkey.utils.ColorHelper
+import com.pengxh.secretkey.utils.StatusBarColorUtil
 
 /**
  * @description: TODO
@@ -18,10 +21,14 @@ abstract class BaseActivity : AppCompatActivity() {
         val captureSwitchStatus = SaveKeyValues.getValue("captureSwitchStatus", false) as Boolean
         if (!captureSwitchStatus) {
             //禁止截屏
-            window.setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE)
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE
+            )
         }
         setContentView(initLayoutView())
+        StatusBarColorUtil.setColor(this, ColorHelper.getXmlColor(this, R.color.colorAccent))
+        ImmersionBar.with(this).init()
         initData()
         initEvent()
     }

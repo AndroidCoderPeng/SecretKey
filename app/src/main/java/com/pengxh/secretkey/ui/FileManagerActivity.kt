@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.app.multilib.utils.DensityUtil
 import com.pengxh.app.multilib.widget.EasyToast
@@ -22,7 +21,6 @@ import com.pengxh.secretkey.adapter.FileManagerAdapter
 import com.pengxh.secretkey.bean.SecretBean
 import com.pengxh.secretkey.utils.ExcelHelper
 import com.pengxh.secretkey.utils.SQLiteUtil
-import com.pengxh.secretkey.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.activity_file.*
 import java.io.File
 
@@ -44,9 +42,6 @@ class FileManagerActivity : BaseNormalActivity() {
     override fun initLayoutView(): Int = R.layout.activity_file
 
     override fun initData() {
-        StatusBarColorUtil.setColor(this, Color.WHITE)
-        ImmersionBar.with(this).statusBarDarkFont(true).init()
-
         sqLiteUtil = SQLiteUtil(this)
     }
 
