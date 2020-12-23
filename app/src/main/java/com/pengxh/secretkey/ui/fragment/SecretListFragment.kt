@@ -1,6 +1,13 @@
 package com.pengxh.secretkey.ui.fragment
 
+import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
 import android.os.CountDownTimer
+import android.os.Handler
+import android.os.Message
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -9,15 +16,14 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.pengxh.app.multilib.base.BaseFragment
+import com.pengxh.app.multilib.utils.BroadcastManager
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.SecretListAdapter
 import com.pengxh.secretkey.bean.SecretBean
 import com.pengxh.secretkey.bean.SecretTagBean
-import com.pengxh.secretkey.utils.SQLiteUtil
-import com.pengxh.secretkey.utils.SecretComparator
-import com.pengxh.secretkey.utils.StringHelper
-import com.pengxh.secretkey.utils.VerticalItemDecoration
+import com.pengxh.secretkey.utils.*
 import com.pengxh.secretkey.utils.callback.DecorationCallback
 import com.pengxh.secretkey.widgets.SlideBarView
 import kotlinx.android.synthetic.main.fragment_secretlist.*
@@ -43,6 +49,7 @@ class SecretListFragment : BaseFragment() {
     private lateinit var sqLiteUtil: SQLiteUtil
     private var dataBeans: ArrayList<SecretTagBean> = ArrayList()
     private var secretAdapter: SecretListAdapter? = null
+    private var isUpdateData = false
 
     override fun initLayoutView(): Int = R.layout.fragment_secretlist
 
@@ -57,10 +64,40 @@ class SecretListFragment : BaseFragment() {
             emptyLayout.visibility = View.GONE
             dataLayout.visibility = View.VISIBLE
 
-            initSecretList()
+            handler.sendEmptyMessage(1010)
         } else {
             emptyLayout.visibility = View.VISIBLE
             dataLayout.visibility = View.GONE
+        }
+        //监听是否导入了数据
+        BroadcastManager.getInstance(context)
+            .addAction(Constant.ACTION_UPDATE, object : BroadcastReceiver() {
+                override fun onReceive(context: Context?, intent: Intent?) {
+                    val action = intent!!.action
+                    if (action != null) {
+                        val response = intent.getStringExtra("data")
+                        if (response == "updateData") {
+                            isUpdateData = true
+                            dataBeans = obtainSecretTagData()
+                            handler.sendEmptyMessage(1010)
+                        }
+                    }
+                }
+            })
+    }
+
+    private val handler: Handler = @SuppressLint("HandlerLeak")
+    object : Handler() {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            if (msg.what == 1010) {
+                if (isUpdateData) {
+                    Log.d(TAG, "onReceive: 刷新数据")
+                    secretAdapter?.notifyDataSetChanged()
+                } else {
+                    initSecretList()
+                }
+            }
         }
     }
 
@@ -95,6 +132,7 @@ class SecretListFragment : BaseFragment() {
             SecretListAdapter.OnCityItemClickListener {
             override fun onClick(position: Int) {
                 val secretTagBean = dataBeans[position]
+                Log.d(TAG, Gson().toJson(secretTagBean))
 
             }
         })

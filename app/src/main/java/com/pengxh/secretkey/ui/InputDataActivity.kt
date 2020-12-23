@@ -52,7 +52,6 @@ class InputDataActivity : BaseActivity() {
             startActivity(
                 Intent(this, FileManagerActivity::class.java)
             )
-            finish()
         }
     }
 }

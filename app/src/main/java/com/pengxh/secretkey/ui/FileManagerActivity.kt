@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.pengxh.app.multilib.base.BaseNormalActivity
+import com.pengxh.app.multilib.utils.BroadcastManager
 import com.pengxh.app.multilib.utils.DensityUtil
 import com.pengxh.app.multilib.widget.EasyToast
+import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.FileManagerAdapter
 import com.pengxh.secretkey.bean.SecretBean
+import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.ExcelHelper
 import com.pengxh.secretkey.utils.SQLiteUtil
 import kotlinx.android.synthetic.main.activity_file.*
@@ -31,11 +33,7 @@ import java.io.File
  * @email: 290677893@qq.com
  * @date: 2020/11/24 20:26
  */
-class FileManagerActivity : BaseNormalActivity() {
-
-    companion object {
-        private const val TAG: String = "FileManagerActivity"
-    }
+class FileManagerActivity : BaseActivity() {
 
     private lateinit var sqLiteUtil: SQLiteUtil
 
@@ -59,6 +57,9 @@ class FileManagerActivity : BaseNormalActivity() {
                 inputData(fileList[index].absolutePath)
             }
         })
+        leftBackView.setOnClickListener {
+            this.finish()
+        }
     }
 
     /**
@@ -88,6 +89,9 @@ class FileManagerActivity : BaseNormalActivity() {
                         }
                         EasyToast.showToast("导入成功", EasyToast.SUCCESS)
                         finish()
+                        //通知列表页刷新数据
+                        BroadcastManager.getInstance(this@FileManagerActivity)
+                            .sendBroadcast(Constant.ACTION_UPDATE, "updateData")
                     }
                 })
             .create().show()

@@ -24,4 +24,6 @@ object Constant {
     const val PASSWORD_MODE = "mode"
 
     val excelTitle = arrayOf("类别", "标题", "账号", "密码", "备注")
+
+    const val ACTION_UPDATE = "action_update"
 }
