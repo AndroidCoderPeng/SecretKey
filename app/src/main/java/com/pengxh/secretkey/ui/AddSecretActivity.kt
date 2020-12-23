@@ -85,7 +85,7 @@ class AddSecretActivity : BaseActivity() {
             remarks = inputRemarks.text.toString().trim()
 
             //将数据存数据库，然后结束当前页面
-            SQLiteUtil(this).saveSecret(category!!, title!!, account!!, password!!, remarks)
+            SQLiteUtil().saveSecret(category!!, title!!, account!!, password!!, remarks)
             this.finish()
         }
     }

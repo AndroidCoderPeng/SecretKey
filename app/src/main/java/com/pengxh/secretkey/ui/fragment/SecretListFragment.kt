@@ -7,14 +7,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.TextView
-import com.gyf.immersionbar.ImmersionBar
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.pengxh.app.multilib.base.BaseFragment
 import com.pengxh.secretkey.R
-import com.pengxh.secretkey.utils.ColorHelper
+import com.pengxh.secretkey.adapter.SecretListAdapter
+import com.pengxh.secretkey.bean.SecretBean
+import com.pengxh.secretkey.bean.SecretTagBean
 import com.pengxh.secretkey.utils.SQLiteUtil
-import com.pengxh.secretkey.utils.StatusBarColorUtil
+import com.pengxh.secretkey.utils.SecretComparator
+import com.pengxh.secretkey.utils.StringHelper
+import com.pengxh.secretkey.utils.VerticalItemDecoration
+import com.pengxh.secretkey.utils.callback.DecorationCallback
 import com.pengxh.secretkey.widgets.SlideBarView
 import kotlinx.android.synthetic.main.fragment_secretlist.*
+import org.jetbrains.annotations.Nullable
+import java.text.Collator
+import java.util.*
+import java.util.regex.Pattern
+import kotlin.collections.ArrayList
+
 
 /**
  * @description:
@@ -28,39 +40,67 @@ class SecretListFragment : BaseFragment() {
         private const val TAG = "SecretListFragment"
     }
 
-    private val letters: MutableList<String> = ArrayList()
-//    private var secretAdapter: SecretListAdapter? = null
-//    private var dataBeans: ArrayList<SecretTagBean> = ArrayList()
+    private lateinit var sqLiteUtil: SQLiteUtil
+    private var dataBeans: ArrayList<SecretTagBean> = ArrayList()
+    private var secretAdapter: SecretListAdapter? = null
 
     override fun initLayoutView(): Int = R.layout.fragment_secretlist
 
     override fun initData() {
         settingsTitle.text = "密码列表"
+        sqLiteUtil = SQLiteUtil()
     }
 
     override fun initEvent() {
-//        secretAdapter = SecretListAdapter(context)
-    }
-
-    //需要及时的刷新界面
-    override fun onResume() {
-        super.onResume()
-        val allSecret = context?.let { SQLiteUtil(it).loadAllSecret() }
-        if (!allSecret.isNullOrEmpty()) {
+        dataBeans = obtainSecretTagData()
+        if (!dataBeans.isNullOrEmpty()) {
             emptyLayout.visibility = View.GONE
             dataLayout.visibility = View.VISIBLE
 
-            allSecret.forEach {
-                letters.add(it.secretTitle!!)
-            }
-            initPopupWindow()
+            initSecretList()
         } else {
             emptyLayout.visibility = View.VISIBLE
             dataLayout.visibility = View.GONE
         }
     }
 
-    private fun initPopupWindow() {
+    private fun initSecretList() {
+        secretAdapter = SecretListAdapter(context, dataBeans)
+        val layoutManager: LinearLayoutManager = object : LinearLayoutManager(context) {
+            override fun smoothScrollToPosition(
+                recyclerView: RecyclerView,
+                state: RecyclerView.State,
+                position: Int
+            ) {
+                val scroller = VerticalItemDecoration.TopSmoothScroller(context)
+                scroller.targetPosition = position
+                startSmoothScroll(scroller)
+            }
+        }
+        secretRecyclerView.layoutManager = layoutManager
+        secretRecyclerView.addItemDecoration(
+            VerticalItemDecoration(context!!,
+                object : DecorationCallback {
+                    override fun getGroupTag(position: Int): Long {
+                        return dataBeans[position].tag!!.toCharArray()[0].toLong()
+                    }
+
+                    override fun getGroupFirstLetter(position: Int): String {
+                        return dataBeans[position].tag!!
+                    }
+                })
+        )
+        secretRecyclerView.adapter = secretAdapter
+        secretAdapter?.setOnCityItemClickListener(object :
+            SecretListAdapter.OnCityItemClickListener {
+            override fun onClick(position: Int) {
+                val secretTagBean = dataBeans[position]
+
+            }
+        })
+    }
+
+    private fun initPopupWindow(letters: ArrayList<String>, allData: ArrayList<SecretBean>) {
         val layoutInflater = LayoutInflater.from(context)
         val rootView: View = layoutInflater.inflate(R.layout.fragment_secretlist, null)
         val contentView: View = layoutInflater.inflate(R.layout.layout_popup, null)
@@ -78,7 +118,8 @@ class SecretListFragment : BaseFragment() {
                 popupWindow.dismiss()
             }
         }
-        slideBarView.setData(letters)
+        //将源数据和侧边栏数据都传递给侧边栏View，方便定位index
+        slideBarView.setData(letters, allData)
         slideBarView.setOnIndexChangeListener(object : SlideBarView.OnIndexChangeListener {
             override fun onIndexChange(letter: String?) {
                 //在屏幕中间放大显示被按到的字母
@@ -91,85 +132,85 @@ class SecretListFragment : BaseFragment() {
         })
     }
 
-//    private fun initSecretList() {
-//        Log.d(TAG, "initSecretList: " + Gson().toJson(dataBeans))
-//        context?.let {
-//            secretAdapter?.setData(dataBeans)
-//            val layoutManager: LinearLayoutManager = object : LinearLayoutManager(it) {
-//                override fun smoothScrollToPosition(
-//                    recyclerView: RecyclerView,
-//                    state: RecyclerView.State,
-//                    position: Int
-//                ) {
-//                    val scroller = VerticalItemDecoration.TopSmoothScroller(it)
-//                    scroller.targetPosition = position
-//                    startSmoothScroll(scroller)
-//                }
-//            }
-//            secretRecyclerView.layoutManager = layoutManager
-//            secretRecyclerView.addItemDecoration(
-//                VerticalItemDecoration(it,
-//                    object : DecorationCallback {
-//                        override fun getGroupTag(position: Int): Long {
-//                            return dataBeans[position].tag!!.toCharArray()[0].toLong()
-//                        }
-//
-//                        override fun getGroupFirstLetter(position: Int): String {
-//                            return dataBeans[position].tag!!
-//                        }
-//                    })
-//            )
-//            secretRecyclerView.adapter = secretAdapter
-//            secretAdapter?.setOnCityItemClickListener(object :
-//                SecretListAdapter.OnCityItemClickListener {
-//                override fun onClick(position: Int) {
-//                    val secretTagBean = dataBeans[position]
-//                    Log.d("SecretListFragment", "onClick: ${Gson().toJson(secretTagBean)}")
-//
-//                }
-//            })
-//        }
-//    }
-
     /**
      * 将密码整理成分组数据，需要整理中英文情况
      */
-//    private fun obtainSecretTagData(): ArrayList<SecretTagBean> {
-//        //先将数据按照字母排序
-//        for (i in 0 until letters.size) {
-//            var title: String = letters[i]
-//            //获取账号第一个字符
-//            val first = title.substring(0, 1)
-//            //判断首字符是否为中文，如果是中文便将首字符拼音的首字母和-符号加在字符串前面
-//            val pattern = Pattern.compile("[\\u4e00-\\u9fa5]+")
-//            if (pattern.matcher(first).matches()) {
-//                title = obtainFirstHanYuPinyin(first).toString() + "-" + title
-//                letters[i] = title
-//            }
-//        }
-//        val comparator: Comparator<Any> = Collator.getInstance(Locale.CHINA)
-//        Collections.sort<String>(letters, comparator)
-//        //遍历数组，去除标识符-及首字母
-//        for (i in 0 until letters.size) {
-//            val str: String = letters[i]
-//            if (str.contains("-") && str.indexOf("-") == 1) {
-//                letters[i] = str.split("-".toRegex()).toTypedArray()[1]
-//            }
-//        }
-//        //格式化数据
-//
-//        for (s in letters) {
-//            val secretTagBean = SecretTagBean()
-//            secretTagBean.tag = StringHelper.obtainHanYuPinyin(s).substring(0, 1).toUpperCase(
-//                Locale.ROOT
-//            )
-//            secretTagBean.title = s
-//            dataBeans.add(secretTagBean)
-//        }
-//        return dataBeans
-//    }
-
-    private fun obtainIndex(title: String): Int {
-        return 0
+    private fun obtainSecretTagData(): ArrayList<SecretTagBean> {
+        val allSecret = sqLiteUtil.loadAllSecret()
+        val list = ArrayList<SecretTagBean>()
+        val slideBarLetters = ArrayList<String>()
+        if (!allSecret.isNullOrEmpty()) {
+            //将中英文重新混合排序
+            for (resultBean in allSecret) {
+                var secretTitle = resultBean.secretTitle
+                //获取账号第一个字符
+                val first = secretTitle!!.substring(0, 1)
+                val pattern: Pattern = Pattern.compile("[\\u4e00-\\u9fa5]+")
+                if (pattern.matcher(first).matches()) {
+                    secretTitle =
+                        StringHelper.obtainFirstHanYuPinyin(first).toString() + "-" + secretTitle
+                    resultBean.secretTitle = secretTitle
+                }
+            }
+            //准备排序
+            val collator: Collator = Collator.getInstance(Locale.CHINA)
+            val secretComparator: SecretComparator<SecretBean> =
+                object : SecretComparator<SecretBean>() {
+                    override fun compare(
+                        @Nullable left: SecretBean,
+                        @Nullable right: SecretBean
+                    ): Int {
+                        if (left.secretTitle == null) {
+                            return -1
+                        }
+                        if (right.secretTitle == null) {
+                            return 1
+                        }
+                        if (left.secretTitle == right.secretTitle) {
+                            if (left.secretAccount == null) {
+                                return -1
+                            }
+                            return if (right.secretAccount == null) {
+                                1
+                            } else collator.compare(left.secretAccount, right.secretAccount)
+                        }
+                        return collator.compare(left.secretTitle, right.secretTitle)
+                    }
+                }
+            Collections.sort(allSecret, secretComparator)
+            //获取侧边栏title
+            allSecret.forEach {
+                slideBarLetters.add(it.secretTitle!!)
+            }
+            //将中文转化为大写字母
+            val letterSet = HashSet<String>()
+            for (s in slideBarLetters) {
+                val firstLetter =
+                    StringHelper.obtainHanYuPinyin(s).substring(0, 1)
+                        .toUpperCase(Locale.ROOT) //取每个title的首字母
+                letterSet.add(firstLetter)
+            }
+            initPopupWindow(ArrayList(letterSet), allSecret)
+            //去掉之前添加得标记
+            for (bean in allSecret) {
+                val secretTitle = bean.secretTitle
+                if (secretTitle!!.contains("-") && secretTitle.indexOf("-") == 1) {
+                    bean.secretTitle = secretTitle.substring(2)
+                }
+            }
+            //获取列表数据
+            for (bean in allSecret) {
+                val secretTagBean = SecretTagBean()
+                val s = bean.secretTitle!!
+                secretTagBean.tag =
+                    StringHelper.obtainHanYuPinyin(s).substring(0, 1).toUpperCase(
+                        Locale.ROOT
+                    )
+                secretTagBean.title = s
+                secretTagBean.account = bean.secretAccount
+                list.add(secretTagBean)
+            }
+        }
+        return list
     }
 }

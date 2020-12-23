@@ -42,7 +42,7 @@ class FileManagerActivity : BaseNormalActivity() {
     override fun initLayoutView(): Int = R.layout.activity_file
 
     override fun initData() {
-        sqLiteUtil = SQLiteUtil(this)
+        sqLiteUtil = SQLiteUtil()
     }
 
     override fun initEvent() {

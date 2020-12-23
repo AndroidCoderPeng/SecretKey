@@ -46,7 +46,7 @@ class SecretDetailActivity : BaseActivity() {
         val category = intent.getStringExtra("mode")
         mTitleView.text = category
 
-        sqLiteUtil = SQLiteUtil(context)
+        sqLiteUtil = SQLiteUtil()
         secretList = sqLiteUtil.loadCategory(category!!)
     }
 

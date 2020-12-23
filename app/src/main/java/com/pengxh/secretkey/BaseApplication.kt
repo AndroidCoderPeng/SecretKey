@@ -9,6 +9,7 @@ import com.baidu.ocr.sdk.model.AccessToken
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.utils.OtherUtils
+import kotlin.properties.Delegates
 
 /**
  * @author: Pengxh
@@ -20,10 +21,15 @@ class BaseApplication : Application() {
 
     companion object {
         private const val TAG = "BaseApplication"
+
+        //单例
+        private var instance: BaseApplication by Delegates.notNull()
+        fun instance() = instance
     }
 
     override fun onCreate() {
         super.onCreate()
+        instance = this
         SaveKeyValues.initSharedPreferences(this)
         EasyToast.init(this)
         OtherUtils.init(this)

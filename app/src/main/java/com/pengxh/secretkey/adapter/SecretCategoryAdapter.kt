@@ -26,7 +26,7 @@ class SecretCategoryAdapter(ctx: Context) : BaseAdapter() {
 
     init {
         inflater = LayoutInflater.from(context)
-        sqLiteUtil = SQLiteUtil(context)
+        sqLiteUtil = SQLiteUtil()
     }
 
     override fun getCount(): Int = Constant.images.size

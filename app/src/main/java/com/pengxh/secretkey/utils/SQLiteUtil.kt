@@ -5,17 +5,22 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
+import com.pengxh.secretkey.BaseApplication
 import com.pengxh.secretkey.bean.SecretBean
 import java.util.*
 
-class SQLiteUtil(mContext: Context) {
+class SQLiteUtil {
 
     companion object {
         private const val Tag = "SQLiteUtil"
+
+        val instance: SQLiteUtil by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
+            SQLiteUtil()
+        }
     }
 
     private val db: SQLiteDatabase
-    private var context: Context = mContext
+    private var context: Context = BaseApplication.instance()
 
     /**
      * 数据库名
@@ -36,6 +41,7 @@ class SQLiteUtil(mContext: Context) {
         val mSqLiteUtilHelper = SQLiteUtilHelper(context, databaseName, null, databaseVersion)
         db = mSqLiteUtilHelper.writableDatabase
     }
+
 
     /**
      * 保存账号密码

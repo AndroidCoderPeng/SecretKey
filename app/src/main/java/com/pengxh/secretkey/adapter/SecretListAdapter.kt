@@ -9,16 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.bean.SecretTagBean
 
-class SecretListAdapter constructor(mContext: Context?) :
+class SecretListAdapter constructor(mContext: Context?, list: ArrayList<SecretTagBean>?) :
     RecyclerView.Adapter<SecretListAdapter.ViewHolder>() {
 
     private var context = mContext
-    private var mItemData: ArrayList<SecretTagBean>? = null
-
-    fun setData(list: ArrayList<SecretTagBean>) {
-        this.mItemData = list
-        notifyDataSetChanged()
-    }
+    private var dataBeans: ArrayList<SecretTagBean>? = list
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -29,7 +24,7 @@ class SecretListAdapter constructor(mContext: Context?) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        mItemData!![position].title?.let { holder.bindHolder(it) }
+        dataBeans!![position].title?.let { holder.bindHolder(it) }
         if (mOnItemClickListener != null) {
             holder.itemView.setOnClickListener(View.OnClickListener {
                 mOnItemClickListener!!.onClick(position)
@@ -38,7 +33,7 @@ class SecretListAdapter constructor(mContext: Context?) :
     }
 
     override fun getItemCount(): Int {
-        return if (mItemData == null) 0 else mItemData!!.size
+        return if (dataBeans == null) 0 else dataBeans!!.size
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

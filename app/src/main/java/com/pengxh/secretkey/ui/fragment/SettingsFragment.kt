@@ -60,7 +60,7 @@ class SettingsFragment : BaseFragment() {
          * */
         outputLayout.setOnClickListener {
             context?.let {
-                val allSecret = SQLiteUtil(it).loadAllSecret()
+                val allSecret = SQLiteUtil().loadAllSecret()
 
                 val mode = SaveKeyValues.getValue(Constant.PASSWORD_MODE, "") as String
                 if (mode == "closePassword" || mode == "") {

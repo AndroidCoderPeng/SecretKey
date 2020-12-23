@@ -33,7 +33,7 @@ class SearchEventActivity : BaseActivity() {
 
     override fun initData() {
         mTitleView.text = "搜索结果"
-        sqLiteUtil = SQLiteUtil(context)
+        sqLiteUtil = SQLiteUtil()
     }
 
     override fun initEvent() {

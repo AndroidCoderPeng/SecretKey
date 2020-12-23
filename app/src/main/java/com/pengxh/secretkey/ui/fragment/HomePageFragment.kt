@@ -45,7 +45,7 @@ class HomePageFragment : BaseFragment() {
     override fun initLayoutView(): Int = R.layout.fragment_home
 
     override fun initData() {
-        sqLiteUtil = SQLiteUtil(context!!)
+        sqLiteUtil = SQLiteUtil()
 
         attentionMessage.isSelected = true
     }
