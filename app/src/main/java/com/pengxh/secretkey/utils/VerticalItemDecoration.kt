@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.pengxh.app.multilib.utils.DensityUtil
 import com.pengxh.secretkey.utils.callback.DecorationCallback
+import java.util.*
 
 /**
  * @description: TODO
@@ -39,7 +40,7 @@ class VerticalItemDecoration(
 
         textPaint = TextPaint()
         textPaint.isAntiAlias = true
-        textPaint.textSize = sp2px(context, 20f).toFloat()
+        textPaint.textSize = sp2px(context, 18f).toFloat()
         textPaint.color = Color.BLACK
         textPaint.textAlign = Paint.Align.LEFT
 
@@ -113,7 +114,7 @@ class VerticalItemDecoration(
             preGroupId = groupId
             groupId = callback.getGroupTag(position)
             if (groupId < 0 || groupId == preGroupId) continue
-            val firstLetter = callback.getGroupFirstLetter(position).toUpperCase()
+            val firstLetter = callback.getGroupFirstLetter(position).toUpperCase(Locale.ROOT)
             if (TextUtils.isEmpty(firstLetter)) continue
             val viewBottom = view.bottom
             var textY = Math.max(topGap, view.top).toFloat()

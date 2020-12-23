@@ -25,6 +25,7 @@ import com.pengxh.secretkey.bean.SecretBean
 import com.pengxh.secretkey.bean.SecretTagBean
 import com.pengxh.secretkey.utils.*
 import com.pengxh.secretkey.utils.callback.DecorationCallback
+import com.pengxh.secretkey.widgets.SecretDetailDialog
 import com.pengxh.secretkey.widgets.SlideBarView
 import kotlinx.android.synthetic.main.fragment_secretlist.*
 import org.jetbrains.annotations.Nullable
@@ -48,6 +49,7 @@ class SecretListFragment : BaseFragment() {
 
     private lateinit var sqLiteUtil: SQLiteUtil
     private var dataBeans: ArrayList<SecretTagBean> = ArrayList()
+    private var allSecretData: ArrayList<SecretBean> = ArrayList()
     private var secretAdapter: SecretListAdapter? = null
     private var isUpdateData = false
 
@@ -60,15 +62,7 @@ class SecretListFragment : BaseFragment() {
 
     override fun initEvent() {
         dataBeans = obtainSecretTagData()
-        if (!dataBeans.isNullOrEmpty()) {
-            emptyLayout.visibility = View.GONE
-            dataLayout.visibility = View.VISIBLE
-
-            handler.sendEmptyMessage(1010)
-        } else {
-            emptyLayout.visibility = View.VISIBLE
-            dataLayout.visibility = View.GONE
-        }
+        handler.sendEmptyMessage(1010)
         //监听是否导入了数据
         BroadcastManager.getInstance(context)
             .addAction(Constant.ACTION_UPDATE, object : BroadcastReceiver() {
@@ -78,12 +72,24 @@ class SecretListFragment : BaseFragment() {
                         val response = intent.getStringExtra("data")
                         if (response == "updateData") {
                             isUpdateData = true
-                            dataBeans = obtainSecretTagData()
+                            dataBeans.clear()
+                            dataBeans.addAll(obtainSecretTagData())
                             handler.sendEmptyMessage(1010)
                         }
                     }
                 }
             })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!dataBeans.isNullOrEmpty()) {
+            emptyLayout.visibility = View.GONE
+            dataLayout.visibility = View.VISIBLE
+        } else {
+            emptyLayout.visibility = View.VISIBLE
+            dataLayout.visibility = View.GONE
+        }
     }
 
     private val handler: Handler = @SuppressLint("HandlerLeak")
@@ -92,7 +98,6 @@ class SecretListFragment : BaseFragment() {
             super.handleMessage(msg)
             if (msg.what == 1010) {
                 if (isUpdateData) {
-                    Log.d(TAG, "onReceive: 刷新数据")
                     secretAdapter?.notifyDataSetChanged()
                 } else {
                     initSecretList()
@@ -102,6 +107,7 @@ class SecretListFragment : BaseFragment() {
     }
 
     private fun initSecretList() {
+        Log.d(TAG, "dataBeans: " + Gson().toJson(dataBeans))
         secretAdapter = SecretListAdapter(context, dataBeans)
         val layoutManager: LinearLayoutManager = object : LinearLayoutManager(context) {
             override fun smoothScrollToPosition(
@@ -132,8 +138,17 @@ class SecretListFragment : BaseFragment() {
             SecretListAdapter.OnCityItemClickListener {
             override fun onClick(position: Int) {
                 val secretTagBean = dataBeans[position]
-                Log.d(TAG, Gson().toJson(secretTagBean))
-
+                allSecretData.forEach {
+                    if (it.secretTitle == secretTagBean.title && it.secretAccount == secretTagBean.account) {
+                        SecretDetailDialog.Builder()
+                            .setContext(context)
+                            .setDialogTitle(it.secretTitle)
+                            .setMessage(it.secretAccount)
+                            .setSubMessage(it.secretPassword)
+                            .setSecretMarks(it.secretRemarks)
+                            .build().show()
+                    }
+                }
             }
         })
     }
@@ -174,12 +189,13 @@ class SecretListFragment : BaseFragment() {
      * 将密码整理成分组数据，需要整理中英文情况
      */
     private fun obtainSecretTagData(): ArrayList<SecretTagBean> {
-        val allSecret = sqLiteUtil.loadAllSecret()
-        val list = ArrayList<SecretTagBean>()
+        Log.d(TAG, "获取数据-开始")
+        allSecretData = sqLiteUtil.loadAllSecret()
+        val updateList = ArrayList<SecretTagBean>()
         val slideBarLetters = ArrayList<String>()
-        if (!allSecret.isNullOrEmpty()) {
+        if (!allSecretData.isNullOrEmpty()) {
             //将中英文重新混合排序
-            for (resultBean in allSecret) {
+            for (resultBean in allSecretData) {
                 var secretTitle = resultBean.secretTitle
                 //获取账号第一个字符
                 val first = secretTitle!!.substring(0, 1)
@@ -215,9 +231,9 @@ class SecretListFragment : BaseFragment() {
                         return collator.compare(left.secretTitle, right.secretTitle)
                     }
                 }
-            Collections.sort(allSecret, secretComparator)
+            Collections.sort(allSecretData, secretComparator)
             //获取侧边栏title
-            allSecret.forEach {
+            allSecretData.forEach {
                 slideBarLetters.add(it.secretTitle!!)
             }
             //将中文转化为大写字母
@@ -228,16 +244,16 @@ class SecretListFragment : BaseFragment() {
                         .toUpperCase(Locale.ROOT) //取每个title的首字母
                 letterSet.add(firstLetter)
             }
-            initPopupWindow(ArrayList(letterSet), allSecret)
+            initPopupWindow(ArrayList(letterSet), allSecretData)
             //去掉之前添加得标记
-            for (bean in allSecret) {
+            for (bean in allSecretData) {
                 val secretTitle = bean.secretTitle
                 if (secretTitle!!.contains("-") && secretTitle.indexOf("-") == 1) {
                     bean.secretTitle = secretTitle.substring(2)
                 }
             }
             //获取列表数据
-            for (bean in allSecret) {
+            for (bean in allSecretData) {
                 val secretTagBean = SecretTagBean()
                 val s = bean.secretTitle!!
                 secretTagBean.tag =
@@ -246,9 +262,10 @@ class SecretListFragment : BaseFragment() {
                     )
                 secretTagBean.title = s
                 secretTagBean.account = bean.secretAccount
-                list.add(secretTagBean)
+                updateList.add(secretTagBean)
             }
         }
-        return list
+        Log.d(TAG, "获取数据-结束" + Gson().toJson(updateList))
+        return updateList
     }
 }

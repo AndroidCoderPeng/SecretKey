@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.util.Log
 import android.view.View
 import cn.bertsir.zbar.utils.QRUtils
 import com.pengxh.app.multilib.utils.DensityUtil
@@ -56,7 +55,6 @@ class SecretDetailActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        Log.d(Tag, "onResume: 获取焦点")
         val secretDetailAdapter = SecretDetailAdapter(context, secretList)
         secretListView.adapter = secretDetailAdapter
         secretDetailAdapter.setOnItemClickListener(object :
@@ -77,13 +75,12 @@ class SecretDetailActivity : BaseActivity() {
                 //复制的数据需要精练
                 val secretBean = secretList[index]
                 val data = secretBean.secretAccount + "\r\n" + secretBean.secretPassword
-                Log.d(Tag, "密码数据Json: $data")
                 val clipboard: ClipboardManager =
                     getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val cipData = ClipData.newPlainText("Secret", data)
                 // 将ClipData内容放到系统剪贴板里。
                 clipboard.setPrimaryClip(cipData)
-                EasyToast.showToast("密码复制成功", EasyToast.SUCCESS)
+                EasyToast.showToast("账号密码复制成功", EasyToast.SUCCESS)
             }
 
             /**
@@ -94,7 +91,6 @@ class SecretDetailActivity : BaseActivity() {
                     .setDialogMessage("请输入您的新密码")
                     .setOnDialogClickListener(object : InputDialog.DialogClickListener {
                         override fun onConfirmClicked(input: String) {
-                            Log.d(Tag, "onConfirmClicked: $input")
                             if (input == "") {
                                 EasyToast.showToast("不能将密码修改为空值", EasyToast.WARING)
                                 return
