@@ -49,8 +49,7 @@ class SlideBarView constructor(context: Context, attrs: AttributeSet? = null) :
         this.data = list
         allData.forEach {
             this.allTitle.add(
-                StringHelper.obtainHanYuPinyin(it.secretTitle!!).substring(0, 1)
-                    .toUpperCase(Locale.ROOT)
+                StringHelper.obtainHanYuPinyin(it.secretTitle!!).toUpperCase(Locale.ROOT)
             )
         }
     }

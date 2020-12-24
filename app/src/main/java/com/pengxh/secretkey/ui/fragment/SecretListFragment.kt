@@ -31,7 +31,6 @@ import kotlinx.android.synthetic.main.fragment_secretlist.*
 import org.jetbrains.annotations.Nullable
 import java.text.Collator
 import java.util.*
-import java.util.regex.Pattern
 import kotlin.collections.ArrayList
 
 
@@ -199,10 +198,8 @@ class SecretListFragment : BaseFragment() {
                 var secretTitle = resultBean.secretTitle
                 //获取账号第一个字符
                 val first = secretTitle!!.substring(0, 1)
-                val pattern: Pattern = Pattern.compile("[\\u4e00-\\u9fa5]+")
-                if (pattern.matcher(first).matches()) {
-                    secretTitle =
-                        StringHelper.obtainFirstHanYuPinyin(first).toString() + "-" + secretTitle
+                if (StringHelper.isChinese(first) || StringHelper.isNumber(first)) {
+                    secretTitle = StringHelper.obtainHanYuPinyin(first) + "-" + secretTitle
                     resultBean.secretTitle = secretTitle
                 }
             }
@@ -240,8 +237,7 @@ class SecretListFragment : BaseFragment() {
             val letterSet = HashSet<String>()
             for (s in slideBarLetters) {
                 val firstLetter =
-                    StringHelper.obtainHanYuPinyin(s).substring(0, 1)
-                        .toUpperCase(Locale.ROOT) //取每个title的首字母
+                    StringHelper.obtainHanYuPinyin(s).toUpperCase(Locale.ROOT) //取每个title的首字母
                 letterSet.add(firstLetter)
             }
             initPopupWindow(ArrayList(letterSet), allSecretData)
@@ -256,10 +252,7 @@ class SecretListFragment : BaseFragment() {
             for (bean in allSecretData) {
                 val secretTagBean = SecretTagBean()
                 val s = bean.secretTitle!!
-                secretTagBean.tag =
-                    StringHelper.obtainHanYuPinyin(s).substring(0, 1).toUpperCase(
-                        Locale.ROOT
-                    )
+                secretTagBean.tag = StringHelper.obtainHanYuPinyin(s).toUpperCase(Locale.ROOT)
                 secretTagBean.title = s
                 secretTagBean.account = bean.secretAccount
                 updateList.add(secretTagBean)
