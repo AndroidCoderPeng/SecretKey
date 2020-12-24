@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.pengxh.app.multilib.utils.DensityUtil
+import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.callback.DecorationCallback
 import java.util.*
 
@@ -32,7 +33,7 @@ class VerticalItemDecoration(
 
     init {
         topLinePaint.isAntiAlias = true
-        topLinePaint.color = Color.parseColor("#F1F1F1")
+        topLinePaint.color = ColorHelper.getXmlColor(context, R.color.mainBackground)
 
         bottomLinePaint = Paint()
         bottomLinePaint.isAntiAlias = true
@@ -41,7 +42,7 @@ class VerticalItemDecoration(
         textPaint = TextPaint()
         textPaint.isAntiAlias = true
         textPaint.textSize = sp2px(context, 18f).toFloat()
-        textPaint.color = Color.BLACK
+        textPaint.color = ColorHelper.getXmlColor(context, R.color.colorAccent)
         textPaint.textAlign = Paint.Align.LEFT
 
         topGap = DensityUtil.dp2px(context, 30f)
