@@ -107,7 +107,7 @@ class SecretListFragment : BaseFragment() {
 
     private fun initSecretList() {
         Log.d(TAG, "dataBeans: " + Gson().toJson(dataBeans))
-        secretAdapter = SecretListAdapter(context, dataBeans)
+        secretAdapter = SecretListAdapter(context, dataBeans, allSecretData)
         val layoutManager: LinearLayoutManager = object : LinearLayoutManager(context) {
             override fun smoothScrollToPosition(
                 recyclerView: RecyclerView,

@@ -1,10 +1,18 @@
 package com.pengxh.secretkey.widgets
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
+
 
 /**
  * @author: Pengxh
@@ -16,6 +24,7 @@ class SecretDetailDialog private constructor(builder: Builder) :
     AlertDialog(builder.mContext!!, R.style.DialogStyle) {
 
     private var ctx: Context? = null
+    private var clipboard: ClipboardManager? = null
     private var title: String? = null
     private var account: String? = null
     private var password: String? = null
@@ -23,6 +32,7 @@ class SecretDetailDialog private constructor(builder: Builder) :
 
     init {
         ctx = builder.mContext
+        clipboard = ctx?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         title = builder.title
         account = builder.account
         password = builder.password
@@ -76,8 +86,33 @@ class SecretDetailDialog private constructor(builder: Builder) :
 
     private fun initView() {
         findViewById<TextView>(R.id.dialogTitle)?.text = title
-        findViewById<TextView>(R.id.dialogMessage)?.text = account
-        findViewById<TextView>(R.id.dialogSubMessage)?.text = password
+        val dialogMessage = findViewById<TextView>(R.id.dialogMessage)
+        dialogMessage?.text = account
+        dialogMessage?.setOnLongClickListener {
+            val cipData = ClipData.newPlainText("account", account)
+            clipboard?.setPrimaryClip(cipData)
+            EasyToast.showToast("账号复制成功", EasyToast.SUCCESS)
+            true
+        }
+        val dialogSubMessage = findViewById<TextView>(R.id.dialogSubMessage)
+        dialogSubMessage?.text = password
+        dialogSubMessage?.setOnLongClickListener {
+            val cipData = ClipData.newPlainText("password", password)
+            clipboard?.setPrimaryClip(cipData)
+            EasyToast.showToast("密码复制成功", EasyToast.SUCCESS)
+            true
+        }
         findViewById<TextView>(R.id.dialogMarks)?.text = marks
+        findViewById<ImageView>(R.id.noticeImageView)?.setOnClickListener {
+            Toast.makeText(ctx, "长按账号和密码可以复制", Toast.LENGTH_SHORT).show()
+        }
+
+        val warningImageView = findViewById<ImageView>(R.id.warningImageView)
+        val animation = AlphaAnimation(0.1f, 1.0f)
+        animation.duration = 1000
+        animation.repeatCount = Animation.INFINITE
+        animation.repeatMode = Animation.RESTART
+        warningImageView?.animation = animation
+        animation.start()
     }
 }

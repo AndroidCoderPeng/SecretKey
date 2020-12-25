@@ -4,16 +4,24 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pengxh.secretkey.R
+import com.pengxh.secretkey.bean.SecretBean
 import com.pengxh.secretkey.bean.SecretTagBean
+import com.pengxh.secretkey.utils.StringHelper
 
-class SecretListAdapter constructor(mContext: Context?, list: ArrayList<SecretTagBean>?) :
+class SecretListAdapter constructor(
+    mContext: Context?,
+    list: ArrayList<SecretTagBean>?,
+    allSecret: ArrayList<SecretBean>?
+) :
     RecyclerView.Adapter<SecretListAdapter.ViewHolder>() {
 
     private var context = mContext
     private var dataBeans: ArrayList<SecretTagBean>? = list
+    private var allSecretData: ArrayList<SecretBean>? = allSecret
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -24,11 +32,19 @@ class SecretListAdapter constructor(mContext: Context?, list: ArrayList<SecretTa
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        dataBeans!![position].title?.let { holder.bindHolder(it) }
+        val title = dataBeans!![position].title!!
+        var type: String? = null
+        allSecretData?.forEach {
+            if (title == it.secretTitle) {
+                type = it.secretCategory
+                return@forEach
+            }
+        }
+        holder.bindHolder(title, StringHelper.obtainResource(type))
         if (mOnItemClickListener != null) {
-            holder.itemView.setOnClickListener(View.OnClickListener {
+            holder.itemView.setOnClickListener {
                 mOnItemClickListener!!.onClick(position)
-            })
+            }
         }
     }
 
@@ -37,11 +53,12 @@ class SecretListAdapter constructor(mContext: Context?, list: ArrayList<SecretTa
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+        var secretTypeView: ImageView = itemView.findViewById(R.id.secretTypeView)
         var secretTitle: TextView = itemView.findViewById(R.id.secretTitle)
 
-        fun bindHolder(title: String) {
+        fun bindHolder(title: String, resource: Int) {
             secretTitle.text = title
+            secretTypeView.setBackgroundResource(resource)
         }
     }
 

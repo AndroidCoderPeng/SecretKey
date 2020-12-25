@@ -1,5 +1,6 @@
 package com.pengxh.secretkey.utils
 
+import com.pengxh.secretkey.R
 import net.sourceforge.pinyin4j.PinyinHelper
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat
@@ -23,6 +24,23 @@ class StringHelper {
         fun isNumber(s: String): Boolean {
             val numberPattern: Pattern = Pattern.compile("^[0-9]*\$")//判断数字
             return numberPattern.matcher(s).matches()
+        }
+
+        /**
+         * 根据类型获取图片
+         * */
+        fun obtainResource(type: String?): Int {
+            when (type) {
+                "网站" -> return R.drawable.ic_web
+                "APP" -> return R.drawable.ic_app
+                "游戏" -> return R.drawable.ic_game
+                "银行卡" -> return R.drawable.ic_card
+                "工作" -> return R.drawable.ic_work
+                "邮箱" -> return R.drawable.ic_email
+                "聊天" -> return R.drawable.ic_chat
+                "其他" -> return R.mipmap.other
+            }
+            return R.mipmap.other
         }
 
         /**

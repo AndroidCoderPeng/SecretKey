@@ -146,6 +146,7 @@ class HomePageFragment : BaseFragment() {
         val qrConfig = QrConfig.Builder().setTitleText("扫一扫") //设置Title文字
             .setShowLight(true) //显示手电筒按钮
             .setShowTitle(true) //显示Title
+            .setScanType(QrConfig.TYPE_ALL)//识别二维码和条形码
             .setShowAlbum(false) //显示从相册选择按钮
             .setCornerColor(ColorHelper.getXmlColor(context!!, R.color.colorPrimaryDark)) //设置扫描框颜色
             .setLineColor(ColorHelper.getXmlColor(context!!, R.color.colorPrimaryDark)) //设置扫描线颜色
