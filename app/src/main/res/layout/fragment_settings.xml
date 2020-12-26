@@ -83,6 +83,22 @@
         </LinearLayout>
 
         <RelativeLayout
+            android:id="@+id/themeLayout"
+            style="@style/itemLayoutStyle"
+            android:layout_marginTop="15dp">
+
+            <ImageView
+                style="@style/leftImageStyle"
+                android:background="@mipmap/theme" />
+
+            <TextView
+                style="@style/textViewStyle"
+                android:text="主题风格" />
+
+            <ImageView style="@style/rightImageStyle" />
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/aboutLayout"
             style="@style/itemLayoutStyle"
             android:layout_marginTop="15dp">

@@ -48,6 +48,7 @@
         <activity android:name=".ui.OcrBankCardActivity" />
         <activity android:name=".ui.InputDataActivity" />
         <activity android:name=".ui.FileManagerActivity" />
+        <activity android:name=".ui.ThemeSelectActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

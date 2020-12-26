@@ -14,6 +14,7 @@ import com.pengxh.secretkey.R
 import com.pengxh.secretkey.ui.AboutActivity
 import com.pengxh.secretkey.ui.InputDataActivity
 import com.pengxh.secretkey.ui.PasswordModeActivity
+import com.pengxh.secretkey.ui.ThemeSelectActivity
 import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.ExcelHelper
 import com.pengxh.secretkey.utils.OtherUtils
@@ -97,6 +98,13 @@ class SettingsFragment : BaseFragment() {
             context?.let {
                 startActivity(Intent(it, InputDataActivity::class.java))
             }
+        }
+
+        /**
+         * 主题选择Layout
+         * */
+        themeLayout.setOnClickListener {
+            OtherUtils.intentActivity(ThemeSelectActivity::class.java)
         }
 
         /**
