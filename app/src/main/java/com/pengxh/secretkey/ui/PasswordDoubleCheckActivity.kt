@@ -10,7 +10,7 @@ import com.pengxh.secretkey.utils.OtherUtils
 import com.pengxh.secretkey.widgets.DigitKeyboard
 import com.pengxh.secretkey.widgets.PasswordEditText
 import kotlinx.android.synthetic.main.activity_password_set.*
-import kotlinx.android.synthetic.main.include_title_white.*
+import kotlinx.android.synthetic.main.include_title_cyan.*
 
 /**
  * @author: Pengxh

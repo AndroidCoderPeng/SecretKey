@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/include_title_white" />
+    <include layout="@layout/include_title_cyan" />
 
     <TextView
         android:id="@+id/settingHint"

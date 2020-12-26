@@ -9,7 +9,7 @@ import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.UpdateViewAdapter
 import com.pengxh.secretkey.bean.UpdateLogBean
 import kotlinx.android.synthetic.main.activity_update_list.*
-import kotlinx.android.synthetic.main.include_title_white.*
+import kotlinx.android.synthetic.main.include_title_cyan.*
 
 class UpdateListActivity : BaseActivity() {
 

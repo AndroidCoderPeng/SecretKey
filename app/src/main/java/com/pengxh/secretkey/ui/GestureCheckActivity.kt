@@ -11,7 +11,7 @@ import com.pengxh.secretkey.utils.StatusBarColorUtil
 import com.pengxh.secretkey.widgets.gesture.GestureLockLayout
 import com.pengxh.secretkey.widgets.gesture.GestureLockLayout.OnLockVerifyListener
 import kotlinx.android.synthetic.main.activity_gesture_set.*
-import kotlinx.android.synthetic.main.include_title_white.*
+import kotlinx.android.synthetic.main.include_title_cyan.*
 
 
 /**

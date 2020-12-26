@@ -16,7 +16,7 @@ import com.pengxh.secretkey.utils.SQLiteUtil
 import com.pengxh.secretkey.widgets.ShareDialog
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.activity_secret_detail.emptyLayout
-import kotlinx.android.synthetic.main.include_title_white.*
+import kotlinx.android.synthetic.main.include_title_cyan.*
 
 /**
  * @author: Pengxh

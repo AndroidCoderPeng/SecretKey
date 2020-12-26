@@ -5,7 +5,7 @@ import com.pengxh.secretkey.BuildConfig
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.OtherUtils
 import kotlinx.android.synthetic.main.activity_about.*
-import kotlinx.android.synthetic.main.include_title_white.*
+import kotlinx.android.synthetic.main.include_title_cyan.*
 
 /**
  * @author: Pengxh

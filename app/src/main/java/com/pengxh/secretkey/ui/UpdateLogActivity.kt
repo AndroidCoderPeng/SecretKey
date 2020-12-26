@@ -3,7 +3,7 @@ package com.pengxh.secretkey.ui
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import kotlinx.android.synthetic.main.activity_update_log.*
-import kotlinx.android.synthetic.main.include_title_white.*
+import kotlinx.android.synthetic.main.include_title_cyan.*
 
 /**
  * @description: TODO
