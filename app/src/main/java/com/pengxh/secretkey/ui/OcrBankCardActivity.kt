@@ -3,6 +3,7 @@ package com.pengxh.secretkey.ui
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
+import android.hardware.camera2.CameraCharacteristics
 import android.util.Log
 import android.view.MotionEvent
 import com.baidu.ocr.sdk.OCR
@@ -48,7 +49,8 @@ class OcrBankCardActivity : BaseNormalActivity(), CameraPreviewHelper.OnCaptureI
     @SuppressLint("ClickableViewAccessibility")
     override fun onResume() {
         super.onResume()
-        cameraPreviewHelper = CameraPreviewHelper(this, targetPreView)
+        cameraPreviewHelper =
+            CameraPreviewHelper(this, targetPreView, "0", CameraCharacteristics.LENS_FACING_BACK)
         cameraPreviewHelper.setImageCallback(this)
         //按钮缩小效果
         recognizeButton.setOnTouchListener { v, event ->
