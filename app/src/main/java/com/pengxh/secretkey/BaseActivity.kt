@@ -21,10 +21,7 @@ abstract class BaseActivity : AppCompatActivity() {
         val captureSwitchStatus = SaveKeyValues.getValue("captureSwitchStatus", false) as Boolean
         if (!captureSwitchStatus) {
             //禁止截屏
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE
-            )
+            window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         }
         setContentView(initLayoutView())
         StatusBarColorUtil.setColor(this, ColorHelper.getXmlColor(this, R.color.colorAccent))

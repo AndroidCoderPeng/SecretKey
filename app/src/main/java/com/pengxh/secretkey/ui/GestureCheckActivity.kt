@@ -1,13 +1,10 @@
 package com.pengxh.secretkey.ui
 
-import android.graphics.Color
 import android.os.Handler
-import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.OtherUtils
-import com.pengxh.secretkey.utils.StatusBarColorUtil
 import com.pengxh.secretkey.widgets.gesture.GestureLockLayout
 import com.pengxh.secretkey.widgets.gesture.GestureLockLayout.OnLockVerifyListener
 import kotlinx.android.synthetic.main.activity_gesture_set.*
@@ -25,9 +22,6 @@ class GestureCheckActivity : BaseActivity() {
     override fun initLayoutView(): Int = R.layout.activity_gesture_check
 
     override fun initData() {
-        StatusBarColorUtil.setColor(this, Color.WHITE)
-        ImmersionBar.with(this).statusBarDarkFont(true).init()
-
         mTitleView.text = "手势解锁"
     }
 

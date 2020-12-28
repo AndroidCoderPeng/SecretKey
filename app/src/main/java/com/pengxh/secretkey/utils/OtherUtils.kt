@@ -70,8 +70,10 @@ class OtherUtils {
                 keyStore.load(null)
                 val keyGenerator: KeyGenerator =
                     KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
-                val builder = KeyGenParameterSpec.Builder("fingerprint_key",
-                    KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
+                val builder = KeyGenParameterSpec.Builder(
+                    "fingerprint_key",
+                    KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
+                )
                     .setBlockModes(KeyProperties.BLOCK_MODE_CBC).setUserAuthenticationRequired(true)
                     .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
                 keyGenerator.init(builder.build())
@@ -94,8 +96,8 @@ class OtherUtils {
                 val fingerprintDialog = FingerprintDialog()
                 fingerprintDialog.setCipher(cipher)
                 fingerprintDialog.show(supportFragmentManager, "fingerprint")
-            } catch (e: java.lang.Exception) {
-                throw java.lang.RuntimeException(e)
+            } catch (e: Exception) {
+                throw RuntimeException(e)
             }
         }
 
@@ -103,18 +105,6 @@ class OtherUtils {
          * 生成[0,9]以内的随机数
          * */
         fun randomNumber(): String = Random().nextInt(10).toString()
-
-        /**
-         * 根据index得到图片
-         * */
-        fun getImageResource(category: String?): Int {
-            for (i in 0..Constant.category.size) {
-                if (Constant.category[i] == category) {
-                    return Constant.images[i]
-                }
-            }
-            return R.mipmap.other
-        }
 
         fun showAlertDialog(context: Context, title: String, message: String) {
             AlertDialog.Builder(context)

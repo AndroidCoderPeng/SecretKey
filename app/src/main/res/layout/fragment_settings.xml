@@ -82,10 +82,12 @@
             </RelativeLayout>
         </LinearLayout>
 
+        <!--主题风格-->
         <RelativeLayout
             android:id="@+id/themeLayout"
             style="@style/itemLayoutStyle"
-            android:layout_marginTop="15dp">
+            android:layout_marginTop="15dp"
+            android:visibility="gone">
 
             <ImageView
                 style="@style/leftImageStyle"
