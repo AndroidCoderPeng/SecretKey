@@ -15,7 +15,9 @@
 
         <com.pengxh.secretkey.widgets.BorderView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="30dp" />
     </FrameLayout>
 
     <LinearLayout
@@ -28,15 +30,15 @@
         android:paddingVertical="30dp">
 
         <LinearLayout
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:background="@drawable/bg_layout_stroke"
             android:gravity="center">
 
             <Button
                 android:id="@+id/recognizeButton"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@drawable/bg_button_white" />
         </LinearLayout>
     </LinearLayout>

@@ -6,6 +6,7 @@ import android.graphics.*
 import android.text.TextPaint
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
+import com.pengxh.app.multilib.utils.DensityUtil
 
 /**
  * @description: TODO
@@ -16,8 +17,11 @@ import androidx.appcompat.widget.AppCompatImageView
 class BorderView(context: Context, attrs: AttributeSet?) :
     AppCompatImageView(context, attrs) {
 
+    private val mContext: Context = context
     private val borderPaint: Paint = Paint()
     private val textPaint: Paint = TextPaint()
+    private var viewHeight = 0
+    private var viewWidth = 0
     private var centerX = 0f
     private var centerY = 0f
 
@@ -40,16 +44,52 @@ class BorderView(context: Context, attrs: AttributeSet?) :
         textPaint.alpha = 255
     }
 
+    //计算出中心位置，便于定位
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         //shr 相当于>>，位运算
         centerX = (w shr 1.toFloat().toInt()).toFloat()
-        centerY = h / 3.toFloat()
+        centerY = (h shr 1.toFloat().toInt()).toFloat()
+    }
+
+    //计算控件实际大小
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        val widthSpecMode = MeasureSpec.getMode(widthMeasureSpec)
+        val widthSpecSize = MeasureSpec.getSize(widthMeasureSpec)
+        val heightSpecMode = MeasureSpec.getMode(heightMeasureSpec)
+        val heightSpecSize = MeasureSpec.getSize(heightMeasureSpec)
+        // 获取宽
+        viewWidth = if (widthSpecMode == MeasureSpec.EXACTLY) {
+            // match_parent/精确值
+            widthSpecSize
+        } else {
+            // wrap_content
+            DensityUtil.dp2px(mContext, 300f)
+        }
+        // 获取高
+        viewHeight = if (heightSpecMode == MeasureSpec.EXACTLY) {
+            // match_parent/精确值
+            heightSpecSize
+        } else {
+            // wrap_content
+            DensityUtil.dp2px(mContext, 180f)
+        }
+        // 设置该view的宽高
+        setMeasuredDimension(viewWidth, viewHeight)
     }
 
     @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+        //绘制圆角矩形
+        val borderRectF = RectF()
+        borderRectF.left = 0f
+        borderRectF.top = 0f
+        borderRectF.right = viewWidth.toFloat()
+        borderRectF.bottom = viewHeight.toFloat()
+        canvas.drawRoundRect(borderRectF, 25f, 25f, borderPaint) //第二个参数是x半径，第三个参数是y半径
+
         //绘制文字
         val textRect = Rect()
         textPaint.getTextBounds(
@@ -63,10 +103,7 @@ class BorderView(context: Context, attrs: AttributeSet?) :
         //计算文字左下角坐标
         val textX = centerX - (textWidth shr 1)
         val textY = centerY + (textHeight shr 1)
-        canvas.drawText("请将银行卡置于方框内，便于识别卡号", textX, textY, textPaint)
-        //绘制圆角矩形
-        val rectF = RectF(centerX - 425, centerY - 225, centerX + 425, centerY + 225)
-        canvas.drawRoundRect(rectF, 25f, 25f, borderPaint) //第二个参数是x半径，第三个参数是y半径
+        canvas.drawText(TEXT, textX, textY, textPaint)
     }
 
     /**
