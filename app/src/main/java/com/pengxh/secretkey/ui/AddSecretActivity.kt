@@ -1,6 +1,7 @@
 package com.pengxh.secretkey.ui
 
 import android.content.Intent
+import android.text.InputType
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -24,6 +25,7 @@ import kotlinx.android.synthetic.main.include_title_cyan.*
 class AddSecretActivity : BaseActivity() {
 
     companion object {
+        private const val Tag = "AddSecretActivity"
         const val requestCode = 777
     }
 
@@ -48,10 +50,12 @@ class AddSecretActivity : BaseActivity() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, pos: Int, id: Long) {
                 category = Constant.category[pos]
                 if (category.equals("银行卡")) {
-                    Log.d("AddSecretActivity", "initEvent: 银行卡")
+                    Log.d(Tag, "initEvent: 银行卡")
                     codeScannerView.visibility = View.VISIBLE
+                    inputAccount.inputType = InputType.TYPE_CLASS_NUMBER
                 } else {
                     codeScannerView.visibility = View.GONE
+                    inputAccount.inputType = InputType.TYPE_CLASS_TEXT
                 }
             }
 
