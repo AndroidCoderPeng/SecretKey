@@ -1,6 +1,7 @@
 package com.pengxh.secretkey.ui
 
 import android.os.Environment
+import android.util.Log
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
@@ -17,6 +18,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 
 class MainActivity : BaseActivity() {
+
+    companion object {
+        private const val Tag = "MainActivity"
+    }
 
     private var menuItem: MenuItem? = null
     private lateinit var fragmentList: ArrayList<Fragment>
@@ -39,14 +44,15 @@ class MainActivity : BaseActivity() {
         if (!dir.exists()) {
             dir.mkdir()
         }
-        val file = File("$dir/密码管家模板表格.xls")
+        val file = File(dir.toString() + File.separator + "密码管家模板表格.xls")
         if (!file.exists()) {
             file.createNewFile()
         }
+        Log.d(Tag, "initExcelDemo: ${file.absoluteFile}")
         //写入模板数据
         ExcelHelper.initExcel(file, Constant.excelTitle)
         //模拟数据
-        val secretData: MutableList<SecretBean> = java.util.ArrayList()
+        val secretData: MutableList<SecretBean> = ArrayList()
         val demoBean = SecretBean()
         demoBean.secretCategory = "网站"
         demoBean.secretTitle = "淘宝网"
