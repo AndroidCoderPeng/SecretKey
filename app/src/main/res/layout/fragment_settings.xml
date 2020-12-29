@@ -33,7 +33,7 @@
 
             <TextView
                 style="@style/textViewStyle"
-                android:text="设置锁屏密码" />
+                android:text="隐私设置" />
 
             <ImageView style="@style/rightImageStyle" />
         </RelativeLayout>
@@ -114,31 +114,6 @@
                 android:text="关于应用" />
 
             <ImageView style="@style/rightImageStyle" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/captureLayout"
-            style="@style/itemLayoutStyle"
-            android:layout_marginTop="15dp">
-
-            <ImageView
-                style="@style/leftImageStyle"
-                android:background="@mipmap/capture" />
-
-            <TextView
-                style="@style/textViewStyle"
-                android:text="允许截屏" />
-
-            <Switch
-                android:id="@+id/captureSwitch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="10dp"
-                android:thumb="@drawable/select_switch_circle"
-                android:track="@drawable/select_switch_background"
-                tools:ignore="UseSwitchCompatOrMaterialXml" />
         </RelativeLayout>
 
         <!--单机应用不需要清除缓存，功能保存，界面暂时隐藏，后续有需求再放开注释-->

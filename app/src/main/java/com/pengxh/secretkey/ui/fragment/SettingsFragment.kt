@@ -19,7 +19,6 @@ import com.pengxh.secretkey.utils.*
 import com.pengxh.secretkey.widgets.InputDialog
 import kotlinx.android.synthetic.main.fragment_settings.*
 import java.io.File
-import kotlin.properties.Delegates
 
 
 /**
@@ -36,17 +35,12 @@ class SettingsFragment : BaseFragment() {
 
     private val dir =
         File(Environment.getExternalStorageDirectory(), "SecretKey").toString() + File.separator
-    private var captureSwitchStatus by Delegates.notNull<Boolean>()
     private lateinit var path: String
 
     override fun initLayoutView(): Int = R.layout.fragment_settings
 
     override fun initData() {
         settingsTitle.text = "设置中心"
-
-        //默认不让截屏
-        captureSwitchStatus = SaveKeyValues.getValue("captureSwitchStatus", false) as Boolean
-        captureSwitch.isChecked = captureSwitchStatus
     }
 
     override fun initEvent() {
@@ -125,29 +119,6 @@ class SettingsFragment : BaseFragment() {
          * */
         aboutLayout.setOnClickListener {
             OtherUtils.intentActivity(AboutActivity::class.java)
-        }
-
-        /**
-         * 截屏开关Layout
-         * */
-        captureLayout.setOnClickListener {
-            AlertDialog.Builder(context)
-                .setIcon(R.mipmap.ic_launcher)
-                .setTitle("温馨提示")
-                .setMessage("截屏开关切换后需要重启应用才能生效")
-                .setCancelable(true)
-                .setPositiveButton("知道了", null)
-                .create().show()
-        }
-        /**
-         * 截屏状态开关
-         * */
-        captureSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                SaveKeyValues.putValue("captureSwitchStatus", true)
-            } else {
-                SaveKeyValues.putValue("captureSwitchStatus", false)
-            }
         }
 
         /**

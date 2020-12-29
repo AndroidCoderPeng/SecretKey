@@ -1,6 +1,7 @@
 package com.pengxh.secretkey
 
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.gyf.immersionbar.ImmersionBar
@@ -16,18 +17,30 @@ import com.pengxh.secretkey.utils.StatusBarColorUtil
  */
 abstract class BaseActivity : AppCompatActivity() {
 
+    companion object {
+        private const val Tag = "BaseActivity"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val captureSwitchStatus = SaveKeyValues.getValue("captureSwitchStatus", false) as Boolean
-        if (!captureSwitchStatus) {
-            //禁止截屏
-            window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
-        }
         setContentView(initLayoutView())
         StatusBarColorUtil.setColor(this, ColorHelper.getXmlColor(this, R.color.colorAccent))
         ImmersionBar.with(this).init()
         initData()
         initEvent()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val captureSwitchStatus = SaveKeyValues.getValue("captureSwitchStatus", false) as Boolean
+        if (!captureSwitchStatus) {
+            //禁止截屏
+            window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+        } else {
+            //清除截屏
+            Log.d(Tag, "清除禁止截屏设置")
+            window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+        }
     }
 
     /**

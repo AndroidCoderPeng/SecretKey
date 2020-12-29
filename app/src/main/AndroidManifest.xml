@@ -30,6 +30,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.EmptyActivity" />
         <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.PasswordSetActivity" />
         <activity android:name=".ui.PasswordCheckActivity" />

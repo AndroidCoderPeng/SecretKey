@@ -9,6 +9,7 @@ import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.OtherUtils
 import kotlinx.android.synthetic.main.activity_password_mode.*
 import kotlinx.android.synthetic.main.include_title_cyan.*
+import kotlin.properties.Delegates
 
 /**
  * @author: Pengxh
@@ -18,16 +19,35 @@ import kotlinx.android.synthetic.main.include_title_cyan.*
  */
 class PasswordModeActivity : BaseActivity() {
 
+    private var captureSwitchStatus by Delegates.notNull<Boolean>()
+
     override fun initLayoutView(): Int = R.layout.activity_password_mode
 
     override fun initData() {
         mTitleView.text = "设置解锁方式"
+
+
+        //默认不让截屏
+        captureSwitchStatus = SaveKeyValues.getValue("captureSwitchStatus", false) as Boolean
+        captureSwitch.isChecked = captureSwitchStatus
     }
 
     /**
      * 解锁方式切换，事件相互独立，有且只能有一种解锁方式
      * */
     override fun initEvent() {
+        /**
+         * 截屏状态开关
+         * */
+        captureSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                SaveKeyValues.putValue("captureSwitchStatus", true)
+            } else {
+                SaveKeyValues.putValue("captureSwitchStatus", false)
+            }
+            startActivity(Intent(this, EmptyActivity::class.java))
+        }
+
         numberSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 gestureSwitch.isChecked = false
