@@ -104,7 +104,7 @@ class SecretDetailActivity : BaseActivity() {
                                 finish()
                             }
                         }
-                    }).build().show(supportFragmentManager, "fingerprint")
+                    }).build().show(supportFragmentManager, "modifyPassword")
             }
         })
         secretListView.setMenuCreator { menu ->

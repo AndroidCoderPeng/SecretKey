@@ -1,11 +1,14 @@
 package com.pengxh.secretkey.utils
 
+import android.annotation.SuppressLint
 import com.pengxh.secretkey.R
 import net.sourceforge.pinyin4j.PinyinHelper
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat
 import net.sourceforge.pinyin4j.format.HanyuPinyinToneType
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.regex.Pattern
 
 class StringHelper {
@@ -24,6 +27,12 @@ class StringHelper {
         fun isNumber(s: String): Boolean {
             val numberPattern: Pattern = Pattern.compile("^[0-9]*\$")//判断数字
             return numberPattern.matcher(s).matches()
+        }
+
+        @SuppressLint("SimpleDateFormat")
+        fun formatDate(): String {
+            val format = SimpleDateFormat("yyyyMMdd")
+            return format.format(Date())
         }
 
         /**
