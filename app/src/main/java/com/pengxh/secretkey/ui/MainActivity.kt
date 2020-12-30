@@ -12,6 +12,7 @@ import com.pengxh.secretkey.bean.SecretBean
 import com.pengxh.secretkey.ui.fragment.HomePageFragment
 import com.pengxh.secretkey.ui.fragment.SecretListFragment
 import com.pengxh.secretkey.ui.fragment.SettingsFragment
+import com.pengxh.secretkey.utils.ActivityManager
 import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.ExcelHelper
 import kotlinx.android.synthetic.main.activity_main.*
@@ -29,6 +30,7 @@ class MainActivity : BaseActivity() {
     override fun initLayoutView(): Int = R.layout.activity_main
 
     override fun initData() {
+        ActivityManager.manager.addActivity(this)
         fragmentList = ArrayList()
         fragmentList.add(HomePageFragment())
         fragmentList.add(SecretListFragment())
