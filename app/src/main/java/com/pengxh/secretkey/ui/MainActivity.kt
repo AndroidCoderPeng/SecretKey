@@ -1,10 +1,14 @@
 package com.pengxh.secretkey.ui
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
 import android.os.Environment
 import android.util.Log
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
+import com.pengxh.app.multilib.utils.BroadcastManager
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.ViewPagerAdapter
@@ -12,7 +16,6 @@ import com.pengxh.secretkey.bean.SecretBean
 import com.pengxh.secretkey.ui.fragment.HomePageFragment
 import com.pengxh.secretkey.ui.fragment.SecretListFragment
 import com.pengxh.secretkey.ui.fragment.SettingsFragment
-import com.pengxh.secretkey.utils.ActivityManager
 import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.ExcelHelper
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,11 +29,11 @@ class MainActivity : BaseActivity() {
 
     private var menuItem: MenuItem? = null
     private lateinit var fragmentList: ArrayList<Fragment>
+    private lateinit var manager: BroadcastManager
 
     override fun initLayoutView(): Int = R.layout.activity_main
 
     override fun initData() {
-        ActivityManager.manager.addActivity(this)
         fragmentList = ArrayList()
         fragmentList.add(HomePageFragment())
         fragmentList.add(SecretListFragment())
@@ -38,6 +41,16 @@ class MainActivity : BaseActivity() {
 
         //初始化数据文件夹和文件
         initExcelDemo()
+        manager = BroadcastManager.getInstance(this)
+        manager.addAction("finishActivity", object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                val action = intent!!.action
+                if (action != null) {
+                    Log.d(Tag, "回到桌面，结束APP")
+                    finish()
+                }
+            }
+        })
     }
 
     private fun initExcelDemo() {
@@ -99,5 +112,10 @@ class MainActivity : BaseActivity() {
                 menuItem!!.isChecked = true
             }
         })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        manager.destroy("finishActivity")
     }
 }

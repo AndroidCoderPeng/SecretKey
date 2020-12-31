@@ -9,9 +9,9 @@ import com.baidu.ocr.sdk.OCR
 import com.baidu.ocr.sdk.OnResultListener
 import com.baidu.ocr.sdk.exception.OCRError
 import com.baidu.ocr.sdk.model.AccessToken
+import com.pengxh.app.multilib.utils.BroadcastManager
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
-import com.pengxh.secretkey.utils.ActivityManager
 import com.pengxh.secretkey.utils.OtherUtils
 import kotlin.properties.Delegates
 
@@ -88,7 +88,7 @@ class BaseApplication : Application(), Application.ActivityLifecycleCallbacks {
         if (level == ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN) {
             isBackground = true
             Log.d(Tag, "APP回到桌面")
-            ActivityManager.manager.removeActivity("ui.MainActivity")
+            BroadcastManager.getInstance(this).sendBroadcast("finishActivity", "")
         }
     }
 }
