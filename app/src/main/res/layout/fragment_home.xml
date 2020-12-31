@@ -53,7 +53,8 @@
             android:ellipsize="marquee"
             android:marqueeRepeatLimit="marquee_forever"
             android:singleLine="true"
-            android:text="本应用不含任何网络通信功能，密码采用数据库加密存储方式，仅保存在设备上，不会上传到任何网络存储介质，您可以放心使用！如果依旧不放心，可以在您设备飞行模式下使用本应用！" />
+            android:text="本应用不含任何网络通信功能，密码采用数据库加密存储方式，仅保存在设备上，不会上传到任何网络存储介质，您可以放心使用！如果依旧不放心，可以在您设备飞行模式下使用本应用！"
+            android:textColor="@color/colorText" />
     </RelativeLayout>
 
     <!--用户自己保存的密码，分类以九宫格形式展示-->
@@ -67,7 +68,7 @@
             android:layout_height="match_parent"
             android:layout_margin="15dp"
             android:horizontalSpacing="15dp"
-            android:listSelector="#00000000"
+            android:listSelector="@color/black"
             android:numColumns="3"
             android:scrollbars="none"
             android:verticalSpacing="15dp" />

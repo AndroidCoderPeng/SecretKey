@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/mainBackground">
+    android:layout_height="match_parent">
 
     <include
         android:id="@+id/title"
@@ -17,6 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/mainBackground"
             android:orientation="vertical"
             android:paddingBottom="70dp">
 
@@ -66,6 +66,7 @@
                             android:textSize="@dimen/textFontSize" />
 
                         <TextView
+                            android:textColor="@color/colorText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
@@ -73,6 +74,7 @@
                             android:text="点击【文件管理】，选择【内部存储】，在列举出来的文件夹列表里面找到【SecretKey】，然后按照提供的模板格式整理数据导入到密码管家中" />
 
                         <TextView
+                            android:textColor="@color/colorText"
                             android:id="@+id/demoFilePathView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

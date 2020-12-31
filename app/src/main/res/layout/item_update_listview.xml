@@ -24,7 +24,7 @@
         android:layout_below="@id/updateMessage"
         android:layout_marginTop="5dp"
         android:text="2020-11-5"
-        android:textColor="@color/lightGray" />
+        android:textColor="@color/colorText" />
 
     <ImageView style="@style/rightImageStyle" />
 </RelativeLayout>
