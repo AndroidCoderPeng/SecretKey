@@ -2,7 +2,6 @@ package com.pengxh.secretkey.utils
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.text.TextPaint
@@ -37,7 +36,7 @@ class VerticalItemDecoration(
 
         bottomLinePaint = Paint()
         bottomLinePaint.isAntiAlias = true
-        bottomLinePaint.color = Color.LTGRAY
+        bottomLinePaint.color = ColorHelper.getXmlColor(context, R.color.mainBackground)
 
         textPaint = TextPaint()
         textPaint.isAntiAlias = true
@@ -90,7 +89,7 @@ class VerticalItemDecoration(
                 DensityUtil.dp2px(context, 15f).toFloat(),
                 view.bottom.toFloat(),
                 parent.width.toFloat(),
-                view.bottom + 1.toFloat(),
+                view.bottom + 1.5f,
                 bottomLinePaint
             )
         }
