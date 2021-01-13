@@ -114,7 +114,7 @@ class VerticalItemDecoration(
             preGroupId = groupId
             groupId = callback.getGroupTag(position)
             if (groupId < 0 || groupId == preGroupId) continue
-            val firstLetter = callback.getGroupFirstLetter(position).toUpperCase(Locale.ROOT)
+            val firstLetter = callback.getGroupFirstLetter(position)?.toUpperCase(Locale.ROOT)
             if (TextUtils.isEmpty(firstLetter)) continue
             val viewBottom = view.bottom
             var textY = Math.max(topGap, view.top).toFloat()
@@ -125,12 +125,14 @@ class VerticalItemDecoration(
                 }
             }
             c.drawRect(0f, textY - topGap, right.toFloat(), textY, topLinePaint)
-            c.drawText(
-                firstLetter,
-                left.toFloat(),
-                textY - DensityUtil.dp2px(context, 7f),
-                textPaint
-            )
+            if (firstLetter != null) {
+                c.drawText(
+                    firstLetter,
+                    left.toFloat(),
+                    textY - DensityUtil.dp2px(context, 7f),
+                    textPaint
+                )
+            }
         }
     }
 

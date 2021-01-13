@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
+import com.pengxh.app.multilib.utils.DensityUtil
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
@@ -42,10 +43,12 @@ class AddSecretActivity : BaseActivity() {
     }
 
     override fun initEvent() {
-        val adapter: ArrayAdapter<String> =
+        val spinnerAdapter: ArrayAdapter<String> =
             ArrayAdapter(this, android.R.layout.simple_spinner_item, Constant.category)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        categorySpinner.adapter = adapter
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        categorySpinner.dropDownVerticalOffset = DensityUtil.dp2px(this, 40.0f)
+        categorySpinner.dropDownWidth = DensityUtil.dp2px(this, 90.0f)
+        categorySpinner.adapter = spinnerAdapter
         categorySpinner.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, pos: Int, id: Long) {
                 category = Constant.category[pos]

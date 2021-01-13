@@ -153,9 +153,14 @@ class SecretListFragment : BaseFragment() {
     }
 
     private fun initPopupWindow(letters: ArrayList<String>, allData: ArrayList<SecretBean>) {
-        val layoutInflater = LayoutInflater.from(context)
-        val rootView: View = layoutInflater.inflate(R.layout.fragment_secretlist, null)
-        val contentView: View = layoutInflater.inflate(R.layout.layout_popup, null)
+        var layoutInflater: LayoutInflater? = null
+        try {
+            layoutInflater = LayoutInflater.from(context)
+        } catch (e: NullPointerException) {
+            e.printStackTrace()
+        }
+        val rootView: View? = layoutInflater?.inflate(R.layout.fragment_secretlist, null)
+        val contentView: View? = layoutInflater?.inflate(R.layout.layout_popup, null)
         val popupWindow = PopupWindow(
             contentView,
             ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -163,7 +168,7 @@ class SecretListFragment : BaseFragment() {
             false
         )
         popupWindow.contentView = contentView
-        val letterView = contentView.findViewById<TextView>(R.id.letterView)
+        val letterView = contentView?.findViewById<TextView>(R.id.letterView)
         val countDownTimer: CountDownTimer = object : CountDownTimer(1000, 1000) {
             override fun onTick(millisUntilFinished: Long) {}
             override fun onFinish() {
@@ -175,7 +180,9 @@ class SecretListFragment : BaseFragment() {
         slideBarView.setOnIndexChangeListener(object : SlideBarView.OnIndexChangeListener {
             override fun onIndexChange(letter: String?) {
                 //在屏幕中间放大显示被按到的字母
-                letterView.text = letter
+                if (letterView != null) {
+                    letterView.text = letter
+                }
                 popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0)
                 countDownTimer.start()
                 //根据滑动显示的字母索引到城市名字第一个汉字
