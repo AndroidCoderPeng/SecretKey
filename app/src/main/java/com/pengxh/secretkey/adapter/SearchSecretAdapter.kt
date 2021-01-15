@@ -25,8 +25,10 @@ class SearchSecretAdapter(ctx: Context, list: MutableList<SecretBean>) :
     private var beanList: MutableList<SecretBean> = list
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        return ItemViewHolder(LayoutInflater.from(context)
-            .inflate(R.layout.item_search_recycleview, parent, false))
+        return ItemViewHolder(
+            LayoutInflater.from(context)
+                .inflate(R.layout.item_search_recycleview, parent, false)
+        )
     }
 
     override fun getItemCount(): Int = beanList.size
@@ -38,12 +40,19 @@ class SearchSecretAdapter(ctx: Context, list: MutableList<SecretBean>) :
         holder.secretPassword.text = secretBean.secretPassword
         holder.secretRemarks.text = secretBean.secretRemarks
 
+        //账号密码长按事件
+        holder.secretAccount.setOnLongClickListener {
+            itemClickListener!!.onAccountLongPressed(position)
+            true
+        }
+        holder.secretPassword.setOnLongClickListener {
+            itemClickListener!!.onPasswordLongPressed(position)
+            true
+        }
+
         //点击事件
         holder.shareTextView.setOnClickListener {
             itemClickListener!!.onShareViewClicked(position)
-        }
-        holder.copyTextView.setOnClickListener {
-            itemClickListener!!.onCopyViewClicked(position)
         }
         holder.visibleView.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
@@ -64,11 +73,14 @@ class SearchSecretAdapter(ctx: Context, list: MutableList<SecretBean>) :
 
         //以下控件需要绑定点击事件
         var shareTextView: TextView = itemView!!.findViewById(R.id.shareTextView)
-        var copyTextView: TextView = itemView!!.findViewById(R.id.copyTextView)
         var visibleView: ToggleButton = itemView!!.findViewById(R.id.visibleView)
     }
 
     interface OnChildViewClickListener {
+        fun onAccountLongPressed(index: Int)
+
+        fun onPasswordLongPressed(index: Int)
+
         fun onShareViewClicked(index: Int)
 
         fun onCopyViewClicked(index: Int)

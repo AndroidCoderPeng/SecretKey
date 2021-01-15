@@ -28,40 +28,25 @@
                 android:textColor="@color/colorText"
                 android:textSize="@dimen/textFontSize" />
 
-            <EditText
+            <TextView
                 android:id="@+id/secretTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@id/shareTextView"
                 android:layout_toEndOf="@id/v"
-                android:background="@null"
-                android:enabled="false"
                 android:singleLine="true"
                 android:text="淘宝"
                 android:textColor="@color/colorText"
                 android:textSize="@dimen/textFontSize" />
 
             <TextView
-                android:id="@+id/copyTextView"
+                android:id="@+id/shareTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="15dp"
-                android:drawableTop="@drawable/ic_copy"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:text="复制"
-                android:textSize="10sp" />
-
-            <TextView
-                android:id="@+id/shareTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="15dp"
-                android:layout_toStartOf="@id/copyTextView"
+                android:layout_marginEnd="10dp"
                 android:drawableTop="@drawable/ic_share"
                 android:gravity="center"
                 android:text="分享"
@@ -84,12 +69,10 @@
                 android:textColor="@color/colorText"
                 android:textSize="@dimen/textFontSize" />
 
-            <EditText
+            <TextView
                 android:id="@+id/secretAccount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:enabled="false"
                 android:singleLine="true"
                 android:text="ABC"
                 android:textColor="@color/colorText"
@@ -120,7 +103,9 @@
                 android:layout_toStartOf="@id/visibleView"
                 android:layout_toEndOf="@id/vv"
                 android:background="@null"
-                android:enabled="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:inputType="textPassword"
                 android:singleLine="true"
                 android:text="123456789"
@@ -161,8 +146,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/vvv"
-                android:background="@null"
-                android:enabled="false"
                 android:singleLine="true"
                 android:text="淘宝账号"
                 android:textColor="@color/colorText"

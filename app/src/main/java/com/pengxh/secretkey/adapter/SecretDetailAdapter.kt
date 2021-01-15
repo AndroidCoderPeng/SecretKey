@@ -51,12 +51,19 @@ class SecretDetailAdapter(ctx: Context, list: MutableList<SecretBean>) : BaseSwi
         holder.secretPassword.text = secretBean.secretPassword
         holder.secretRemarks.text = secretBean.secretRemarks
 
+        //账号密码长按事件
+        holder.secretAccount.setOnLongClickListener {
+            itemClickListener!!.onAccountLongPressed(position)
+            true
+        }
+        holder.secretPassword.setOnLongClickListener {
+            itemClickListener!!.onPasswordLongPressed(position)
+            true
+        }
+
         //点击事件
         holder.shareTextView.setOnClickListener {
             itemClickListener!!.onShareViewClicked(position)
-        }
-        holder.copyTextView.setOnClickListener {
-            itemClickListener!!.onCopyViewClicked(position)
         }
         holder.modifyTextView.setOnClickListener {
             itemClickListener!!.onModifyViewClicked(position)
@@ -81,15 +88,16 @@ class SecretDetailAdapter(ctx: Context, list: MutableList<SecretBean>) : BaseSwi
 
         //以下控件需要绑定点击事件
         var shareTextView: TextView = itemView.findViewById(R.id.shareTextView)
-        var copyTextView: TextView = itemView.findViewById(R.id.copyTextView)
         var modifyTextView: TextView = itemView.findViewById(R.id.modifyTextView)
         var visibleView: ToggleButton = itemView.findViewById(R.id.visibleView)
     }
 
     interface OnChildViewClickListener {
-        fun onShareViewClicked(index: Int)
+        fun onAccountLongPressed(index: Int)
 
-        fun onCopyViewClicked(index: Int)
+        fun onPasswordLongPressed(index: Int)
+
+        fun onShareViewClicked(index: Int)
 
         fun onModifyViewClicked(index: Int)
     }

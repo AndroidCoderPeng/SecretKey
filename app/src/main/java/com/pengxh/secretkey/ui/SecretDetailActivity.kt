@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import cn.bertsir.zbar.utils.QRUtils
+import com.google.android.material.snackbar.Snackbar
 import com.pengxh.app.multilib.utils.DensityUtil
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.app.multilib.widget.swipemenu.SwipeMenuItem
@@ -36,6 +37,7 @@ class SecretDetailActivity : BaseActivity() {
     }
 
     private val context = this
+    private lateinit var clipboardManager: ClipboardManager
     private lateinit var sqLiteUtil: SQLiteUtil
     private lateinit var secretList: MutableList<SecretBean>
 
@@ -45,12 +47,17 @@ class SecretDetailActivity : BaseActivity() {
         val category = intent.getStringExtra("mode")
         mTitleView.text = category
 
+        clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         sqLiteUtil = SQLiteUtil()
         secretList = sqLiteUtil.loadCategory(category!!)
     }
 
     override fun initEvent() {
         initUI(secretList)
+
+        val snackBar = Snackbar.make(linearLayout, "长按账号和密码复制哦~", Snackbar.LENGTH_LONG)
+        snackBar.setAction("知道了") { snackBar.dismiss() }
+        snackBar.show()
     }
 
     override fun onResume() {
@@ -59,6 +66,20 @@ class SecretDetailActivity : BaseActivity() {
         secretListView.adapter = secretDetailAdapter
         secretDetailAdapter.setOnItemClickListener(object :
             SecretDetailAdapter.OnChildViewClickListener {
+            override fun onAccountLongPressed(index: Int) {
+                val secretBean = secretList[index]
+                val cipData = ClipData.newPlainText("secretAccount", secretBean.secretAccount)
+                clipboardManager.setPrimaryClip(cipData)
+                EasyToast.showToast("账号复制成功", EasyToast.SUCCESS)
+            }
+
+            override fun onPasswordLongPressed(index: Int) {
+                val secretBean = secretList[index]
+                val cipData = ClipData.newPlainText("secretPassword", secretBean.secretPassword)
+                clipboardManager.setPrimaryClip(cipData)
+                EasyToast.showToast("密码复制成功", EasyToast.SUCCESS)
+            }
+
             override fun onShareViewClicked(index: Int) {
                 val secretBean = secretList[index]
                 val data = secretBean.secretAccount + "\r\n" + secretBean.secretPassword
@@ -69,18 +90,6 @@ class SecretDetailActivity : BaseActivity() {
                 )
                 ShareDialog.Builder().setContext(context).setDialogTitle("请不要将此二维码随意泄露给他人")
                     .setDialogBitmap(createCodeBitmap).build().show()
-            }
-
-            override fun onCopyViewClicked(index: Int) {
-                //复制的数据需要精练
-                val secretBean = secretList[index]
-                val data = secretBean.secretAccount + "\r\n" + secretBean.secretPassword
-                val clipboard: ClipboardManager =
-                    getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                val cipData = ClipData.newPlainText("Secret", data)
-                // 将ClipData内容放到系统剪贴板里。
-                clipboard.setPrimaryClip(cipData)
-                EasyToast.showToast("账号密码复制成功", EasyToast.SUCCESS)
             }
 
             override fun onModifyViewClicked(index: Int) {
