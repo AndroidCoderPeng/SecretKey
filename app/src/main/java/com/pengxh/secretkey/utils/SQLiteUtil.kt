@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
+import com.pengxh.app.multilib.utils.BroadcastManager
 import com.pengxh.secretkey.BaseApplication
 import com.pengxh.secretkey.bean.SecretBean
 import java.util.*
@@ -21,6 +22,7 @@ class SQLiteUtil {
 
     private val db: SQLiteDatabase
     private var context: Context = BaseApplication.instance()
+    private val manager: BroadcastManager
 
     /**
      * 数据库名
@@ -40,6 +42,8 @@ class SQLiteUtil {
     init {
         val mSqLiteUtilHelper = SQLiteUtilHelper(context, databaseName, null, databaseVersion)
         db = mSqLiteUtilHelper.writableDatabase
+        //通知列表页更新数据
+        manager = BroadcastManager.getInstance(context)
     }
 
 
@@ -67,6 +71,8 @@ class SQLiteUtil {
             Log.d(Tag, secretCategory + "，" + secretAccount + "更新密码")
             updateSecret(secretTitle, secretAccount, secretPassword)
         }
+        //通知列表页更新数据
+        manager.sendBroadcast(Constant.ACTION_UPDATE, "updateData")
     }
 
     /**
@@ -80,6 +86,8 @@ class SQLiteUtil {
             Log.d(Tag, secretAccount + "更新密码")
             db.update(tableName, values, "secretAccount = ?", arrayOf(secretAccount))
         }
+        //通知列表页更新数据
+        manager.sendBroadcast(Constant.ACTION_UPDATE, "updateData")
     }
 
     /**
@@ -118,6 +126,8 @@ class SQLiteUtil {
      * */
     fun deleteSecret(title: String, account: String) {
         db.delete(tableName, "secretTitle = ? and secretAccount = ?", arrayOf(title, account))
+        //通知列表页更新数据
+        manager.sendBroadcast(Constant.ACTION_UPDATE, "updateData")
     }
 
     /**
