@@ -85,6 +85,7 @@
             app:backgroundTint="@color/colorAccent"
             app:borderWidth="0dp"
             app:elevation="10dp"
-            app:fabSize="mini" />
+            app:fabSize="auto"
+            app:rippleColor="@color/rippleColor" />
     </RelativeLayout>
 </LinearLayout>

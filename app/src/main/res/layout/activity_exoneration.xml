@@ -7,11 +7,6 @@
 
     <include layout="@layout/include_title_cyan" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/lineViewHeight"
-        android:background="@color/lightGray" />
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

@@ -16,7 +16,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="35dp">
+            android:layout_height="40dp">
 
             <TextView
                 android:id="@+id/v"
@@ -68,15 +68,11 @@
                 android:textSize="10sp" />
         </RelativeLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/lineViewHeight"
-            android:layout_marginHorizontal="10dp"
-            android:background="@color/mainBackground" />
+        <View style="@style/dividerLineStyle" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="10dp">
@@ -100,15 +96,11 @@
                 android:textSize="@dimen/textFontSize" />
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/lineViewHeight"
-            android:layout_marginHorizontal="10dp"
-            android:background="@color/mainBackground" />
+        <View style="@style/dividerLineStyle" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="35dp">
+            android:layout_height="40dp">
 
             <TextView
                 android:id="@+id/vv"
@@ -147,15 +139,11 @@
                 android:textOn="" />
         </RelativeLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/lineViewHeight"
-            android:layout_marginHorizontal="10dp"
-            android:background="@color/mainBackground" />
+        <View style="@style/dividerLineStyle" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="35dp">
+            android:layout_height="40dp">
 
             <TextView
                 android:id="@+id/vvv"

@@ -83,9 +83,6 @@ class SecretDetailActivity : BaseActivity() {
                 EasyToast.showToast("账号密码复制成功", EasyToast.SUCCESS)
             }
 
-            /**
-             * 遗留问题：修改密码后无法立即生效，焦点（生命周期）问题
-             * */
             override fun onModifyViewClicked(index: Int) {
                 InputDialog.Builder().setContext(context).setDialogTitle("修改密码")
                     .setDialogMessage("请输入您的新密码")
