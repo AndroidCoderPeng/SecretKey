@@ -93,7 +93,7 @@ class SecretDetailActivity : BaseActivity() {
             }
 
             override fun onModifyViewClicked(index: Int) {
-                InputDialog.Builder().setContext(context).setDialogTitle("修改密码")
+                InputDialog.Builder().setContext(context).setDialogTitle("修改账号信息")
                     .setDialogMessage("请输入您的新密码")
                     .setOnDialogClickListener(object : InputDialog.DialogClickListener {
                         override fun onConfirmClicked(input: String) {

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
@@ -41,9 +42,11 @@ class InputDialog private constructor(builder: Builder) : DialogFragment() {
         setStyle(STYLE_NO_TITLE, R.style.InputDialogStyle)
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
+    override fun onCreateView(
+        inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
+        savedInstanceState: Bundle?
+    ): View? {
         val window = dialog?.window!!
         window.decorView.setPadding(30, 0, 30, 0)
         val lp = window.attributes
@@ -60,8 +63,8 @@ class InputDialog private constructor(builder: Builder) : DialogFragment() {
         mDialogTitle.text = title
         mInputHint.hint = hintMessage
 
-        val mDialogConfirm: TextView = mRootView!!.findViewById(R.id.mDialogConfirm)
-        mDialogConfirm.setOnClickListener {
+        val confirmButton: Button = mRootView!!.findViewById(R.id.confirmButton)
+        confirmButton.setOnClickListener {
             dialogListener!!.onConfirmClicked(mInputHint.text.toString())
             dismiss()
         }
