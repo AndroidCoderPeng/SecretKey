@@ -68,7 +68,6 @@ class SQLiteUtil {
             db.insert(tableName, null, values)
         } else {
             //批量导入可能会有重复的，需要更新数据
-            Log.d(Tag, secretCategory + "，" + secretAccount + "更新密码")
             updateSecret(secretTitle, secretAccount, secretPassword)
         }
         //通知列表页更新数据
@@ -79,12 +78,16 @@ class SQLiteUtil {
      * 更新密码
      * */
     fun updateSecret(secretTitle: String, secretAccount: String, secretPassword: String) {
+        Log.d(Tag, secretAccount + "更新密码")
         val values = ContentValues()
         values.put("secretPassword", SecretHelper.encode(secretPassword))
         if (isSecretExist(secretTitle, secretAccount)) {
-            //更新密码
-            Log.d(Tag, secretAccount + "更新密码")
-            db.update(tableName, values, "secretAccount = ?", arrayOf(secretAccount))
+            db.update(
+                tableName,
+                values,
+                "secretTitle = ? and secretAccount = ?",
+                arrayOf(secretTitle, secretAccount)
+            )
         }
         //通知列表页更新数据
         manager.sendBroadcast(Constant.ACTION_UPDATE, "updateData")

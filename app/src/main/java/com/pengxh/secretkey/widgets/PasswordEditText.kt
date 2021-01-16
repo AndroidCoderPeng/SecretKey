@@ -18,7 +18,7 @@ import com.pengxh.secretkey.R
  * @description: TODO
  * @date: 2020/7/27 15:29
  */
-class PasswordEditText @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
+class PasswordEditText constructor(context: Context, attrs: AttributeSet? = null) :
     AppCompatEditText(context, attrs) {
     /**
      * 密码的画笔
@@ -190,22 +190,28 @@ class PasswordEditText @JvmOverloads constructor(context: Context, attrs: Attrib
         // 密码的颜色
         mPasswordColor = array.getColor(R.styleable.PasswordEditText_passwordColor, mPasswordColor)
         // 密码圆点的半径
-        mPasswordRadius = array.getDimension(R.styleable.PasswordEditText_passwordRadius,
-            DensityUtil.dp2px(context, mPasswordRadius.toFloat()).toFloat()).toInt()
+        mPasswordRadius = array.getDimension(
+            R.styleable.PasswordEditText_passwordRadius,
+            DensityUtil.dp2px(context, mPasswordRadius.toFloat()).toFloat()
+        ).toInt()
         // 密码的个数
         mPasswordNumber =
             array.getInteger(R.styleable.PasswordEditText_passwordNumber, mPasswordNumber)
 
         // 间隔线大小
-        mDivisionLineSize = array.getDimension(R.styleable.PasswordEditText_divisionLineSize,
-            DensityUtil.dp2px(context, mDivisionLineSize.toFloat()).toFloat()).toInt()
+        mDivisionLineSize = array.getDimension(
+            R.styleable.PasswordEditText_divisionLineSize,
+            DensityUtil.dp2px(context, mDivisionLineSize.toFloat()).toFloat()
+        ).toInt()
         // 间隔线的颜色
         mDivisionLineColor =
             array.getColor(R.styleable.PasswordEditText_divisionLineColor, mDivisionLineColor)
 
         // 边框的厚度
-        mBorderStrokeSize = array.getDimension(R.styleable.PasswordEditText_bgSize,
-            DensityUtil.dp2px(context, mBorderStrokeSize.toFloat()).toFloat()).toInt()
+        mBorderStrokeSize = array.getDimension(
+            R.styleable.PasswordEditText_bgSize,
+            DensityUtil.dp2px(context, mBorderStrokeSize.toFloat()).toFloat()
+        ).toInt()
         // 边框的圆角
         mBorderCorner = array.getDimension(R.styleable.PasswordEditText_bgCorner, 0f).toInt()
         // 获取边框的颜色
@@ -215,8 +221,10 @@ class PasswordEditText @JvmOverloads constructor(context: Context, attrs: Attrib
         mUnderlineColor =
             array.getColor(R.styleable.PasswordEditText_underlineColor, mUnderlineColor)
         // 下划线的厚度
-        mUnderlineSize = array.getDimension(R.styleable.PasswordEditText_underlineSize,
-            DensityUtil.dp2px(context, mUnderlineSize.toFloat()).toFloat()).toInt()
+        mUnderlineSize = array.getDimension(
+            R.styleable.PasswordEditText_underlineSize,
+            DensityUtil.dp2px(context, mUnderlineSize.toFloat()).toFloat()
+        ).toInt()
 
         // 样式类型
         mBgStyle = array.getInteger(R.styleable.PasswordEditText_bgStyle, BACKGROUND_STYLE_BORDER)
@@ -264,10 +272,12 @@ class PasswordEditText @JvmOverloads constructor(context: Context, attrs: Attrib
             val cy = height / 2
             val cx =
                 mBorderStrokeSize + i * mPasswordItemWidth + i * mDivisionLineSize + mPasswordItemWidth / 2
-            canvas.drawCircle(cx.toFloat(),
+            canvas.drawCircle(
+                cx.toFloat(),
                 cy.toFloat(),
                 mPasswordRadius.toFloat(),
-                mPasswordPaint!!)
+                mPasswordPaint!!
+            )
         }
     }
 
@@ -279,11 +289,13 @@ class PasswordEditText @JvmOverloads constructor(context: Context, attrs: Attrib
             val startX = mBorderStrokeSize + (i + 1) * mPasswordItemWidth + i * mDivisionLineSize
             val startY = mBorderStrokeSize
             val endY = height - mBorderStrokeSize
-            canvas.drawLine(startX.toFloat(),
+            canvas.drawLine(
+                startX.toFloat(),
                 startY.toFloat(),
                 startX.toFloat(),
                 endY.toFloat(),
-                mDivisionLinePaint)
+                mDivisionLinePaint
+            )
         }
     }
 
@@ -291,19 +303,23 @@ class PasswordEditText @JvmOverloads constructor(context: Context, attrs: Attrib
      * 绘制背景
      */
     private fun drawBg(canvas: Canvas) {
-        val rect = RectF(mBorderStrokeSize.toFloat(),
+        val rect = RectF(
+            mBorderStrokeSize.toFloat(),
             mBorderStrokeSize.toFloat(),
             (width - mBorderStrokeSize).toFloat(),
-            (height - mBorderStrokeSize).toFloat())
+            (height - mBorderStrokeSize).toFloat()
+        )
         // 绘制背景  drawRect , drawRoundRect  ,
         // 如果有圆角那么就绘制drawRoundRect，否则绘制drawRect
         if (mBorderCorner == 0) {
             canvas.drawRect(rect, mBorderPaint)
         } else {
-            canvas.drawRoundRect(rect,
+            canvas.drawRoundRect(
+                rect,
                 mBorderCorner.toFloat(),
                 mBorderCorner.toFloat(),
-                mBorderPaint)
+                mBorderPaint
+            )
         }
     }
 
@@ -316,11 +332,13 @@ class PasswordEditText @JvmOverloads constructor(context: Context, attrs: Attrib
             val startY = height - mBorderStrokeSize
             val endX = startX + mUnderlineWidth
             val endY = height - mBorderStrokeSize
-            canvas.drawLine(startX.toFloat(),
+            canvas.drawLine(
+                startX.toFloat(),
                 startY.toFloat(),
                 endX.toFloat(),
                 endY.toFloat(),
-                mUnderlinePaint)
+                mUnderlinePaint
+            )
         }
     }
 
