@@ -18,7 +18,7 @@ import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.SecretDetailAdapter
 import com.pengxh.secretkey.bean.SecretBean
 import com.pengxh.secretkey.utils.SQLiteUtil
-import com.pengxh.secretkey.widgets.InputDialog
+import com.pengxh.secretkey.widgets.InputDialogPlus
 import com.pengxh.secretkey.widgets.ShareDialog
 import kotlinx.android.synthetic.main.activity_secret_detail.*
 import kotlinx.android.synthetic.main.include_title_cyan.*
@@ -40,11 +40,12 @@ class SecretDetailActivity : BaseActivity() {
     private lateinit var clipboardManager: ClipboardManager
     private lateinit var sqLiteUtil: SQLiteUtil
     private lateinit var secretList: MutableList<SecretBean>
+    private var category: String? = null
 
     override fun initLayoutView(): Int = R.layout.activity_secret_detail
 
     override fun initData() {
-        val category = intent.getStringExtra("mode")
+        category = intent.getStringExtra("mode")
         mTitleView.text = category
 
         clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -93,22 +94,25 @@ class SecretDetailActivity : BaseActivity() {
             }
 
             override fun onModifyViewClicked(index: Int) {
-                InputDialog.Builder().setContext(context).setDialogTitle("修改账号信息")
-                    .setDialogMessage("请输入您的新密码")
-                    .setOnDialogClickListener(object : InputDialog.DialogClickListener {
-                        override fun onConfirmClicked(input: String) {
-                            if (input == "") {
+                InputDialogPlus.Builder().setContext(context)
+                    .setCategory(category)
+                    .setOnDialogClickListener(object : InputDialogPlus.DialogClickListener {
+                        override fun onConfirmClicked(
+                            category: String,
+                            password: String,
+                            remarks: String
+                        ) {
+                            if (password == "") {
                                 EasyToast.showToast("不能将密码修改为空值", EasyToast.WARING)
                                 return
-                            } else {
-                                val secretBean = secretList[index]
-                                sqLiteUtil.updateSecret(
-                                    secretBean.secretTitle!!,
-                                    secretBean.secretAccount!!,
-                                    input
-                                )
-                                finish()
                             }
+                            val secretBean = secretList[index]
+                            sqLiteUtil.updateSecret(
+                                secretBean.secretTitle!!,
+                                secretBean.secretAccount!!,
+                                category, password, remarks
+                            )
+                            finish()
                         }
                     }).build().show(supportFragmentManager, "modifyPassword")
             }

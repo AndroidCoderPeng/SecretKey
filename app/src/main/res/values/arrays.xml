@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="category">
+        <item>网站</item>
+        <item>APP </item>
+        <item>游戏</item>
+        <item>银行卡</item>
+        <item>工作</item>
+        <item>邮箱 </item>
+        <item>聊天</item>
+        <item>其他</item>
+    </string-array>
+</resources>

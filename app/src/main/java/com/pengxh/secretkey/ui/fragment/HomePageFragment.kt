@@ -102,7 +102,7 @@ class HomePageFragment : BaseFragment() {
         //密码分类九宫格
         secretGridView.adapter = context?.let { SecretCategoryAdapter(it) }
         secretGridView.setOnItemClickListener { parent, view, position, id ->
-            OtherUtils.intentActivity(SecretDetailActivity::class.java, Constant.category[position])
+            OtherUtils.intentActivity(SecretDetailActivity::class.java, Constant.CATEGORY[position])
         }
     }
 

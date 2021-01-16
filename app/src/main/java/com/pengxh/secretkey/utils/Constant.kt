@@ -9,7 +9,7 @@ import com.pengxh.secretkey.R
  * @date: 2020/8/1 21:57
  */
 object Constant {
-    val images = arrayOf(
+    val IMAGES = arrayOf(
         R.drawable.ic_web,
         R.drawable.ic_app,
         R.drawable.ic_game,
@@ -19,7 +19,7 @@ object Constant {
         R.drawable.ic_chat,
         R.mipmap.other
     )
-    val category = arrayOf("网站", "APP", "游戏", "银行卡", "工作", "邮箱", "聊天", "其他")
+    val CATEGORY = arrayOf("网站", "APP", "游戏", "银行卡", "工作", "邮箱", "聊天", "其他")
 
     const val PASSWORD_MODE = "mode"
 

@@ -44,14 +44,14 @@ class AddSecretActivity : BaseActivity() {
 
     override fun initEvent() {
         val spinnerAdapter: ArrayAdapter<String> =
-            ArrayAdapter(this, android.R.layout.simple_spinner_item, Constant.category)
+            ArrayAdapter(this, android.R.layout.simple_spinner_item, Constant.CATEGORY)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         categorySpinner.dropDownVerticalOffset = DensityUtil.dp2px(this, 40.0f)
         categorySpinner.dropDownWidth = DensityUtil.dp2px(this, 90.0f)
         categorySpinner.adapter = spinnerAdapter
         categorySpinner.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, pos: Int, id: Long) {
-                category = Constant.category[pos]
+                category = Constant.CATEGORY[pos]
                 if (category.equals("银行卡")) {
                     Log.d(Tag, "initEvent: 银行卡")
                     codeScannerView.visibility = View.VISIBLE

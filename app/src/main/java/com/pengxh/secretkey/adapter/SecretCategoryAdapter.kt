@@ -29,9 +29,9 @@ class SecretCategoryAdapter(ctx: Context) : BaseAdapter() {
         sqLiteUtil = SQLiteUtil()
     }
 
-    override fun getCount(): Int = Constant.images.size
+    override fun getCount(): Int = Constant.IMAGES.size
 
-    override fun getItem(position: Int): Any = Constant.images[position]
+    override fun getItem(position: Int): Any = Constant.IMAGES[position]
 
     override fun getItemId(position: Int): Long = position.toLong()
 
@@ -47,10 +47,10 @@ class SecretCategoryAdapter(ctx: Context) : BaseAdapter() {
             view = convertView
             itemViewHolder = view.tag as ItemViewHolder
         }
-        itemViewHolder.secretCover.setImageResource(Constant.images[position])
-        itemViewHolder.secretCategory.text = Constant.category[position]
+        itemViewHolder.secretCover.setImageResource(Constant.IMAGES[position])
+        itemViewHolder.secretCategory.text = Constant.CATEGORY[position]
         itemViewHolder.secretCount.text =
-            "(${sqLiteUtil.loadCategory(Constant.category[position]).size})"
+            "(${sqLiteUtil.loadCategory(Constant.CATEGORY[position]).size})"
         return view
     }
 
