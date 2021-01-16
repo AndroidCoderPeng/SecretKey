@@ -30,7 +30,8 @@ class AddSecretActivity : BaseActivity() {
         const val requestCode = 777
     }
 
-    private var category: String? = null
+    private var intentCategory: String? = null
+    private var selectCategory: String? = null
     private var title: String? = null
     private var account: String? = null
     private var password: String? = null
@@ -40,19 +41,31 @@ class AddSecretActivity : BaseActivity() {
 
     override fun initData() {
         mTitleView.text = "添加密码"
+        intentCategory = intent.getStringExtra("secretCategory")
     }
 
     override fun initEvent() {
-        val spinnerAdapter: ArrayAdapter<String> =
-            ArrayAdapter(this, android.R.layout.simple_spinner_item, Constant.CATEGORY)
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        categorySpinner.dropDownVerticalOffset = DensityUtil.dp2px(this, 40.0f)
-        categorySpinner.dropDownWidth = DensityUtil.dp2px(this, 90.0f)
-        categorySpinner.adapter = spinnerAdapter
+        if (intentCategory == null) {
+            val spinnerAdapter: ArrayAdapter<String> =
+                ArrayAdapter(this, android.R.layout.simple_spinner_item, Constant.CATEGORY)
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            categorySpinner.dropDownVerticalOffset = DensityUtil.dp2px(this, 40.0f)
+            categorySpinner.dropDownWidth = DensityUtil.dp2px(this, 90.0f)
+            categorySpinner.adapter = spinnerAdapter
+        } else {
+            //选中当前分类
+            for (index in 0..Constant.CATEGORY.size) {
+                if (intentCategory == Constant.CATEGORY[index]) {
+                    categorySpinner.setSelection(index, true)
+                    selectCategory = intentCategory
+                    break
+                }
+            }
+        }
         categorySpinner.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, pos: Int, id: Long) {
-                category = Constant.CATEGORY[pos]
-                if (category.equals("银行卡")) {
+                selectCategory = Constant.CATEGORY[pos]
+                if (selectCategory.equals("银行卡")) {
                     Log.d(Tag, "initEvent: 银行卡")
                     codeScannerView.visibility = View.VISIBLE
                     inputAccount.inputType = InputType.TYPE_CLASS_NUMBER
@@ -92,7 +105,7 @@ class AddSecretActivity : BaseActivity() {
             remarks = inputRemarks.text.toString().trim()
 
             //将数据存数据库，然后结束当前页面
-            SQLiteUtil().saveSecret(category!!, title!!, account!!, password!!, remarks)
+            SQLiteUtil().saveSecret(selectCategory!!, title!!, account!!, password!!, remarks)
             this.finish()
         }
     }

@@ -1,10 +1,7 @@
 package com.pengxh.secretkey.ui
 
 import android.app.AlertDialog
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.DialogInterface
+import android.content.*
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
@@ -50,12 +47,9 @@ class SecretDetailActivity : BaseActivity() {
 
         clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         sqLiteUtil = SQLiteUtil()
-        secretList = sqLiteUtil.loadCategory(category!!)
     }
 
     override fun initEvent() {
-        initUI(secretList)
-
         val snackBar = Snackbar.make(linearLayout, "长按账号和密码复制哦~", Snackbar.LENGTH_LONG)
         snackBar.setAction("知道了") { snackBar.dismiss() }
         snackBar.show()
@@ -63,6 +57,9 @@ class SecretDetailActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
+        secretList = sqLiteUtil.loadCategory(category!!)
+        initUI(secretList)
+
         val secretDetailAdapter = SecretDetailAdapter(context, secretList)
         secretListView.adapter = secretDetailAdapter
         secretDetailAdapter.setOnItemClickListener(object :
@@ -149,6 +146,12 @@ class SecretDetailActivity : BaseActivity() {
                     }).create().show()
             }
             false
+        }
+        addSecretFab.attachToListView(secretListView)
+        addSecretFab.setOnClickListener {
+            val intent = Intent(this, AddSecretActivity::class.java)
+            intent.putExtra("secretCategory", category)
+            startActivity(intent)
         }
     }
 

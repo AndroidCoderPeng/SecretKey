@@ -176,19 +176,27 @@ class SecretListFragment : BaseFragment() {
             }
         }
         //将源数据和侧边栏数据都传递给侧边栏View，方便定位index
-        slideBarView.setData(letters, allData)
-        slideBarView.setOnIndexChangeListener(object : SlideBarView.OnIndexChangeListener {
-            override fun onIndexChange(letter: String?) {
-                //在屏幕中间放大显示被按到的字母
-                if (letterView != null) {
-                    letterView.text = letter
+        try {
+            slideBarView.setData(letters, allData)
+            slideBarView.setOnIndexChangeListener(object : SlideBarView.OnIndexChangeListener {
+                override fun onIndexChange(letter: String?) {
+                    //在屏幕中间放大显示被按到的字母
+                    if (letterView != null) {
+                        letterView.text = letter
+                    }
+                    popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0)
+                    countDownTimer.start()
+                    //根据滑动显示的字母索引到城市名字第一个汉字
+                    secretRecyclerView.smoothScrollToPosition(
+                        slideBarView.obtainFirstLetterIndex(
+                            letter!!
+                        )
+                    )
                 }
-                popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0)
-                countDownTimer.start()
-                //根据滑动显示的字母索引到城市名字第一个汉字
-                secretRecyclerView.smoothScrollToPosition(slideBarView.obtainFirstLetterIndex(letter!!))
-            }
-        })
+            })
+        } catch (e: NullPointerException) {
+            e.printStackTrace()
+        }
     }
 
     /**
