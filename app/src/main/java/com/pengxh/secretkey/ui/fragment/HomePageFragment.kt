@@ -115,7 +115,7 @@ class HomePageFragment : BaseFragment() {
                     //重置随机密码
                     resetSecretNumber()
                 } else {
-                    minuteProgressBar.progress = length
+                    minuteProgressBar?.progress = length
                 }
             }
         }, 0, 1) //间隔调最小，这样进度条前进比较平滑
