@@ -1,7 +1,10 @@
 package com.pengxh.secretkey.ui.fragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.os.Handler
+import android.os.Message
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -110,15 +113,25 @@ class HomePageFragment : BaseFragment() {
         object : Timer() {}.schedule(object : TimerTask() {
             override fun run() {
                 length++
-                if (length == 30000) {
+                if (length == 50000) {
                     length = 0
                     //重置随机密码
-                    resetSecretNumber()
+                    handler.sendEmptyMessage(20210302)
                 } else {
                     minuteProgressBar?.progress = length
                 }
             }
         }, 0, 1) //间隔调最小，这样进度条前进比较平滑
+    }
+
+    @SuppressLint("HandlerLeak")
+    private val handler = object : Handler() {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            if (msg.what == 20210302) {
+                resetSecretNumber()
+            }
+        }
     }
 
     private fun resetSecretNumber() {
