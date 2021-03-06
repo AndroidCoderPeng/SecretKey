@@ -6,11 +6,13 @@ import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.ToggleButton
 import com.pengxh.app.multilib.widget.swipemenu.BaseSwipeListAdapter
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.bean.SecretBean
+import com.pengxh.secretkey.widgets.MarqueeTextView
 
 /**
  * @author: Pengxh
@@ -48,7 +50,7 @@ class SecretDetailAdapter(ctx: Context, list: MutableList<SecretBean>) : BaseSwi
         val secretBean = beanList[position]
         holder.secretTitle.text = secretBean.secretTitle
         holder.secretAccount.text = secretBean.secretAccount
-        holder.secretPassword.text = secretBean.secretPassword
+        holder.secretPassword.setText(secretBean.secretPassword)
         holder.secretRemarks.text = secretBean.secretRemarks
 
         //账号密码长按事件
@@ -81,10 +83,10 @@ class SecretDetailAdapter(ctx: Context, list: MutableList<SecretBean>) : BaseSwi
     }
 
     class ItemViewHolder(itemView: View) {
-        var secretTitle: TextView = itemView.findViewById(R.id.secretTitle)
-        var secretAccount: TextView = itemView.findViewById(R.id.secretAccount)
-        var secretPassword: TextView = itemView.findViewById(R.id.secretPassword)
-        var secretRemarks: TextView = itemView.findViewById(R.id.secretRemarks)
+        var secretTitle: MarqueeTextView = itemView.findViewById(R.id.secretTitle)
+        var secretAccount: MarqueeTextView = itemView.findViewById(R.id.secretAccount)
+        var secretPassword: EditText = itemView.findViewById(R.id.secretPassword)
+        var secretRemarks: MarqueeTextView = itemView.findViewById(R.id.secretRemarks)
 
         //以下控件需要绑定点击事件
         var shareTextView: TextView = itemView.findViewById(R.id.shareTextView)

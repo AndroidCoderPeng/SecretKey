@@ -85,8 +85,8 @@ class SecretDetailDialog private constructor(builder: Builder) :
     }
 
     private fun initView() {
-        findViewById<TextView>(R.id.dialogTitle)?.text = title
-        val dialogMessage = findViewById<TextView>(R.id.dialogMessage)
+        findViewById<MarqueeTextView>(R.id.dialogTitle)?.text = title
+        val dialogMessage = findViewById<MarqueeTextView>(R.id.dialogMessage)
         dialogMessage?.text = account
         dialogMessage?.setOnLongClickListener {
             val cipData = ClipData.newPlainText("account", account)
@@ -102,7 +102,7 @@ class SecretDetailDialog private constructor(builder: Builder) :
             EasyToast.showToast("密码复制成功", EasyToast.SUCCESS)
             true
         }
-        findViewById<TextView>(R.id.dialogMarks)?.text = marks
+        findViewById<MarqueeTextView>(R.id.dialogMarks)?.text = marks
         findViewById<ImageView>(R.id.noticeImageView)?.setOnClickListener {
             Toast.makeText(ctx, "长按账号和密码可以复制", Toast.LENGTH_SHORT).show()
         }
