@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingMultiplier="1.3"
-                android:text="\t\t\t\t本应用本意是方便自己，由于作者本人各种账号密码太多太繁杂，又不放心应用市场上面的各种密码管理软件的安全性，所以只能自己动手开发一个功能类似的软件，方便自己。"
+                android:text="\u3000\u3000本应用本意是方便自己，由于作者本人各种账号密码太多太繁杂，又不放心应用市场上面的各种密码管理软件的安全性，所以只能自己动手开发一个功能类似的软件，方便自己。"
                 android:textColor="@color/colorText"
                 android:textSize="@dimen/textFontSize" />
 
