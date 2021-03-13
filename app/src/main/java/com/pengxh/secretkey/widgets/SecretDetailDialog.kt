@@ -1,11 +1,10 @@
 package com.pengxh.secretkey.widgets
 
+import android.animation.ObjectAnimator
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -106,13 +105,11 @@ class SecretDetailDialog private constructor(builder: Builder) :
         findViewById<ImageView>(R.id.noticeImageView)?.setOnClickListener {
             Toast.makeText(ctx, "长按账号和密码可以复制", Toast.LENGTH_SHORT).show()
         }
-
+        //为ImageView添加属性动画
         val warningImageView = findViewById<ImageView>(R.id.warningImageView)
-        val animation = AlphaAnimation(0.1f, 1.0f)
-        animation.duration = 1000
-        animation.repeatCount = Animation.INFINITE
-        animation.repeatMode = Animation.RESTART
-        warningImageView?.animation = animation
-        animation.start()
+        val animator: ObjectAnimator = ObjectAnimator.ofFloat(warningImageView, "alpha", 1f, 0f, 1f)
+        animator.repeatCount = -1
+        animator.duration = 3000
+        animator.start()
     }
 }
