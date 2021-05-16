@@ -15,7 +15,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.pengxh.app.multilib.utils.BroadcastManager
 import com.pengxh.app.multilib.utils.DensityUtil
-import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.FileManagerAdapter
@@ -23,6 +22,7 @@ import com.pengxh.secretkey.bean.SecretBean
 import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.ExcelHelper
 import com.pengxh.secretkey.utils.SQLiteUtil
+import com.pengxh.secretkey.utils.ToastHelper
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import kotlinx.android.synthetic.main.activity_file.*
 import java.io.File
@@ -43,8 +43,7 @@ class FileManagerActivity : BaseActivity() {
         topLayout.setTitle("选择导入文件").setTextColor(ContextCompat.getColor(this, R.color.white))
         topLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.mainThemeColor))
         topLayout.setTitleGravity(Gravity.START)
-        //TODO 换小一点的图标
-        topLayout.addLeftImageButton(R.mipmap.left_white_1, 0).setOnClickListener { finish() }
+        topLayout.addLeftImageButton(R.drawable.ic_left, 0).setOnClickListener { finish() }
     }
 
     override fun initData() {
@@ -89,7 +88,7 @@ class FileManagerActivity : BaseActivity() {
                         it.secretRemarks!!
                     )
                 }
-                EasyToast.showToast("导入成功", EasyToast.SUCCESS)
+                ToastHelper.showToast("导入成功", ToastHelper.SUCCESS)
                 finish()
                 //通知列表页刷新数据
                 BroadcastManager.getInstance(this@FileManagerActivity)

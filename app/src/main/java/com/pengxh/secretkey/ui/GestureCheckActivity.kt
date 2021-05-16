@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.activity_gesture_set.*
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO
  * @date: 2020/7/29 14:58
  */
 class GestureCheckActivity : BaseActivity() {

@@ -11,13 +11,13 @@ import androidx.core.content.ContextCompat
 import cn.bertsir.zbar.utils.QRUtils
 import com.google.android.material.snackbar.Snackbar
 import com.pengxh.app.multilib.utils.DensityUtil
-import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.app.multilib.widget.swipemenu.SwipeMenuItem
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.SecretDetailAdapter
 import com.pengxh.secretkey.bean.SecretBean
 import com.pengxh.secretkey.utils.SQLiteUtil
+import com.pengxh.secretkey.utils.ToastHelper
 import com.pengxh.secretkey.widgets.InputDialogPlus
 import com.pengxh.secretkey.widgets.ShareDialog
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
@@ -70,14 +70,14 @@ class SecretDetailActivity : BaseActivity() {
                 val secretBean = secretList[index]
                 val cipData = ClipData.newPlainText("secretAccount", secretBean.secretAccount)
                 clipboardManager.setPrimaryClip(cipData)
-                EasyToast.showToast("账号复制成功", EasyToast.SUCCESS)
+                ToastHelper.showToast("账号复制成功", ToastHelper.SUCCESS)
             }
 
             override fun onPasswordLongPressed(index: Int) {
                 val secretBean = secretList[index]
                 val cipData = ClipData.newPlainText("secretPassword", secretBean.secretPassword)
                 clipboardManager.setPrimaryClip(cipData)
-                EasyToast.showToast("密码复制成功", EasyToast.SUCCESS)
+                ToastHelper.showToast("密码复制成功", ToastHelper.SUCCESS)
             }
 
             override fun onShareViewClicked(index: Int) {
@@ -102,7 +102,7 @@ class SecretDetailActivity : BaseActivity() {
                             remarks: String
                         ) {
                             if (password == "") {
-                                EasyToast.showToast("不能将密码修改为空值", EasyToast.WARING)
+                                ToastHelper.showToast("不能将密码修改为空值", ToastHelper.WARING)
                                 return
                             }
                             val secretBean = secretList[index]

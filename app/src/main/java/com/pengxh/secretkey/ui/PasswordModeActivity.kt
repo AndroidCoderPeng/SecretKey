@@ -3,18 +3,17 @@ package com.pengxh.secretkey.ui
 import android.content.Intent
 import androidx.core.content.ContextCompat
 import com.pengxh.app.multilib.utils.SaveKeyValues
-import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.OtherUtils
+import com.pengxh.secretkey.utils.ToastHelper
 import kotlinx.android.synthetic.main.activity_password_mode.*
 import kotlin.properties.Delegates
 
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO
  * @date: 2020/7/28 11:04
  */
 class PasswordModeActivity : BaseActivity() {
@@ -77,7 +76,7 @@ class PasswordModeActivity : BaseActivity() {
         fingerprintSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (!OtherUtils.isSupportFingerprint()) {
                 buttonView.isChecked = false
-                EasyToast.showToast("设备不支持指纹识别或者未录入指纹", EasyToast.ERROR)
+                ToastHelper.showToast("设备不支持指纹识别或者未录入指纹", ToastHelper.ERROR)
             } else {
                 if (isChecked) {
                     numberSwitch.isChecked = false

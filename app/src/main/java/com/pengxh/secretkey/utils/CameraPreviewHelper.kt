@@ -19,7 +19,6 @@ import android.view.Surface
 import android.view.TextureView
 import android.view.TextureView.SurfaceTextureListener
 import androidx.core.content.ContextCompat
-import com.pengxh.app.multilib.widget.EasyToast
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -30,7 +29,7 @@ import kotlin.collections.ArrayList
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO 相机部分功能封装
+ * @description: 相机部分功能封装
  * @date: 2020年11月16日19:26:32
  */
 class CameraPreviewHelper(
@@ -105,7 +104,7 @@ class CameraPreviewHelper(
         val mCameraManager = (mContext.getSystemService(Context.CAMERA_SERVICE) as CameraManager)
         val cameraIdList = mCameraManager.cameraIdList
         if (cameraIdList.isEmpty()) {
-            EasyToast.showToast("没有可用相机", EasyToast.WARING)
+            ToastHelper.showToast("没有可用相机", ToastHelper.WARING)
             return
         }
         for (id in cameraIdList) {
@@ -150,7 +149,7 @@ class CameraPreviewHelper(
                 Manifest.permission.CAMERA
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            EasyToast.showToast("没有相机权限", EasyToast.WARING)
+            ToastHelper.showToast("没有相机权限", ToastHelper.WARING)
             return
         }
         mCameraManager.openCamera(mCameraId, object : CameraDevice.StateCallback() {
@@ -170,7 +169,7 @@ class CameraPreviewHelper(
 
             override fun onError(camera: CameraDevice, error: Int) {
                 Log.d(Tag, "onError: " + camera.id)
-                EasyToast.showToast("打开相机失败，错误码：$error", EasyToast.ERROR)
+                ToastHelper.showToast("打开相机失败，错误码：$error", ToastHelper.ERROR)
             }
         }, mPreviewHandler)
     }
@@ -257,7 +256,7 @@ class CameraPreviewHelper(
             }
 
             override fun onConfigureFailed(session: CameraCaptureSession) {
-                EasyToast.showToast("开启预览会话失败！", EasyToast.ERROR)
+                ToastHelper.showToast("开启预览会话失败！", ToastHelper.ERROR)
             }
         }, mPreviewHandler)
     }
@@ -282,7 +281,7 @@ class CameraPreviewHelper(
         ) {
             super.onCaptureFailed(session, request, failure)
             Log.d(Tag, "onCaptureFailed: $failure")
-            EasyToast.showToast("开启预览失败！", EasyToast.ERROR)
+            ToastHelper.showToast("开启预览失败！", ToastHelper.ERROR)
             canTakePic = false
         }
     }

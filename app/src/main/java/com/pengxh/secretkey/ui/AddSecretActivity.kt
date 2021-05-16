@@ -8,16 +8,15 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import com.pengxh.app.multilib.utils.DensityUtil
-import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.SQLiteUtil
+import com.pengxh.secretkey.utils.ToastHelper
 import kotlinx.android.synthetic.main.activity_secret_add.*
 
 
 /**
- * @description: TODO
  * @author: Pengxh
  * @email: 290677893@qq.com
  * @date: 2020/8/1 22:53
@@ -88,19 +87,19 @@ class AddSecretActivity : BaseActivity() {
         saveButton.setOnClickListener {
             title = inputTitle.text.toString().trim()
             if (title == null || title == "") {
-                EasyToast.showToast("标题未填写，请检查", EasyToast.WARING)
+                ToastHelper.showToast("标题未填写，请检查", ToastHelper.WARING)
                 return@setOnClickListener
             }
 
             account = inputAccount.text.toString().trim()
             if (account == null || account == "") {
-                EasyToast.showToast("账号未填写，请检查", EasyToast.WARING)
+                ToastHelper.showToast("账号未填写，请检查", ToastHelper.WARING)
                 return@setOnClickListener
             }
 
             password = inputPassword.text.toString().trim()
             if (password == null || password == "") {
-                EasyToast.showToast("密码未填写，请检查", EasyToast.WARING)
+                ToastHelper.showToast("密码未填写，请检查", ToastHelper.WARING)
                 return@setOnClickListener
             }
             remarks = inputRemarks.text.toString().trim()

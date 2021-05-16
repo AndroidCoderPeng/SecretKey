@@ -14,15 +14,14 @@ import com.baidu.ocr.sdk.model.BankCardResult
 import com.google.gson.Gson
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
-import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.CameraPreviewHelper
 import com.pengxh.secretkey.utils.OtherUtils
+import com.pengxh.secretkey.utils.ToastHelper
 import kotlinx.android.synthetic.main.activity_ocr.*
 import java.io.File
 
 /**
- * @description: TODO
  * @author: Pengxh
  * @email: 290677893@qq.com
  * @date: 2020/11/17 23:13
@@ -66,7 +65,7 @@ class OcrBankCardActivity : BaseNormalActivity(), CameraPreviewHelper.OnCaptureI
                     if (OtherUtils.isNetworkAvailable(this)) {
                         cameraPreviewHelper.takePicture()
                     } else {
-                        EasyToast.showToast("识别失败", EasyToast.ERROR)
+                        ToastHelper.showToast("识别失败", ToastHelper.ERROR)
                     }
                 }
             }
@@ -82,9 +81,9 @@ class OcrBankCardActivity : BaseNormalActivity(), CameraPreviewHelper.OnCaptureI
                 Log.d(TAG, "onResult: " + Gson().toJson(bankCardResult))
                 val bankCardNumber = bankCardResult?.bankCardNumber
                 if (bankCardNumber == "") {
-                    EasyToast.showToast("识别失败", EasyToast.ERROR)
+                    ToastHelper.showToast("识别失败", ToastHelper.ERROR)
                 } else {
-                    EasyToast.showToast("识别成功", EasyToast.SUCCESS)
+                    ToastHelper.showToast("识别成功", ToastHelper.SUCCESS)
                     val intent = Intent()
                     intent.putExtra("bankName", bankCardResult?.bankName)
                     intent.putExtra("bankCardNumber", bankCardNumber)

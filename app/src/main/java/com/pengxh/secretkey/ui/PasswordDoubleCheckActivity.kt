@@ -4,10 +4,10 @@ import android.view.KeyEvent
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.pengxh.app.multilib.utils.SaveKeyValues
-import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.OtherUtils
+import com.pengxh.secretkey.utils.ToastHelper
 import com.pengxh.secretkey.widgets.DigitKeyboard
 import com.pengxh.secretkey.widgets.PasswordEditText
 import kotlinx.android.synthetic.main.activity_password_set.*
@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.activity_password_set.*
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO
  * @date: 2020/7/28 11:01
  */
 class PasswordDoubleCheckActivity : BaseActivity(), DigitKeyboard.DigitKeyboardClickListener,
@@ -59,7 +58,7 @@ class PasswordDoubleCheckActivity : BaseActivity(), DigitKeyboard.DigitKeyboardC
                 OtherUtils.intentActivity(MainActivity::class.java)
                 finish()
             } else {
-                EasyToast.showToast("两次密码不一致，请重新设置", EasyToast.ERROR)
+                ToastHelper.showToast("两次密码不一致，请重新设置", ToastHelper.ERROR)
             }
         }
     }

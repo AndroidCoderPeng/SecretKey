@@ -15,7 +15,6 @@ import com.pengxh.secretkey.R
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO
  * @date: 2020/7/27 15:29
  */
 class PasswordEditText constructor(context: Context, attrs: AttributeSet? = null) :

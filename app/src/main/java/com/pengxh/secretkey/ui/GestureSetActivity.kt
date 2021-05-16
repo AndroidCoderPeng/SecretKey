@@ -12,7 +12,6 @@ import com.pengxh.secretkey.widgets.gesture.GestureLockLayout.OnLockResetListene
 import kotlinx.android.synthetic.main.activity_gesture_set.*
 
 /**
- * @description: TODO
  * @author: Pengxh
  * @email: 290677893@qq.com
  * @date: 2020/7/28 22:29

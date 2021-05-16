@@ -5,42 +5,30 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Handler
 import android.os.Message
-import android.util.Log
-import android.view.KeyEvent
+import android.text.InputType
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import cn.bertsir.zbar.QrConfig
 import cn.bertsir.zbar.QrManager
 import cn.bertsir.zbar.view.ScanLineView
 import com.pengxh.app.multilib.base.BaseFragment
-import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.SecretCategoryAdapter
 import com.pengxh.secretkey.ui.AddSecretActivity
 import com.pengxh.secretkey.ui.SearchEventActivity
 import com.pengxh.secretkey.ui.SecretDetailActivity
-import com.pengxh.secretkey.utils.ColorHelper
-import com.pengxh.secretkey.utils.Constant
-import com.pengxh.secretkey.utils.OtherUtils
-import com.pengxh.secretkey.utils.SQLiteUtil
+import com.pengxh.secretkey.utils.*
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.include_secret_number.*
-import kotlinx.android.synthetic.main.include_title_main.*
 import java.util.*
 
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO
  * @date: 2020年7月24日12:41:36
  */
 class HomePageFragment : BaseFragment() {
-
-    companion object {
-        private const val Tag: String = "HomePageFragment"
-    }
 
     private var length = 0 //进度条初始值
     private lateinit var sqLiteUtil: SQLiteUtil
@@ -54,29 +42,6 @@ class HomePageFragment : BaseFragment() {
     }
 
     override fun initEvent() {
-        //TODO 搜索，还没找到合适的UI效果，暂时隐藏
-        mTitleRightView.setOnClickListener {
-            val key = searchView.text.toString().trim()
-            if (key == "") {
-                EasyToast.showToast("您什么都还没输入呢~", EasyToast.WARING)
-                return@setOnClickListener
-            }
-            OtherUtils.intentActivity(SearchEventActivity::class.java, key)
-        }
-        searchView.setOnEditorActionListener(object : TextView.OnEditorActionListener {
-            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    val s = searchView.text.toString().trim()
-                    Log.d(Tag, "onEditorAction: $s")
-                    //点击搜索的时候隐藏软键盘
-                    hideKeyboard(searchView)
-                    OtherUtils.intentActivity(SearchEventActivity::class.java, s)
-                    return true
-                }
-                return false
-            }
-        })
-
         //进页面首先生成一次随机密码
         resetSecretNumber()
 
@@ -88,16 +53,32 @@ class HomePageFragment : BaseFragment() {
             initScanner()
         }
 
+        //搜索密码
+        searchSecretItem.setOnClickListener {
+            val builder = QMUIDialog.EditTextDialogBuilder(context)
+            builder.setTitle("搜索")
+                .setPlaceholder("请输入要搜索的账号")
+                .setInputType(InputType.TYPE_CLASS_TEXT)
+                .setCancelable(false)
+                .addAction("取消") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .addAction("确定") { dialog, _ ->
+                    val input: String = builder.editText.text.toString()
+                    if (input == "") {
+                        ToastHelper.showToast("您什么都还没输入呢~", ToastHelper.WARING)
+                        return@addAction
+                    }
+                    dialog.dismiss()
+                    OtherUtils.intentActivity(SearchEventActivity::class.java, input)
+                }
+                .show()
+        }
+
         //添加密码
-        outlineFab.setOnClickListener {
+        addSecretItem.setOnClickListener {
             OtherUtils.intentActivity(AddSecretActivity::class.java)
         }
-    }
-
-    private fun hideKeyboard(view: View) {
-        val manager: InputMethodManager =
-            view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        manager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     override fun onResume() {

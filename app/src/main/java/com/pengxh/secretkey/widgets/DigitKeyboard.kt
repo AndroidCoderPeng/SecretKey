@@ -14,7 +14,6 @@ import com.pengxh.secretkey.R
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO
  * @date: 2020/7/28 10:13
  */
 class DigitKeyboard constructor(context: Context?, attrs: AttributeSet? = null) :

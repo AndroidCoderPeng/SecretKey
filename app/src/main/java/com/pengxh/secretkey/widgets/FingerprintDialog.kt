@@ -18,14 +18,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.pengxh.app.multilib.utils.DensityUtil
-import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.ui.WelcomeActivity
+import com.pengxh.secretkey.utils.ToastHelper
 import javax.crypto.Cipher
 
 
 /**
- * @description: TODO
  * @author: Pengxh
  * @email: 290677893@qq.com
  * @date: 2020/7/29 21:19
@@ -52,9 +51,11 @@ class FingerprintDialog : DialogFragment() {
         isCancelable = false
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
+    override fun onCreateView(
+        inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.dialog_fingerprint, container, false)
         fingerprintView = view.findViewById(R.id.fingerprintView)
         fingerprintHint = view.findViewById(R.id.fingerprintHint)
@@ -95,7 +96,8 @@ class FingerprintDialog : DialogFragment() {
     private fun startListening(cipher: Cipher?) {
         isSelfCancelled = false
         mCancellationSignal = CancellationSignal()
-        fingerprintManager!!.authenticate(FingerprintManager.CryptoObject(cipher!!),
+        fingerprintManager!!.authenticate(
+            FingerprintManager.CryptoObject(cipher!!),
             mCancellationSignal,
             0,
             object : FingerprintManager.AuthenticationCallback() {
@@ -104,7 +106,7 @@ class FingerprintDialog : DialogFragment() {
                     if (!isSelfCancelled) {
                         fingerprintHint!!.text = errString
                         if (errorCode == FingerprintManager.FINGERPRINT_ERROR_LOCKOUT) {
-                            EasyToast.showToast(errString.toString(), EasyToast.ERROR)
+                            ToastHelper.showToast(errString.toString(), ToastHelper.ERROR)
                             dismiss()
                         }
                     }
@@ -128,7 +130,8 @@ class FingerprintDialog : DialogFragment() {
                     fingerprintHint!!.text = "指纹认证失败，请再试一次"
                 }
             },
-            null)
+            null
+        )
     }
 
     @SuppressLint("HandlerLeak")

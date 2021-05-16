@@ -5,7 +5,6 @@ import android.content.Context
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO
  * @date: 2020/7/29 12:34
  */
 class ColorHelper {

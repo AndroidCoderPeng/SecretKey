@@ -46,6 +46,9 @@ class UpdateLogActivity : BaseActivity() {
             updateMessage.contains("密码管家2.2版本主要更新") -> {
                 staticURL = "file:///android_asset/html/version_2_2.html"
             }
+            updateMessage.contains("密码管家2.3版本主要更新") -> {
+                staticURL = "file:///android_asset/html/version_2_3.html"
+            }
         }
         updateWebView.settings.defaultTextEncodingName = "utf-8"
         updateWebView.loadUrl(staticURL)

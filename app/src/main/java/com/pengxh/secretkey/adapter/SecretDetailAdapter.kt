@@ -17,7 +17,6 @@ import com.pengxh.secretkey.widgets.MarqueeTextView
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO
  * @date: 2020/8/3 12:35
  */
 class SecretDetailAdapter(ctx: Context, list: MutableList<SecretBean>) : BaseSwipeListAdapter() {

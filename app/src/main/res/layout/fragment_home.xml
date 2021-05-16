@@ -6,10 +6,6 @@
     android:background="@color/mainBackground"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/include_title_main"
-        android:visibility="gone" />
-
     <!--随机密码生成器-->
     <RelativeLayout
         android:layout_width="match_parent"
@@ -75,18 +71,37 @@
             android:scrollbars="none"
             android:verticalSpacing="15dp" />
 
-        <com.melnykov.fab.FloatingActionButton
-            android:id="@+id/outlineFab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="@dimen/margin_10dp"
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/actionMenu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="20dp"
             android:padding="@dimen/padding_10dp"
-            android:src="@drawable/ic_add"
-            app:fab_colorNormal="@color/mainThemeColor"
-            app:fab_colorRipple="@color/rippleColor"
-            app:fab_shadow="true"
-            app:fab_type="normal" />
+            app:menu_backgroundColor="#80FFFFFF"
+            app:menu_colorNormal="@color/mainThemeColor"
+            app:menu_colorPressed="@color/mainThemeColor"
+            app:menu_fab_size="normal">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/addSecretItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_pencil"
+                app:fab_colorNormal="@color/colorPrimary"
+                app:fab_colorPressed="@color/colorPrimary"
+                app:fab_label="添加账号"
+                app:fab_size="mini" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/searchSecretItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_search"
+                app:fab_colorNormal="@color/colorPrimary"
+                app:fab_colorPressed="@color/colorPrimary"
+                app:fab_label="搜索账号"
+                app:fab_size="mini" />
+
+        </com.github.clans.fab.FloatingActionMenu>
     </RelativeLayout>
 </LinearLayout>

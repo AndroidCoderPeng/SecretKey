@@ -20,7 +20,6 @@ import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO
  * @date: 2020/7/24 10:44
  */
 class AgreementDialog private constructor(builder: Builder) :
@@ -82,7 +81,7 @@ class AgreementDialog private constructor(builder: Builder) :
         val dialogMessage = findViewById<TextView>(R.id.dialogMessage)
         dialogMessage?.text = message
         val subMessage = findViewById<TextView>(R.id.subMessage)
-        //TODO 下划线点击效果
+        //下划线点击效果
         if (subMessage != null) {
             val spanText = SpannableString(context.getString(R.string.agreement))
             //免责声明

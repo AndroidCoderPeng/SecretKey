@@ -13,7 +13,6 @@ import com.pengxh.secretkey.widgets.PasswordEditText
 import kotlinx.android.synthetic.main.activity_password_set.*
 
 /**
- * @description: TODO
  * @author: Pengxh
  * @email: 290677893@qq.com
  * @date: 2020/7/25 21:29

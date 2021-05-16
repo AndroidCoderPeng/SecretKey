@@ -8,7 +8,6 @@ import kotlinx.android.synthetic.main.activity_exoneration.*
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO 隐私政策
  * @date: 2020/6/22 16:38
  */
 class PrivacyActivity : BaseActivity() {

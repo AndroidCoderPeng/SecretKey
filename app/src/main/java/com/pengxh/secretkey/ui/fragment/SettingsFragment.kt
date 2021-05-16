@@ -10,12 +10,10 @@ import com.google.gson.Gson
 import com.pengxh.app.multilib.base.BaseFragment
 import com.pengxh.app.multilib.utils.FileUtil
 import com.pengxh.app.multilib.utils.SaveKeyValues
-import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.ui.AboutActivity
 import com.pengxh.secretkey.ui.InputDataActivity
 import com.pengxh.secretkey.ui.PasswordModeActivity
-import com.pengxh.secretkey.ui.ThemeSelectActivity
 import com.pengxh.secretkey.utils.*
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog.EditTextDialogBuilder
 import kotlinx.android.synthetic.main.fragment_settings.*
@@ -60,7 +58,7 @@ class SettingsFragment : BaseFragment() {
 
                 val mode = SaveKeyValues.getValue(Constant.PASSWORD_MODE, "") as String
                 if (mode == "closePassword" || mode == "") {
-                    EasyToast.showToast("没有设置启动密码，无法导出", EasyToast.ERROR)
+                    ToastHelper.showToast("没有设置启动密码，无法导出", ToastHelper.ERROR)
                 } else {
                     if (allSecret.size > 0) {
                         //写入到excel
@@ -97,7 +95,7 @@ class SettingsFragment : BaseFragment() {
                             }
                             .show()
                     } else {
-                        EasyToast.showToast("没有数据，无法导出", EasyToast.WARING)
+                        ToastHelper.showToast("没有数据，无法导出", ToastHelper.WARING)
                     }
                 }
             }
@@ -110,13 +108,6 @@ class SettingsFragment : BaseFragment() {
             context?.let {
                 startActivity(Intent(it, InputDataActivity::class.java))
             }
-        }
-
-        /**
-         * 主题选择Layout
-         * */
-        themeLayout.setOnClickListener {
-            OtherUtils.intentActivity(ThemeSelectActivity::class.java)
         }
 
         /**
@@ -143,7 +134,7 @@ class SettingsFragment : BaseFragment() {
                     override fun onClick(dialog: DialogInterface?, which: Int) {
                         FileUtil.deleteFile(file)
                         cacheSizeView.text = FileUtil.formatFileSize(0)
-                        EasyToast.showToast("清理成功", EasyToast.SUCCESS)
+                        ToastHelper.showToast("清理成功", ToastHelper.SUCCESS)
                     }
                 }).create().show()
         }

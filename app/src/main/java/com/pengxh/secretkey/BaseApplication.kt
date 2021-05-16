@@ -11,14 +11,13 @@ import com.baidu.ocr.sdk.exception.OCRError
 import com.baidu.ocr.sdk.model.AccessToken
 import com.pengxh.app.multilib.utils.BroadcastManager
 import com.pengxh.app.multilib.utils.SaveKeyValues
-import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.utils.OtherUtils
+import com.pengxh.secretkey.utils.ToastHelper
 import kotlin.properties.Delegates
 
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO
  * @date: 2020/6/11 14:24
  */
 class BaseApplication : Application(), Application.ActivityLifecycleCallbacks {
@@ -37,7 +36,7 @@ class BaseApplication : Application(), Application.ActivityLifecycleCallbacks {
         super.onCreate()
         instance = this
         SaveKeyValues.initSharedPreferences(this)
-        EasyToast.init(this)
+        ToastHelper.initToastHelper(this)
         OtherUtils.init(this)
         registerActivityLifecycleCallbacks(this)
         //百度OCR初始化

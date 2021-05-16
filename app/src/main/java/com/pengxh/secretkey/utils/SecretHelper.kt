@@ -5,7 +5,7 @@ import android.util.Base64
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO 采用Base64编码方式加码，但是加密前已将原始数据进行转换，提高安全性
+ * @description: 采用Base64编码方式加码，但是加密前已将原始数据进行转换，提高安全性
  * @date: 2020/8/5 14:45
  */
 class SecretHelper {

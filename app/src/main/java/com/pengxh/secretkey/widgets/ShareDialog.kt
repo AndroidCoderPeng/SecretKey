@@ -11,7 +11,6 @@ import com.pengxh.secretkey.R
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO
  * @date: 2020/7/24 10:44
  */
 class ShareDialog private constructor(builder: Builder) :

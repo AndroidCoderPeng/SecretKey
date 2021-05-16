@@ -15,7 +15,6 @@ import com.pengxh.secretkey.utils.SQLiteUtil
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO
  * @date: 2020/7/1 15:10
  */
 class SecretCategoryAdapter(ctx: Context) : BaseAdapter() {
