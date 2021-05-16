@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.include_title_cyan.*
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO
+ * @description: TODO 未修改
  * @date: 2020/8/5 10:15
  */
 class SearchEventActivity : BaseActivity() {
@@ -31,6 +31,10 @@ class SearchEventActivity : BaseActivity() {
     private lateinit var clipboardManager: ClipboardManager
 
     override fun initLayoutView(): Int = R.layout.activity_search
+
+    override fun setupTopBarLayout() {
+
+    }
 
     override fun initData() {
         mTitleView.text = "搜索结果"

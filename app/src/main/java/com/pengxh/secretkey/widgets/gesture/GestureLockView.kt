@@ -71,12 +71,12 @@ class GestureLockView @JvmOverloads constructor(ctx: Context, attrs: AttributeSe
         canvas.drawCircle(0f, 0f, mOuterRadius, mPaint)
 
         //内部圆点填充色
-        mPaint.color = ColorHelper.getXmlColor(mContext, R.color.colorAccent)
+        mPaint.color = ColorHelper.getXmlColor(mContext, R.color.mainThemeColor)
         canvas.drawCircle(0f, 0f, mInnerRadius, mPaint)
 
         //外部连线
         mPaint.style = Paint.Style.STROKE
-        mPaint.color = ColorHelper.getXmlColor(mContext, R.color.colorAccent)
+        mPaint.color = ColorHelper.getXmlColor(mContext, R.color.mainThemeColor)
         mPaint.strokeWidth = DensityUtil.dp2px(context, 1f).toFloat()
         canvas.drawCircle(0f, 0f, mOuterRadius, mPaint)
     }
@@ -90,10 +90,10 @@ class GestureLockView @JvmOverloads constructor(ctx: Context, attrs: AttributeSe
         mPaint.style = Paint.Style.FILL
         mPaint.color = Color.parseColor("#ADD5E6")
         canvas.drawCircle(0f, 0f, mOuterRadius, mPaint)
-        mPaint.color = ColorHelper.getXmlColor(mContext, R.color.colorAccent)
+        mPaint.color = ColorHelper.getXmlColor(mContext, R.color.mainThemeColor)
         canvas.drawCircle(0f, 0f, mInnerRadius, mPaint)
         mPaint.style = Paint.Style.STROKE
-        mPaint.color = ColorHelper.getXmlColor(mContext, R.color.colorAccent)
+        mPaint.color = ColorHelper.getXmlColor(mContext, R.color.mainThemeColor)
         mPaint.strokeWidth = DensityUtil.dp2px(context, 1f).toFloat()
         canvas.drawCircle(0f, 0f, mOuterRadius, mPaint)
     }

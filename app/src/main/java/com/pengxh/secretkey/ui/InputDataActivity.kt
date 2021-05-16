@@ -7,10 +7,10 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
+import androidx.core.content.ContextCompat
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import kotlinx.android.synthetic.main.activity_input.*
-import kotlinx.android.synthetic.main.include_title_cyan.*
 import java.io.File
 
 
@@ -28,8 +28,13 @@ class InputDataActivity : BaseActivity() {
 
     override fun initLayoutView(): Int = R.layout.activity_input
 
+    override fun setupTopBarLayout() {
+        topLayout.setTitle("导入数据").setTextColor(ContextCompat.getColor(this, R.color.white))
+        topLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.mainThemeColor))
+    }
+
     override fun initData() {
-        mTitleView.text = "导入数据"
+
     }
 
     override fun initEvent() {
@@ -47,7 +52,8 @@ class InputDataActivity : BaseActivity() {
             }
         }
         //选择文件
-        selectFile.setOnClickListener {
+        selectFileButton.setChangeAlphaWhenPress(true)
+        selectFileButton.setOnClickListener {
             //打开自定义文件管理器页面
             startActivity(
                 Intent(this, FileManagerActivity::class.java)

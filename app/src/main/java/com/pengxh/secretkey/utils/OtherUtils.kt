@@ -1,6 +1,5 @@
 package com.pengxh.secretkey.utils
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.hardware.fingerprint.FingerprintManager
@@ -9,8 +8,8 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import androidx.fragment.app.FragmentManager
 import com.pengxh.secretkey.BaseActivity
-import com.pengxh.secretkey.R
 import com.pengxh.secretkey.widgets.FingerprintDialog
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog.MessageDialogBuilder
 import java.security.KeyStore
 import java.util.*
 import javax.crypto.Cipher
@@ -21,7 +20,6 @@ import javax.crypto.SecretKey
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO
  * @date: 2020/7/29 15:16
  */
 class OtherUtils {
@@ -107,13 +105,15 @@ class OtherUtils {
         fun randomNumber(): String = Random().nextInt(10).toString()
 
         fun showAlertDialog(context: Context, title: String, message: String) {
-            AlertDialog.Builder(context)
-                .setIcon(R.mipmap.ic_launcher)
+            MessageDialogBuilder(context)
                 .setTitle(title)
                 .setMessage(message)
-                .setCancelable(false)
-                .setPositiveButton("知道了", null)
-                .create().show()
+                .setCanceledOnTouchOutside(false)
+                .addAction(
+                    "知道了"
+                ) { dialog, _ ->
+                    dialog.dismiss()
+                }.create().show()
         }
 
         /**

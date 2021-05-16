@@ -5,28 +5,11 @@
     android:background="@color/mainBackground"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <com.qmuiteam.qmui.widget.QMUITopBarLayout
+        android:id="@+id/topLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        android:paddingVertical="10dp">
-
-        <ImageView
-            android:id="@+id/leftBackView"
-            style="@style/leftImageStyle"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="10dp"
-            android:background="@mipmap/left_white_1" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/leftBackView"
-            android:text="选择导入文件"
-            android:textColor="@color/white"
-            android:textSize="@dimen/titleFontSize" />
-    </RelativeLayout>
+        android:fitsSystemWindows="true" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fileRecyclerView"

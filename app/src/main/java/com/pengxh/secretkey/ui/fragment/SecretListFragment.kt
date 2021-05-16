@@ -55,7 +55,6 @@ class SecretListFragment : BaseFragment() {
     override fun initLayoutView(): Int = R.layout.fragment_secretlist
 
     override fun initData() {
-        settingsTitle.text = "密码列表"
         sqLiteUtil = SQLiteUtil()
     }
 

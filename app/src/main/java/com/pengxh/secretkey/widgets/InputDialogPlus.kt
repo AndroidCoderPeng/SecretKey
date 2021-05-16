@@ -9,13 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.fragment.app.DialogFragment
 import com.pengxh.app.multilib.utils.DensityUtil
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.Constant
+import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
 
 
 /**
@@ -77,7 +77,8 @@ class InputDialogPlus private constructor(builder: Builder) : DialogFragment() {
         val inputPassword: EditText = mRootView!!.findViewById(R.id.inputPassword)
         val inputMarks: EditText = mRootView!!.findViewById(R.id.inputMarks)
 
-        val confirmButton: Button = mRootView!!.findViewById(R.id.confirmButton)
+        val confirmButton: QMUIRoundButton = mRootView!!.findViewById(R.id.confirmButton)
+        confirmButton.setChangeAlphaWhenPress(true)
         confirmButton.setOnClickListener {
             dialogListener!!.onConfirmClicked(
                 category!!,

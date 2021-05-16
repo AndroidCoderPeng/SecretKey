@@ -1,14 +1,14 @@
 package com.pengxh.secretkey.ui
 
 import android.content.Context
-import android.content.DialogInterface
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.os.Environment
+import android.view.Gravity
 import android.view.View
-import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -23,12 +23,12 @@ import com.pengxh.secretkey.bean.SecretBean
 import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.ExcelHelper
 import com.pengxh.secretkey.utils.SQLiteUtil
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import kotlinx.android.synthetic.main.activity_file.*
 import java.io.File
 
 
 /**
- * @description: TODO
  * @author: Pengxh
  * @email: 290677893@qq.com
  * @date: 2020/11/24 20:26
@@ -38,6 +38,14 @@ class FileManagerActivity : BaseActivity() {
     private lateinit var sqLiteUtil: SQLiteUtil
 
     override fun initLayoutView(): Int = R.layout.activity_file
+
+    override fun setupTopBarLayout() {
+        topLayout.setTitle("选择导入文件").setTextColor(ContextCompat.getColor(this, R.color.white))
+        topLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.mainThemeColor))
+        topLayout.setTitleGravity(Gravity.START)
+        //TODO 换小一点的图标
+        topLayout.addLeftImageButton(R.mipmap.left_white_1, 0).setOnClickListener { finish() }
+    }
 
     override fun initData() {
         sqLiteUtil = SQLiteUtil()
@@ -57,9 +65,6 @@ class FileManagerActivity : BaseActivity() {
                 inputData(fileList[index].absolutePath)
             }
         })
-        leftBackView.setOnClickListener {
-            this.finish()
-        }
     }
 
     /**
@@ -69,32 +74,27 @@ class FileManagerActivity : BaseActivity() {
         val data = ExcelHelper.transformExcelToJson(filePath)
         val type = object : TypeToken<List<SecretBean>>() {}.type
         val beanList: List<SecretBean> = Gson().fromJson(data, type)
-        AlertDialog.Builder(this)
-            .setIcon(R.mipmap.ic_launcher)
+        QMUIDialog.MessageDialogBuilder(this)
             .setTitle("温馨提示")
             .setMessage("可导入${beanList.size}条数据。导入的账号数据如与密码管家已有账号数据重复，将会自动修改原有账号密码，请谨慎操作！")
-            .setCancelable(true)
-            .setPositiveButton(
-                "确认导入",
-                object : DialogInterface.OnClickListener {
-                    override fun onClick(dialog: DialogInterface?, which: Int) {
-                        beanList.forEach {
-                            sqLiteUtil.saveSecret(
-                                it.secretCategory!!,
-                                it.secretTitle!!,
-                                it.secretAccount!!,
-                                it.secretPassword!!,
-                                it.secretRemarks!!
-                            )
-                        }
-                        EasyToast.showToast("导入成功", EasyToast.SUCCESS)
-                        finish()
-                        //通知列表页刷新数据
-                        BroadcastManager.getInstance(this@FileManagerActivity)
-                            .sendBroadcast(Constant.ACTION_UPDATE, "updateData")
-                    }
-                })
-            .create().show()
+            .setCanceledOnTouchOutside(true)
+            .addAction("知道了") { dialog, _ ->
+                dialog.dismiss()
+                beanList.forEach {
+                    sqLiteUtil.saveSecret(
+                        it.secretCategory!!,
+                        it.secretTitle!!,
+                        it.secretAccount!!,
+                        it.secretPassword!!,
+                        it.secretRemarks!!
+                    )
+                }
+                EasyToast.showToast("导入成功", EasyToast.SUCCESS)
+                finish()
+                //通知列表页刷新数据
+                BroadcastManager.getInstance(this@FileManagerActivity)
+                    .sendBroadcast(Constant.ACTION_UPDATE, "updateData")
+            }.create().show()
     }
 
     //RecyclerView分割线

@@ -1,8 +1,9 @@
 package com.pengxh.secretkey.ui
 
+import androidx.core.content.ContextCompat
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
-import kotlinx.android.synthetic.main.include_title_cyan.*
+import kotlinx.android.synthetic.main.activity_exoneration.*
 
 /**
  * @author: Pengxh
@@ -14,8 +15,13 @@ class PrivacyActivity : BaseActivity() {
 
     override fun initLayoutView(): Int = R.layout.activity_privacy
 
+    override fun setupTopBarLayout() {
+        topLayout.setTitle("隐私政策").setTextColor(ContextCompat.getColor(this, R.color.white))
+        topLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.mainThemeColor))
+    }
+
     override fun initData() {
-        mTitleView.text = "隐私政策"
+
     }
 
     override fun initEvent() {

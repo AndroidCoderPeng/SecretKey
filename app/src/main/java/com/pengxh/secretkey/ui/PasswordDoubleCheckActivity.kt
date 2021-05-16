@@ -2,6 +2,7 @@ package com.pengxh.secretkey.ui
 
 import android.view.KeyEvent
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.BaseActivity
@@ -10,7 +11,6 @@ import com.pengxh.secretkey.utils.OtherUtils
 import com.pengxh.secretkey.widgets.DigitKeyboard
 import com.pengxh.secretkey.widgets.PasswordEditText
 import kotlinx.android.synthetic.main.activity_password_set.*
-import kotlinx.android.synthetic.main.include_title_cyan.*
 
 /**
  * @author: Pengxh
@@ -23,13 +23,16 @@ class PasswordDoubleCheckActivity : BaseActivity(), DigitKeyboard.DigitKeyboardC
 
     override fun initLayoutView(): Int = R.layout.activity_password_set
 
+    override fun setupTopBarLayout() {
+        topLayout.setTitle("确认密码").setTextColor(ContextCompat.getColor(this, R.color.white))
+        topLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.mainThemeColor))
+    }
+
     override fun initData() {
-        mTitleView.text = "确认密码"
+
     }
 
     override fun initEvent() {
-        mTitleLeftView.setOnClickListener { this.finish() }
-
         digitKeyboard.setOnDigitKeyboardClickListener(this)
         passwordEditText.setOnFinishListener(this)
 

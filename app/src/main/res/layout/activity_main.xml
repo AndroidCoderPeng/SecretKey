@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    android:orientation="vertical">
+
+    <com.qmuiteam.qmui.widget.QMUITopBarLayout
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true" />
 
     <com.pengxh.app.multilib.widget.NoScrollViewPager
         android:id="@+id/mainViewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottomNavigation" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:background="@color/white"
         app:itemIconTint="@drawable/bottom_text_color"
         app:itemTextColor="@drawable/bottom_text_color"
         app:menu="@menu/bottom_nav_menu" />
-</RelativeLayout>
+</LinearLayout>

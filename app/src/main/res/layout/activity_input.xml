@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <include
-        android:id="@+id/title"
-        layout="@layout/include_title_cyan" />
+    <com.qmuiteam.qmui.widget.QMUITopBarLayout
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title"
-        android:scrollbars="none">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/mainBackground"
-            android:orientation="vertical"
-            android:paddingBottom="70dp">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -66,21 +69,21 @@
                             android:textSize="@dimen/textFontSize" />
 
                         <TextView
-                            android:textColor="@color/colorText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:gravity="center_vertical"
-                            android:text="点击【文件管理】，选择【内部存储】，在列举出来的文件夹列表里面找到【SecretKey】，然后按照提供的模板格式整理数据导入到密码管家中" />
+                            android:text="点击【文件管理】，选择【内部存储】，在列举出来的文件夹列表里面找到【SecretKey】，然后按照提供的模板格式整理数据导入到密码管家中"
+                            android:textColor="@color/colorText" />
 
                         <TextView
-                            android:textColor="@color/colorText"
                             android:id="@+id/demoFilePathView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:gravity="center_vertical"
-                            android:text="模板地址：" />
+                            android:text="模板地址："
+                            android:textColor="@color/colorText" />
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -219,17 +222,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:background="@color/white">
 
-        <Button
-            android:id="@+id/selectFile"
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+            android:id="@+id/selectFileButton"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="36dp"
             android:layout_margin="15dp"
-            android:background="@drawable/button_selector"
             android:text="选择导入文件"
             android:textColor="@color/white"
-            android:textSize="@dimen/textFontSize" />
+            android:textSize="@dimen/titleFontSize"
+            app:qmui_backgroundColor="@color/mainThemeColor"
+            app:qmui_borderColor="@color/mainThemeColor"
+            app:qmui_radius="18dp" />
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

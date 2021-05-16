@@ -11,23 +11,13 @@ import android.util.Base64
 class SecretHelper {
     companion object {
         /**
-         * String扩展函数，字符串转ASCII码
-         * */
-        @Deprecated("暂时废弃")
-        private fun String.toASCII(): String {
-            val builder = StringBuilder()
-            this.toCharArray().forEach {
-                builder.append(it.toByte().toInt())
-            }
-            return builder.toString()
-        }
-
-        /**
          * 加密
          * */
         fun encode(originalData: String): String {
-            return String(Base64.encode(originalData.toByteArray(Charsets.UTF_8), Base64.NO_WRAP),
-                Charsets.UTF_8)
+            return String(
+                Base64.encode(originalData.toByteArray(Charsets.UTF_8), Base64.NO_WRAP),
+                Charsets.UTF_8
+            )
         }
 
         /**

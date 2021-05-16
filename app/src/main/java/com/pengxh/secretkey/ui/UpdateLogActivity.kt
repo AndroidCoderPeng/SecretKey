@@ -1,12 +1,11 @@
 package com.pengxh.secretkey.ui
 
+import androidx.core.content.ContextCompat
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import kotlinx.android.synthetic.main.activity_update_log.*
-import kotlinx.android.synthetic.main.include_title_cyan.*
 
 /**
- * @description: TODO
  * @author: Pengxh
  * @email: 290677893@qq.com
  * @date: 2020/11/8 17:10
@@ -17,9 +16,12 @@ class UpdateLogActivity : BaseActivity() {
 
     override fun initLayoutView(): Int = R.layout.activity_update_log
 
-    override fun initData() {
-        mTitleView.text = "更新详情"
+    override fun setupTopBarLayout() {
+        topLayout.setTitle("更新详情").setTextColor(ContextCompat.getColor(this, R.color.white))
+        topLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.mainThemeColor))
+    }
 
+    override fun initData() {
         updateMessage = intent.getStringExtra("message")!!
     }
 

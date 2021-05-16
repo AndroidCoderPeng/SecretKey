@@ -37,6 +37,6 @@
         android:gravity="center"
         android:padding="10dp"
         android:text="取消"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/mainThemeColor"
         android:textSize="@dimen/titleFontSize" />
 </LinearLayout>

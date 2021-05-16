@@ -5,6 +5,7 @@ import android.hardware.camera2.CameraCharacteristics
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.BaseActivity
@@ -14,9 +15,10 @@ import com.pengxh.secretkey.utils.OtherUtils
 import com.pengxh.secretkey.widgets.DigitKeyboard
 import com.pengxh.secretkey.widgets.PasswordEditText
 import kotlinx.android.synthetic.main.activity_password_check.*
+import kotlinx.android.synthetic.main.activity_password_check.topLayout
+import kotlinx.android.synthetic.main.activity_password_set.*
 import kotlinx.android.synthetic.main.activity_password_set.digitKeyboard
 import kotlinx.android.synthetic.main.activity_password_set.passwordEditText
-import kotlinx.android.synthetic.main.include_title_cyan.*
 
 /**
  * @author: Pengxh
@@ -31,8 +33,13 @@ class PasswordCheckActivity : BaseActivity(), DigitKeyboard.DigitKeyboardClickLi
 
     override fun initLayoutView(): Int = R.layout.activity_password_check
 
+    override fun setupTopBarLayout() {
+        topLayout.setTitle("输入密码").setTextColor(ContextCompat.getColor(this, R.color.white))
+        topLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.mainThemeColor))
+    }
+
     override fun initData() {
-        mTitleView.text = "输入密码"
+
     }
 
     override fun initEvent() {

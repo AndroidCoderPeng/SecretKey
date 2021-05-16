@@ -4,8 +4,9 @@
     <color name="colorPrimary">#3700B3</color>
     <!--Appbar背景色-->
     <color name="colorPrimaryDark">#3700B3</color>
-    <!--控制各个控件被选中时的颜色-->
-    <color name="colorAccent">#03DAC5</color>
+
+    <color name="mainThemeColor">#03DAC5</color>
+
     <color name="rippleColor">#03AAC5</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>

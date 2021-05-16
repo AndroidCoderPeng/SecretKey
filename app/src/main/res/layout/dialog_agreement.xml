@@ -53,17 +53,18 @@
             android:textSize="@dimen/textFontSize" />
 
         <!-- 确定按钮 -->
-        <Button
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
             android:id="@+id/confirmButton"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginVertical="10dp"
-            android:background="@drawable/button_selector"
-            android:gravity="center"
             android:text="同意"
             android:textColor="@color/white"
-            android:textSize="@dimen/titleFontSize" />
+            android:textSize="@dimen/titleFontSize"
+            app:qmui_backgroundColor="@color/mainThemeColor"
+            app:qmui_borderColor="@color/mainThemeColor"
+            app:qmui_radius="18dp" />
 
         <TextView
             android:id="@+id/cancelView"

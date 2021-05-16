@@ -6,7 +6,9 @@
     android:background="@color/mainBackground"
     android:orientation="vertical">
 
-    <include layout="@layout/include_title_main" />
+    <include
+        layout="@layout/include_title_main"
+        android:visibility="gone" />
 
     <!--随机密码生成器-->
     <RelativeLayout
@@ -82,7 +84,7 @@
             android:layout_margin="@dimen/margin_10dp"
             android:padding="@dimen/padding_10dp"
             android:src="@drawable/ic_add"
-            app:fab_colorNormal="@color/colorAccent"
+            app:fab_colorNormal="@color/mainThemeColor"
             app:fab_colorRipple="@color/rippleColor"
             app:fab_shadow="true"
             app:fab_type="normal" />

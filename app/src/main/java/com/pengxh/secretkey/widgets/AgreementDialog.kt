@@ -9,13 +9,13 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import com.pengxh.secretkey.R
 import com.pengxh.secretkey.ui.ExonerationActivity
 import com.pengxh.secretkey.ui.PrivacyActivity
-import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.OtherUtils
+import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
 
 /**
  * @author: Pengxh
@@ -115,8 +115,9 @@ class AgreementDialog private constructor(builder: Builder) :
             subMessage.movementMethod = LinkMovementMethod.getInstance()
             subMessage.text = spanText
         }
-        val confirmButton = findViewById<Button>(R.id.confirmButton)
+        val confirmButton = findViewById<QMUIRoundButton>(R.id.confirmButton)
         confirmButton?.setOnClickListener(this)
+        confirmButton?.setChangeAlphaWhenPress(true)
         val cancelView = findViewById<TextView>(R.id.cancelView)
         cancelView?.setOnClickListener(this)
     }

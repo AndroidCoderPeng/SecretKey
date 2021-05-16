@@ -12,6 +12,10 @@ class ThemeSelectActivity : BaseActivity() {
 
     override fun initLayoutView(): Int = R.layout.activity_theme
 
+    override fun setupTopBarLayout() {
+
+    }
+
     override fun initData() {
         mTitleView.text = "主题风格"
     }

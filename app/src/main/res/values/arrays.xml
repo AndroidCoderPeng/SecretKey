@@ -2,7 +2,7 @@
 <resources>
     <string-array name="category">
         <item>网站</item>
-        <item>APP </item>
+        <item>APP</item>
         <item>游戏</item>
         <item>银行卡</item>
         <item>工作</item>

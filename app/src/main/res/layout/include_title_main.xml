@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="@color/colorAccent">
+    android:background="@color/mainThemeColor">
 
     <com.pengxh.app.multilib.widget.EditTextWithDelete
         android:id="@+id/searchView"

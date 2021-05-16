@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Environment
+import android.text.InputType
 import android.util.Log
 import com.google.gson.Gson
 import com.pengxh.app.multilib.base.BaseFragment
@@ -16,7 +17,7 @@ import com.pengxh.secretkey.ui.InputDataActivity
 import com.pengxh.secretkey.ui.PasswordModeActivity
 import com.pengxh.secretkey.ui.ThemeSelectActivity
 import com.pengxh.secretkey.utils.*
-import com.pengxh.secretkey.widgets.InputDialog
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog.EditTextDialogBuilder
 import kotlinx.android.synthetic.main.fragment_settings.*
 import java.io.File
 
@@ -24,7 +25,6 @@ import java.io.File
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO
  * @date: 2020年7月24日12:41:47
  */
 class SettingsFragment : BaseFragment() {
@@ -40,7 +40,7 @@ class SettingsFragment : BaseFragment() {
     override fun initLayoutView(): Int = R.layout.fragment_settings
 
     override fun initData() {
-        settingsTitle.text = "设置中心"
+
     }
 
     override fun initEvent() {
@@ -65,32 +65,37 @@ class SettingsFragment : BaseFragment() {
                     if (allSecret.size > 0) {
                         //写入到excel
                         Log.d(Tag, "待写入数据: " + Gson().toJson(allSecret))
-                        InputDialog.Builder()
-                            .setContext(context)
-                            .setDialogTitle("导出到表格")
-                            .setDialogMessage("请输入文件名")
-                            .setOnDialogClickListener(object : InputDialog.DialogClickListener {
-                                override fun onConfirmClicked(input: String) {
-                                    path = if (input == "") {
-                                        dir + "密码管家_" + StringHelper.formatDate() + ".xls"
-                                    } else {
-                                        "$dir$input.xls"
-                                    }
-                                    val file = File(path)
-                                    if (!file.exists()) {
-                                        file.createNewFile()
-                                    }
-                                    Log.d(Tag, "initEvent: 写入表格-开始")
-                                    ExcelHelper.initExcel(file, Constant.excelTitle)
-                                    ExcelHelper.writeSecretToExcel(allSecret)
-                                    Log.d(Tag, "initEvent: 写入表格-结束")
-                                    OtherUtils.showAlertDialog(
-                                        it,
-                                        "温馨提示",
-                                        "导出数据到本地成功，文件路径: ${file.absolutePath}"
-                                    )
+                        val builder = EditTextDialogBuilder(context)
+                        builder.setTitle("导出到表格")
+                            .setPlaceholder("请输入文件名")
+                            .setInputType(InputType.TYPE_CLASS_TEXT)
+                            .setCancelable(false)
+                            .addAction("取消") { dialog, _ ->
+                                dialog.dismiss()
+                            }
+                            .addAction("确定") { dialog, _ ->
+                                dialog.dismiss()
+                                val input: String = builder.editText.text.toString()
+                                path = if (input == "") {
+                                    dir + "密码管家_" + StringHelper.formatDate() + ".xls"
+                                } else {
+                                    "$dir$input.xls"
                                 }
-                            }).build().show(fragmentManager!!, "outputData")
+                                val file = File(path)
+                                if (!file.exists()) {
+                                    file.createNewFile()
+                                }
+                                Log.d(Tag, "initEvent: 写入表格-开始")
+                                ExcelHelper.initExcel(file, Constant.excelTitle)
+                                ExcelHelper.writeSecretToExcel(allSecret)
+                                Log.d(Tag, "initEvent: 写入表格-结束")
+                                OtherUtils.showAlertDialog(
+                                    it,
+                                    "温馨提示",
+                                    "导出数据到本地成功，文件路径: ${file.absolutePath}"
+                                )
+                            }
+                            .show()
                     } else {
                         EasyToast.showToast("没有数据，无法导出", EasyToast.WARING)
                     }

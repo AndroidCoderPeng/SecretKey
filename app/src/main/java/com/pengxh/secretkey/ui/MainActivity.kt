@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Environment
 import android.util.Log
 import android.view.MenuItem
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.pengxh.app.multilib.utils.BroadcastManager
@@ -32,6 +33,11 @@ class MainActivity : BaseActivity() {
     private lateinit var manager: BroadcastManager
 
     override fun initLayoutView(): Int = R.layout.activity_main
+
+    override fun setupTopBarLayout() {
+        topLayout.setTitle("密码箱").setTextColor(ContextCompat.getColor(this, R.color.white))
+        topLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.mainThemeColor))
+    }
 
     override fun initData() {
         fragmentList = ArrayList()
@@ -81,9 +87,21 @@ class MainActivity : BaseActivity() {
     override fun initEvent() {
         bottomNavigation.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_home -> mainViewPager.currentItem = 0
-                R.id.nav_secret -> mainViewPager.currentItem = 1
-                R.id.nav_settings -> mainViewPager.currentItem = 2
+                R.id.nav_home -> {
+                    mainViewPager.currentItem = 0
+                    topLayout.setTitle("密码箱")
+                        .setTextColor(ContextCompat.getColor(this, R.color.white))
+                }
+                R.id.nav_secret -> {
+                    mainViewPager.currentItem = 1
+                    topLayout.setTitle("密码列表")
+                        .setTextColor(ContextCompat.getColor(this, R.color.white))
+                }
+                R.id.nav_settings -> {
+                    mainViewPager.currentItem = 2
+                    topLayout.setTitle("设置中心")
+                        .setTextColor(ContextCompat.getColor(this, R.color.white))
+                }
             }
             false
         }

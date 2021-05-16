@@ -54,7 +54,7 @@ class HomePageFragment : BaseFragment() {
     }
 
     override fun initEvent() {
-        //搜索
+        //TODO 搜索，还没找到合适的UI效果，暂时隐藏
         mTitleRightView.setOnClickListener {
             val key = searchView.text.toString().trim()
             if (key == "") {
@@ -104,7 +104,7 @@ class HomePageFragment : BaseFragment() {
         super.onResume()
         //密码分类九宫格
         secretGridView.adapter = context?.let { SecretCategoryAdapter(it) }
-        secretGridView.setOnItemClickListener { parent, view, position, id ->
+        secretGridView.setOnItemClickListener { _, _, position, _ ->
             OtherUtils.intentActivity(SecretDetailActivity::class.java, Constant.CATEGORY[position])
         }
     }
@@ -171,7 +171,7 @@ class HomePageFragment : BaseFragment() {
             .setTitleBackgroudColor(
                 ColorHelper.getXmlColor(
                     context!!,
-                    R.color.colorAccent
+                    R.color.mainThemeColor
                 )
             ) //设置状态栏颜色
             .setTitleTextColor(Color.WHITE) //设置Title文字颜色

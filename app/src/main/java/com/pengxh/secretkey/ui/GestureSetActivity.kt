@@ -1,6 +1,7 @@
 package com.pengxh.secretkey.ui
 
 import android.os.Handler
+import androidx.core.content.ContextCompat
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
@@ -9,7 +10,6 @@ import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.widgets.gesture.GestureLockLayout
 import com.pengxh.secretkey.widgets.gesture.GestureLockLayout.OnLockResetListener
 import kotlinx.android.synthetic.main.activity_gesture_set.*
-import kotlinx.android.synthetic.main.include_title_cyan.*
 
 /**
  * @description: TODO
@@ -22,16 +22,19 @@ class GestureSetActivity : BaseActivity() {
     override fun initLayoutView(): Int = R.layout.activity_gesture_set
 
     override fun initData() {
-        mTitleView.text = "设置手势解锁密码"
+
+    }
+
+    override fun setupTopBarLayout() {
+        topLayout.setTitle("设置手势解锁密码").setTextColor(ContextCompat.getColor(this, R.color.white))
+        topLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.mainThemeColor))
     }
 
     override fun initEvent() {
-        mTitleLeftView.setOnClickListener { this.finish() }
-
         //设置提示view 每行每列点的个数
         displayView.setDotCount(3)
         //设置提示view 选中状态的颜色
-        displayView.setDotSelectedColor(ColorHelper.getXmlColor(this, R.color.colorAccent))
+        displayView.setDotSelectedColor(ColorHelper.getXmlColor(this, R.color.mainThemeColor))
         //设置手势解锁view 每行每列点的个数
         gestureLockLayout.setDotCount(3)
         //设置手势解锁view 最少连接数

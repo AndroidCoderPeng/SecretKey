@@ -1,6 +1,7 @@
 package com.pengxh.secretkey.ui
 
 import android.content.Intent
+import androidx.core.content.ContextCompat
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.BaseActivity
@@ -8,7 +9,6 @@ import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.OtherUtils
 import kotlinx.android.synthetic.main.activity_password_mode.*
-import kotlinx.android.synthetic.main.include_title_cyan.*
 import kotlin.properties.Delegates
 
 /**
@@ -23,10 +23,12 @@ class PasswordModeActivity : BaseActivity() {
 
     override fun initLayoutView(): Int = R.layout.activity_password_mode
 
+    override fun setupTopBarLayout() {
+        topLayout.setTitle("设置解锁方式").setTextColor(ContextCompat.getColor(this, R.color.white))
+        topLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.mainThemeColor))
+    }
+
     override fun initData() {
-        mTitleView.text = "设置解锁方式"
-
-
         //默认不让截屏
         captureSwitchStatus = SaveKeyValues.getValue("captureSwitchStatus", false) as Boolean
         captureSwitch.isChecked = captureSwitchStatus

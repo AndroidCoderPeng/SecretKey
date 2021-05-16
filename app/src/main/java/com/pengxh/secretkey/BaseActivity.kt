@@ -4,13 +4,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.utils.SaveKeyValues
-import com.pengxh.secretkey.utils.ColorHelper
-import com.pengxh.secretkey.utils.StatusBarColorUtil
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 
 /**
- * @description: TODO
  * @author: Pengxh
  * @email: 290677893@qq.com
  * @date: 2020/7/30 19:18
@@ -24,8 +21,8 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(initLayoutView())
-        StatusBarColorUtil.setColor(this, ColorHelper.getXmlColor(this, R.color.colorAccent))
-        ImmersionBar.with(this).init()
+        QMUIStatusBarHelper.translucent(this)//沉浸式状态栏
+        setupTopBarLayout()
         initData()
         initEvent()
     }
@@ -42,6 +39,11 @@ abstract class BaseActivity : AppCompatActivity() {
             window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
         }
     }
+
+    /**
+     * 沉浸式状态栏
+     */
+    protected abstract fun setupTopBarLayout()
 
     /**
      * 初始化xml布局

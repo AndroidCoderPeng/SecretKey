@@ -21,7 +21,7 @@ class GestureLockDisplayView @JvmOverloads constructor(context: Context?,
     private var mDotMargin = 0
 
     //选中颜色
-    private var mDotSelectedColor = resources.getColor(R.color.colorAccent)
+    private var mDotSelectedColor = resources.getColor(R.color.mainThemeColor)
 
     //未选中时颜色
     private var mDotUnSelectedColor = resources.getColor(R.color.lightGray)

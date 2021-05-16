@@ -1,10 +1,13 @@
 package com.pengxh.secretkey.ui
 
-import android.app.AlertDialog
-import android.content.*
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
+import androidx.core.content.ContextCompat
 import cn.bertsir.zbar.utils.QRUtils
 import com.google.android.material.snackbar.Snackbar
 import com.pengxh.app.multilib.utils.DensityUtil
@@ -17,21 +20,16 @@ import com.pengxh.secretkey.bean.SecretBean
 import com.pengxh.secretkey.utils.SQLiteUtil
 import com.pengxh.secretkey.widgets.InputDialogPlus
 import com.pengxh.secretkey.widgets.ShareDialog
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import kotlinx.android.synthetic.main.activity_secret_detail.*
-import kotlinx.android.synthetic.main.include_title_cyan.*
 
 
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO
  * @date: 2020/8/3 10:48
  */
 class SecretDetailActivity : BaseActivity() {
-
-    companion object {
-        private const val Tag = "SecretDetailActivity"
-    }
 
     private val context = this
     private lateinit var clipboardManager: ClipboardManager
@@ -41,9 +39,13 @@ class SecretDetailActivity : BaseActivity() {
 
     override fun initLayoutView(): Int = R.layout.activity_secret_detail
 
+    override fun setupTopBarLayout() {
+        topLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.mainThemeColor))
+    }
+
     override fun initData() {
         category = intent.getStringExtra("mode")
-        mTitleView.text = category
+        topLayout.setTitle(category).setTextColor(ContextCompat.getColor(this, R.color.white))
 
         clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         sqLiteUtil = SQLiteUtil()
@@ -124,17 +126,19 @@ class SecretDetailActivity : BaseActivity() {
             deleteItem.titleColor = Color.WHITE
             menu.addMenuItem(deleteItem)
         }
-        secretListView.setOnMenuItemClickListener { position, menu, index ->
+        secretListView.setOnMenuItemClickListener { position, _, index ->
             val secretBean = secretList[position]
             when (index) {
-                0 -> AlertDialog.Builder(context)
-                    .setIcon(R.mipmap.ic_launcher)
-                    .setTitle("温馨提示")
-                    .setMessage("删除后将无法恢复，是否继续？")
-                    .setCancelable(false)
-                    .setNegativeButton("容我想想", null)
-                    .setPositiveButton("已经想好", object : DialogInterface.OnClickListener {
-                        override fun onClick(dialog: DialogInterface?, which: Int) {
+                0 ->
+                    QMUIDialog.MessageDialogBuilder(context)
+                        .setTitle("温馨提示")
+                        .setMessage("删除后将无法恢复，是否继续？")
+                        .setCanceledOnTouchOutside(false)
+                        .addAction("容我想想") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .addAction("已经想好") { dialog, _ ->
+                            dialog.dismiss()
                             sqLiteUtil.deleteSecret(
                                 secretBean.secretTitle!!,
                                 secretBean.secretAccount!!
@@ -142,8 +146,7 @@ class SecretDetailActivity : BaseActivity() {
                             secretList.removeAt(position)
                             secretDetailAdapter.notifyDataSetChanged()
                             initUI(secretList)
-                        }
-                    }).create().show()
+                        }.create().show()
             }
             false
         }

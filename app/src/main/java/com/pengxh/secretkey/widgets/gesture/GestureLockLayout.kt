@@ -40,10 +40,10 @@ class GestureLockLayout @JvmOverloads constructor(context: Context, attrs: Attri
     private val mStrokeWidth = 2f
 
     //手指触摸时，path颜色
-    private var mFingerTouchColor = resources.getColor(R.color.colorAccent)
+    private var mFingerTouchColor = resources.getColor(R.color.mainThemeColor)
 
     //手指抬起时,密码匹配path颜色
-    private var mFingerUpMatchedColor = resources.getColor(R.color.colorAccent)
+    private var mFingerUpMatchedColor = resources.getColor(R.color.mainThemeColor)
 
     //手指抬起时,密码不匹配path颜色
     private var mFingerUpUnmatchedColor = Color.RED

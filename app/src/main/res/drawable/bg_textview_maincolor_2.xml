@@ -6,7 +6,7 @@
         android:width="60px"
         android:height="60px" />
 
-    <solid android:color="@color/colorAccent" />
+    <solid android:color="@color/mainThemeColor" />
 
     <corners android:radius="15dp" />
 </shape>

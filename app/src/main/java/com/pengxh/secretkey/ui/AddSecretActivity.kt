@@ -2,11 +2,11 @@ package com.pengxh.secretkey.ui
 
 import android.content.Intent
 import android.text.InputType
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat
 import com.pengxh.app.multilib.utils.DensityUtil
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.secretkey.BaseActivity
@@ -14,7 +14,6 @@ import com.pengxh.secretkey.R
 import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.SQLiteUtil
 import kotlinx.android.synthetic.main.activity_secret_add.*
-import kotlinx.android.synthetic.main.include_title_cyan.*
 
 
 /**
@@ -26,7 +25,6 @@ import kotlinx.android.synthetic.main.include_title_cyan.*
 class AddSecretActivity : BaseActivity() {
 
     companion object {
-        private const val Tag = "AddSecretActivity"
         const val requestCode = 777
     }
 
@@ -39,8 +37,12 @@ class AddSecretActivity : BaseActivity() {
 
     override fun initLayoutView(): Int = R.layout.activity_secret_add
 
+    override fun setupTopBarLayout() {
+        topLayout.setTitle("添加密码").setTextColor(ContextCompat.getColor(this, R.color.white))
+        topLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.mainThemeColor))
+    }
+
     override fun initData() {
-        mTitleView.text = "添加密码"
         intentCategory = intent.getStringExtra("secretCategory")
     }
 
@@ -66,7 +68,6 @@ class AddSecretActivity : BaseActivity() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, pos: Int, id: Long) {
                 selectCategory = Constant.CATEGORY[pos]
                 if (selectCategory.equals("银行卡")) {
-                    Log.d(Tag, "initEvent: 银行卡")
                     codeScannerView.visibility = View.VISIBLE
                     inputAccount.inputType = InputType.TYPE_CLASS_NUMBER
                 } else {
@@ -108,6 +109,7 @@ class AddSecretActivity : BaseActivity() {
             SQLiteUtil().saveSecret(selectCategory!!, title!!, account!!, password!!, remarks)
             this.finish()
         }
+        saveButton.setChangeAlphaWhenPress(true)
     }
 
     /**

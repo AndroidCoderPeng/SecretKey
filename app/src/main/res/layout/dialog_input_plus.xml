@@ -89,15 +89,16 @@
                 android:singleLine="true" />
         </LinearLayout>
 
-        <Button
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
             android:id="@+id/confirmButton"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:layout_marginTop="@dimen/margin_10dp"
-            android:background="@drawable/button_selector"
-            android:gravity="center"
+            android:layout_margin="20dp"
             android:text="@string/confirm"
             android:textColor="@color/white"
-            android:textSize="@dimen/titleFontSize" />
+            android:textSize="@dimen/titleFontSize"
+            app:qmui_backgroundColor="@color/mainThemeColor"
+            app:qmui_borderColor="@color/mainThemeColor"
+            app:qmui_radius="18dp" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -1,6 +1,7 @@
 package com.pengxh.secretkey.ui
 
 import android.os.Handler
+import androidx.core.content.ContextCompat
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
@@ -8,7 +9,6 @@ import com.pengxh.secretkey.utils.OtherUtils
 import com.pengxh.secretkey.widgets.gesture.GestureLockLayout
 import com.pengxh.secretkey.widgets.gesture.GestureLockLayout.OnLockVerifyListener
 import kotlinx.android.synthetic.main.activity_gesture_set.*
-import kotlinx.android.synthetic.main.include_title_cyan.*
 
 
 /**
@@ -22,7 +22,12 @@ class GestureCheckActivity : BaseActivity() {
     override fun initLayoutView(): Int = R.layout.activity_gesture_check
 
     override fun initData() {
-        mTitleView.text = "手势解锁"
+
+    }
+
+    override fun setupTopBarLayout() {
+        topLayout.setTitle("手势解锁").setTextColor(ContextCompat.getColor(this, R.color.white))
+        topLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.mainThemeColor))
     }
 
     override fun initEvent() {
