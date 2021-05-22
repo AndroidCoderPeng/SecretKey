@@ -1,15 +1,13 @@
 package com.pengxh.secretkey.ui
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
 import android.os.Environment
+import android.os.Handler
+import android.os.Message
 import android.util.Log
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import com.pengxh.app.multilib.utils.BroadcastManager
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.ViewPagerAdapter
@@ -21,16 +19,47 @@ import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.ExcelHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
+import java.lang.ref.WeakReference
 
 class MainActivity : BaseActivity() {
 
     companion object {
         private const val Tag = "MainActivity"
+
+        private lateinit var weakReferenceHandler: WeakReferenceHandler
+
+        fun sendEmptyMessage(what: Int) {
+            weakReferenceHandler.sendEmptyMessage(what)
+        }
     }
 
     private var menuItem: MenuItem? = null
-    private lateinit var fragmentList: ArrayList<Fragment>
-    private lateinit var manager: BroadcastManager
+    private var fragmentList: ArrayList<Fragment>
+
+    init {
+        weakReferenceHandler = WeakReferenceHandler(this)
+
+        fragmentList = ArrayList()
+        fragmentList.add(HomePageFragment())
+        fragmentList.add(SecretListFragment())
+        fragmentList.add(SettingsFragment())
+    }
+
+    private class WeakReferenceHandler(activity: MainActivity) : Handler() {
+        private val mActivity: WeakReference<MainActivity> = WeakReference(activity)
+
+        override fun handleMessage(msg: Message) {
+            if (mActivity.get() == null) {
+                return
+            }
+            val activity = mActivity.get()
+            when (msg.what) {
+                Constant.FINISH_APP -> {
+                    activity?.finish()
+                }
+            }
+        }
+    }
 
     override fun initLayoutView(): Int = R.layout.activity_main
 
@@ -40,26 +69,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initData() {
-        fragmentList = ArrayList()
-        fragmentList.add(HomePageFragment())
-        fragmentList.add(SecretListFragment())
-        fragmentList.add(SettingsFragment())
-
         //初始化数据文件夹和文件
-        initExcelDemo()
-        manager = BroadcastManager.getInstance(this)
-        manager.addAction("finishActivity", object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                val action = intent!!.action
-                if (action != null) {
-                    Log.d(Tag, "回到桌面，结束APP")
-                    finish()
-                }
-            }
-        })
-    }
-
-    private fun initExcelDemo() {
         val dir =
             File(Environment.getExternalStorageDirectory(), "SecretKey")
         if (!dir.exists()) {
@@ -130,10 +140,5 @@ class MainActivity : BaseActivity() {
                 menuItem!!.isChecked = true
             }
         })
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        manager.destroy("finishActivity")
     }
 }

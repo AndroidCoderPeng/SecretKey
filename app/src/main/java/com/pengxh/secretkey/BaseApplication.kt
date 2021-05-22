@@ -9,8 +9,9 @@ import com.baidu.ocr.sdk.OCR
 import com.baidu.ocr.sdk.OnResultListener
 import com.baidu.ocr.sdk.exception.OCRError
 import com.baidu.ocr.sdk.model.AccessToken
-import com.pengxh.app.multilib.utils.BroadcastManager
 import com.pengxh.app.multilib.utils.SaveKeyValues
+import com.pengxh.secretkey.ui.MainActivity
+import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.OtherUtils
 import com.pengxh.secretkey.utils.ToastHelper
 import kotlin.properties.Delegates
@@ -42,7 +43,7 @@ class BaseApplication : Application(), Application.ActivityLifecycleCallbacks {
         //百度OCR初始化
         OCR.getInstance(this).initAccessToken(object : OnResultListener<AccessToken> {
             override fun onResult(result: AccessToken?) {
-                Log.d(Tag, "onResult: ${result?.tokenJson}")
+//                Log.d(Tag, "onResult: ${result?.tokenJson}")
             }
 
             override fun onError(ocrError: OCRError?) {
@@ -87,7 +88,7 @@ class BaseApplication : Application(), Application.ActivityLifecycleCallbacks {
         if (level == ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN) {
             isBackground = true
             Log.d(Tag, "APP回到桌面")
-            BroadcastManager.getInstance(this).sendBroadcast("finishActivity", "")
+            MainActivity.sendEmptyMessage(Constant.FINISH_APP)
         }
     }
 }

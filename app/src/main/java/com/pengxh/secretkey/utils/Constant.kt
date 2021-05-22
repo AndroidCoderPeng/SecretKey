@@ -25,4 +25,7 @@ object Constant {
     val excelTitle = arrayOf("类别", "标题", "账号", "密码", "备注")
 
     const val ACTION_UPDATE = "action_update"
+
+    const val FINISH_APP = 10001
+    const val UPDATE_DATA = 10002
 }
