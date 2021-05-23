@@ -91,6 +91,9 @@ class SlideBarView constructor(context: Context, attrs: AttributeSet? = null) :
     @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+        if (data.isNullOrEmpty()) {
+            return
+        }
         letterHeight = mHeight / data.size
         if (showBackground) {
             //绘制进度条背景，圆角矩形

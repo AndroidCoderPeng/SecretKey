@@ -27,5 +27,6 @@ object Constant {
     const val ACTION_UPDATE = "action_update"
 
     const val FINISH_APP = 10001
-    const val UPDATE_DATA = 10002
+    const val DEFAULT_DATA = 10002
+    const val UPDATE_DATA = 10003
 }
