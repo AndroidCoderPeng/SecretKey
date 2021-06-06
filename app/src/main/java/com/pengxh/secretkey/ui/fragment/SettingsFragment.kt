@@ -5,12 +5,12 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Environment
 import android.text.InputType
-import android.util.Log
-import com.google.gson.Gson
 import com.pengxh.app.multilib.base.BaseFragment
 import com.pengxh.app.multilib.utils.FileUtil
 import com.pengxh.app.multilib.utils.SaveKeyValues
+import com.pengxh.secretkey.BaseApplication
 import com.pengxh.secretkey.R
+import com.pengxh.secretkey.greendao.SecretSQLiteBeanDao
 import com.pengxh.secretkey.ui.AboutActivity
 import com.pengxh.secretkey.ui.InputDataActivity
 import com.pengxh.secretkey.ui.PasswordModeActivity
@@ -27,12 +27,10 @@ import java.io.File
  */
 class SettingsFragment : BaseFragment() {
 
-    companion object {
-        private const val Tag = "SettingsFragment"
-    }
-
-    private val dir =
+    private var dir: String =
         File(Environment.getExternalStorageDirectory(), "SecretKey").toString() + File.separator
+    private var secretBeanDao: SecretSQLiteBeanDao =
+        BaseApplication.instance().obtainDaoSession().secretSQLiteBeanDao
     private lateinit var path: String
 
     override fun initLayoutView(): Int = R.layout.fragment_settings
@@ -54,7 +52,7 @@ class SettingsFragment : BaseFragment() {
          * */
         outputLayout.setOnClickListener {
             context?.let {
-                val allSecret = SQLiteUtil().loadAllSecret()
+                val allSecret = secretBeanDao.loadAll()
 
                 val mode = SaveKeyValues.getValue(Constant.PASSWORD_MODE, "") as String
                 if (mode == "closePassword" || mode == "") {
@@ -62,7 +60,6 @@ class SettingsFragment : BaseFragment() {
                 } else {
                     if (allSecret.size > 0) {
                         //写入到excel
-                        Log.d(Tag, "待写入数据: " + Gson().toJson(allSecret))
                         val builder = EditTextDialogBuilder(context)
                         builder.setTitle("导出到表格")
                             .setPlaceholder("请输入文件名")
@@ -83,10 +80,8 @@ class SettingsFragment : BaseFragment() {
                                 if (!file.exists()) {
                                     file.createNewFile()
                                 }
-                                Log.d(Tag, "initEvent: 写入表格-开始")
                                 ExcelHelper.initExcel(file, Constant.excelTitle)
                                 ExcelHelper.writeSecretToExcel(allSecret)
-                                Log.d(Tag, "initEvent: 写入表格-结束")
                                 OtherUtils.showAlertDialog(
                                     it,
                                     "温馨提示",

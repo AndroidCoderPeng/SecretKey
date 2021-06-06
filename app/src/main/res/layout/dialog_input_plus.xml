@@ -92,11 +92,12 @@
         <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
             android:id="@+id/confirmButton"
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            android:paddingVertical="7dp"
             android:text="@string/confirm"
             android:textColor="@color/white"
-            android:textSize="@dimen/titleFontSize"
+            android:textSize="@dimen/textFontSize"
             app:qmui_backgroundColor="@color/mainThemeColor"
             app:qmui_borderColor="@color/mainThemeColor"
             app:qmui_radius="18dp" />

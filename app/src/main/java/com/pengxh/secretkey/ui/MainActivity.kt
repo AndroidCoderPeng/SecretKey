@@ -11,7 +11,7 @@ import androidx.viewpager.widget.ViewPager
 import com.pengxh.secretkey.BaseActivity
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.ViewPagerAdapter
-import com.pengxh.secretkey.bean.SecretBean
+import com.pengxh.secretkey.bean.SecretSQLiteBean
 import com.pengxh.secretkey.ui.fragment.HomePageFragment
 import com.pengxh.secretkey.ui.fragment.SecretListFragment
 import com.pengxh.secretkey.ui.fragment.SettingsFragment
@@ -79,17 +79,16 @@ class MainActivity : BaseActivity() {
         if (!file.exists()) {
             file.createNewFile()
         }
-        Log.d(Tag, "initExcelDemo: ${file.absoluteFile}")
         //写入模板数据
         ExcelHelper.initExcel(file, Constant.excelTitle)
         //模拟数据
-        val secretData: MutableList<SecretBean> = ArrayList()
-        val demoBean = SecretBean()
-        demoBean.secretCategory = "网站"
-        demoBean.secretTitle = "淘宝网"
-        demoBean.secretAccount = "ABC"
-        demoBean.secretPassword = "123456789"
-        demoBean.secretRemarks = "这里是个选填项"
+        val secretData: MutableList<SecretSQLiteBean> = ArrayList()
+        val demoBean = SecretSQLiteBean()
+        demoBean.category = "网站"
+        demoBean.title = "淘宝网"
+        demoBean.account = "ABC"
+        demoBean.password = "123456789"
+        demoBean.remarks = "这里是个选填项"
         secretData.add(demoBean)
         ExcelHelper.writeSecretToExcel(secretData)
     }

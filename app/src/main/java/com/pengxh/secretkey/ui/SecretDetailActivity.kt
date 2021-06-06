@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Handler
+import android.os.Message
 import android.view.View
 import androidx.core.content.ContextCompat
 import cn.bertsir.zbar.utils.QRUtils
@@ -13,15 +15,19 @@ import com.google.android.material.snackbar.Snackbar
 import com.pengxh.app.multilib.utils.DensityUtil
 import com.pengxh.app.multilib.widget.swipemenu.SwipeMenuItem
 import com.pengxh.secretkey.BaseActivity
+import com.pengxh.secretkey.BaseApplication
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.SecretDetailAdapter
-import com.pengxh.secretkey.bean.SecretBean
-import com.pengxh.secretkey.utils.SQLiteUtil
+import com.pengxh.secretkey.bean.SecretSQLiteBean
+import com.pengxh.secretkey.greendao.DaoSession
+import com.pengxh.secretkey.greendao.SecretSQLiteBeanDao
 import com.pengxh.secretkey.utils.ToastHelper
 import com.pengxh.secretkey.widgets.InputDialogPlus
 import com.pengxh.secretkey.widgets.ShareDialog
+import com.qmuiteam.qmui.util.QMUIDisplayHelper
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import kotlinx.android.synthetic.main.activity_secret_detail.*
+import java.lang.ref.WeakReference
 
 
 /**
@@ -31,11 +37,13 @@ import kotlinx.android.synthetic.main.activity_secret_detail.*
  */
 class SecretDetailActivity : BaseActivity() {
 
-    private val context = this
-    private lateinit var clipboardManager: ClipboardManager
-    private lateinit var sqLiteUtil: SQLiteUtil
-    private lateinit var secretList: MutableList<SecretBean>
+    private var daoSession: DaoSession = BaseApplication.instance().obtainDaoSession()
+    private var secretList: MutableList<SecretSQLiteBean> = ArrayList()
     private var category: String? = null
+    private var isUpdate: Boolean = false
+    private lateinit var secretListAdapter: SecretDetailAdapter
+    private lateinit var weakReferenceHandler: WeakReferenceHandler
+    private lateinit var clipboardManager: ClipboardManager
 
     override fun initLayoutView(): Int = R.layout.activity_secret_detail
 
@@ -44,78 +52,24 @@ class SecretDetailActivity : BaseActivity() {
     }
 
     override fun initData() {
+        weakReferenceHandler = WeakReferenceHandler(this)
+        clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+
         category = intent.getStringExtra("mode")
         topLayout.setTitle(category).setTextColor(ContextCompat.getColor(this, R.color.white))
 
-        clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        sqLiteUtil = SQLiteUtil()
+        secretList = daoSession.queryBuilder(SecretSQLiteBean::class.java)
+            .where(SecretSQLiteBeanDao.Properties.Category.eq(category))
+            .list()
+        weakReferenceHandler.sendEmptyMessage(20210606)
     }
 
     override fun initEvent() {
         val snackBar = Snackbar.make(linearLayout, "长按账号和密码复制哦~", Snackbar.LENGTH_LONG)
         snackBar.setAction("知道了") { snackBar.dismiss() }
         snackBar.show()
-    }
 
-    override fun onResume() {
-        super.onResume()
-        secretList = sqLiteUtil.loadCategory(category!!)
-        initUI(secretList)
-
-        val secretDetailAdapter = SecretDetailAdapter(context, secretList)
-        secretListView.adapter = secretDetailAdapter
-        secretDetailAdapter.setOnItemClickListener(object :
-            SecretDetailAdapter.OnChildViewClickListener {
-            override fun onAccountLongPressed(index: Int) {
-                val secretBean = secretList[index]
-                val cipData = ClipData.newPlainText("secretAccount", secretBean.secretAccount)
-                clipboardManager.setPrimaryClip(cipData)
-                ToastHelper.showToast("账号复制成功", ToastHelper.SUCCESS)
-            }
-
-            override fun onPasswordLongPressed(index: Int) {
-                val secretBean = secretList[index]
-                val cipData = ClipData.newPlainText("secretPassword", secretBean.secretPassword)
-                clipboardManager.setPrimaryClip(cipData)
-                ToastHelper.showToast("密码复制成功", ToastHelper.SUCCESS)
-            }
-
-            override fun onShareViewClicked(index: Int) {
-                val secretBean = secretList[index]
-                val data = secretBean.secretAccount + "\r\n" + secretBean.secretPassword
-                val createCodeBitmap = QRUtils.getInstance().createQRCode(
-                    data,
-                    DensityUtil.dp2px(context, 300.0f),
-                    DensityUtil.dp2px(context, 300.0f)
-                )
-                ShareDialog.Builder().setContext(context).setDialogTitle("请不要将此二维码随意泄露给他人")
-                    .setDialogBitmap(createCodeBitmap).build().show()
-            }
-
-            override fun onModifyViewClicked(index: Int) {
-                InputDialogPlus.Builder().setContext(context)
-                    .setCategory(category)
-                    .setOnDialogClickListener(object : InputDialogPlus.DialogClickListener {
-                        override fun onConfirmClicked(
-                            category: String,
-                            password: String,
-                            remarks: String
-                        ) {
-                            if (password == "") {
-                                ToastHelper.showToast("不能将密码修改为空值", ToastHelper.WARING)
-                                return
-                            }
-                            val secretBean = secretList[index]
-                            sqLiteUtil.updateSecret(
-                                secretBean.secretTitle!!,
-                                secretBean.secretAccount!!,
-                                category, password, remarks
-                            )
-                            finish()
-                        }
-                    }).build().show(supportFragmentManager, "modifyPassword")
-            }
-        })
+        //List删除事件
         secretListView.setMenuCreator { menu ->
             val deleteItem = SwipeMenuItem(this)
             deleteItem.setIcon(R.drawable.ic_delete_white)
@@ -130,7 +84,7 @@ class SecretDetailActivity : BaseActivity() {
             val secretBean = secretList[position]
             when (index) {
                 0 ->
-                    QMUIDialog.MessageDialogBuilder(context)
+                    QMUIDialog.MessageDialogBuilder(this)
                         .setTitle("温馨提示")
                         .setMessage("删除后将无法恢复，是否继续？")
                         .setCanceledOnTouchOutside(false)
@@ -139,13 +93,10 @@ class SecretDetailActivity : BaseActivity() {
                         }
                         .addAction("已经想好") { dialog, _ ->
                             dialog.dismiss()
-                            sqLiteUtil.deleteSecret(
-                                secretBean.secretTitle!!,
-                                secretBean.secretAccount!!
-                            )
+                            daoSession.delete(secretBean)
                             secretList.removeAt(position)
-                            secretDetailAdapter.notifyDataSetChanged()
-                            initUI(secretList)
+                            isUpdate = true
+                            weakReferenceHandler.sendEmptyMessage(20210606)
                         }.create().show()
             }
             false
@@ -158,13 +109,87 @@ class SecretDetailActivity : BaseActivity() {
         }
     }
 
-    private fun initUI(list: MutableList<SecretBean>) {
-        if (list.size > 0) {
-            secretListView.visibility = View.VISIBLE
-            emptyLayout.visibility = View.GONE
-        } else {
-            emptyLayout.visibility = View.VISIBLE
-            secretListView.visibility = View.GONE
+    private class WeakReferenceHandler(activity: SecretDetailActivity) : Handler() {
+        private val mActivity: WeakReference<SecretDetailActivity> = WeakReference(activity)
+
+        override fun handleMessage(msg: Message) {
+            if (mActivity.get() == null) {
+                return
+            }
+            val activity = mActivity.get()
+            when (msg.what) {
+                20210606 -> {
+                    if (activity!!.secretList.size == 0) {
+                        activity.secretListView.visibility = View.GONE
+                        activity.emptyLayout.visibility = View.VISIBLE
+                    } else {
+                        activity.secretListView.visibility = View.VISIBLE
+                        activity.emptyLayout.visibility = View.GONE
+                    }
+                    if (activity.isUpdate) {
+                        activity.secretListAdapter.notifyDataSetChanged()
+                    } else {
+                        activity.secretListAdapter =
+                            SecretDetailAdapter(activity, activity.secretList)
+                        activity.secretListView.adapter = activity.secretListAdapter
+                        activity.secretListAdapter.setOnItemClickListener(object :
+                            SecretDetailAdapter.OnChildViewClickListener {
+                            override fun onAccountLongPressed(index: Int) {
+                                val secretBean = activity.secretList[index]
+                                val cipData =
+                                    ClipData.newPlainText("secretAccount", secretBean.account)
+                                activity.clipboardManager.setPrimaryClip(cipData)
+                                ToastHelper.showToast("账号复制成功", ToastHelper.SUCCESS)
+                            }
+
+                            override fun onPasswordLongPressed(index: Int) {
+                                val secretBean = activity.secretList[index]
+                                val cipData =
+                                    ClipData.newPlainText("secretPassword", secretBean.password)
+                                activity.clipboardManager.setPrimaryClip(cipData)
+                                ToastHelper.showToast("密码复制成功", ToastHelper.SUCCESS)
+                            }
+
+                            override fun onShareViewClicked(index: Int) {
+                                val secretBean = activity.secretList[index]
+                                val data = secretBean.account + "\r\n" + secretBean.password
+                                val createCodeBitmap = QRUtils.getInstance().createQRCode(
+                                    data,
+                                    QMUIDisplayHelper.dp2px(activity, 300),
+                                    QMUIDisplayHelper.dp2px(activity, 300)
+                                )
+                                ShareDialog.Builder().setContext(activity)
+                                    .setDialogTitle("请不要将此二维码随意泄露给他人")
+                                    .setDialogBitmap(createCodeBitmap).build().show()
+                            }
+
+                            override fun onModifyViewClicked(index: Int) {
+                                InputDialogPlus.Builder().setContext(activity)
+                                    .setCategory(activity.category)
+                                    .setOnDialogClickListener(object :
+                                        InputDialogPlus.DialogClickListener {
+                                        override fun onConfirmClicked(
+                                            category: String,
+                                            password: String,
+                                            remarks: String
+                                        ) {
+                                            if (password == "") {
+                                                ToastHelper.showToast(
+                                                    "不能将密码修改为空值",
+                                                    ToastHelper.WARING
+                                                )
+                                                return
+                                            }
+                                            activity.daoSession.update(activity.secretList[index])
+                                            activity.finish()
+                                        }
+                                    }).build()
+                                    .show(activity.supportFragmentManager, "modifyPassword")
+                            }
+                        })
+                    }
+                }
+            }
         }
     }
 }

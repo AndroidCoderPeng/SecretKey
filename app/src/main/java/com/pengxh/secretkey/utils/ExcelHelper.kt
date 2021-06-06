@@ -1,7 +1,6 @@
 package com.pengxh.secretkey.utils
 
-import android.util.Log
-import com.pengxh.secretkey.bean.SecretBean
+import com.pengxh.secretkey.bean.SecretSQLiteBean
 import jxl.Workbook
 import jxl.WorkbookSettings
 import jxl.format.Colour
@@ -18,7 +17,6 @@ import java.io.FileInputStream
  */
 class ExcelHelper {
     companion object {
-        private const val TAG = "ExcelHelper"
         private const val UTF8_ENCODING = "UTF-8"
         private lateinit var arial14font: WritableFont
         private lateinit var arial14format: WritableCellFormat
@@ -98,7 +96,7 @@ class ExcelHelper {
         /**
          * 将数据写入Excel表格
          * */
-        fun writeSecretToExcel(list: List<SecretBean>?) {
+        fun writeSecretToExcel(list: List<SecretSQLiteBean>?) {
             if (list != null && list.isNotEmpty()) {
                 var writeBook: WritableWorkbook? = null
                 try {
@@ -108,12 +106,12 @@ class ExcelHelper {
                     writeBook = Workbook.createWorkbook(file, workbook)
                     val sheet: WritableSheet = writeBook.getSheet(0)
                     for (j in list.indices) {
-                        val secretBean: SecretBean = list[j]
-                        val secretCategory: String? = secretBean.secretCategory
-                        val secretTitle: String? = secretBean.secretTitle
-                        val secretAccount: String? = secretBean.secretAccount
-                        val secretPassword: String? = secretBean.secretPassword
-                        val secretRemarks: String? = secretBean.secretRemarks
+                        val secretBean: SecretSQLiteBean = list[j]
+                        val secretCategory: String? = secretBean.category
+                        val secretTitle: String? = secretBean.title
+                        val secretAccount: String? = secretBean.account
+                        val secretPassword: String? = secretBean.password
+                        val secretRemarks: String? = secretBean.remarks
                         //第一行留作表头
                         sheet.addCell(Label(0, j + 1, secretCategory, arial12format))
                         sheet.addCell(Label(1, j + 1, secretTitle, arial12format))
@@ -123,8 +121,6 @@ class ExcelHelper {
                         sheet.setRowView(j + 1, 350) //设置行高
                     }
                     writeBook.write()
-                    Log.d(TAG, "writeSecretToExcel: 导出表格到本地成功")
-                    //然后导出到指定位置
                 } catch (e: Exception) {
                     e.printStackTrace()
                 } finally {
@@ -154,11 +150,11 @@ class ExcelHelper {
                 val cell4 = sheet.getCell(4, i)
                 //每一行创建一个JSONObject对象
                 val jsonObject = JSONObject()
-                jsonObject.put("secretCategory", cell.contents)
-                jsonObject.put("secretTitle", cell1.contents)
-                jsonObject.put("secretAccount", cell2.contents)
-                jsonObject.put("secretPassword", cell3.contents)
-                jsonObject.put("secretRemarks", cell4.contents)
+                jsonObject.put("category", cell.contents)
+                jsonObject.put("title", cell1.contents)
+                jsonObject.put("account", cell2.contents)
+                jsonObject.put("password", cell3.contents)
+                jsonObject.put("remarks", cell4.contents)
                 //加入json队列
                 result.put(jsonObject)
             }

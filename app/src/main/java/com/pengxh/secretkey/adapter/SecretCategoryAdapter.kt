@@ -8,9 +8,12 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.pengxh.secretkey.BaseApplication
 import com.pengxh.secretkey.R
+import com.pengxh.secretkey.bean.SecretSQLiteBean
+import com.pengxh.secretkey.greendao.DaoSession
+import com.pengxh.secretkey.greendao.SecretSQLiteBeanDao
 import com.pengxh.secretkey.utils.Constant
-import com.pengxh.secretkey.utils.SQLiteUtil
 
 /**
  * @author: Pengxh
@@ -21,11 +24,10 @@ class SecretCategoryAdapter(ctx: Context) : BaseAdapter() {
 
     private var context: Context = ctx
     private var inflater: LayoutInflater
-    private var sqLiteUtil: SQLiteUtil
+    private var daoSession: DaoSession = BaseApplication.instance().obtainDaoSession()
 
     init {
         inflater = LayoutInflater.from(context)
-        sqLiteUtil = SQLiteUtil()
     }
 
     override fun getCount(): Int = Constant.IMAGES.size
@@ -48,8 +50,10 @@ class SecretCategoryAdapter(ctx: Context) : BaseAdapter() {
         }
         itemViewHolder.secretCover.setImageResource(Constant.IMAGES[position])
         itemViewHolder.secretCategory.text = Constant.CATEGORY[position]
-        itemViewHolder.secretCount.text =
-            "(${sqLiteUtil.loadCategory(Constant.CATEGORY[position]).size})"
+        val categoryData = daoSession.queryBuilder(SecretSQLiteBean::class.java)
+            .where(SecretSQLiteBeanDao.Properties.Category.eq(Constant.CATEGORY[position]))
+            .list()
+        itemViewHolder.secretCount.text = "(${categoryData.size})"
         return view
     }
 

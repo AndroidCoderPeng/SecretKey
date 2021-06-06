@@ -19,11 +19,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.pengxh.app.multilib.base.BaseFragment
 import com.pengxh.app.multilib.utils.BroadcastManager
+import com.pengxh.secretkey.BaseApplication
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.SecretListAdapter
-import com.pengxh.secretkey.bean.SecretBean
+import com.pengxh.secretkey.bean.SecretSQLiteBean
 import com.pengxh.secretkey.bean.SecretTagBean
-import com.pengxh.secretkey.utils.*
+import com.pengxh.secretkey.greendao.SecretSQLiteBeanDao
+import com.pengxh.secretkey.utils.Constant
+import com.pengxh.secretkey.utils.SecretComparator
+import com.pengxh.secretkey.utils.StringHelper
+import com.pengxh.secretkey.utils.VerticalItemDecoration
 import com.pengxh.secretkey.utils.callback.DecorationCallback
 import com.pengxh.secretkey.widgets.SecretDetailDialog
 import com.pengxh.secretkey.widgets.SlideBarView
@@ -45,16 +50,17 @@ class SecretListFragment : BaseFragment() {
         private const val TAG = "SecretListFragment"
     }
 
-    private lateinit var sqLiteUtil: SQLiteUtil
+    private var secretBeanDao: SecretSQLiteBeanDao =
+        BaseApplication.instance().obtainDaoSession().secretSQLiteBeanDao
     private var dataBeans: ArrayList<SecretTagBean> = ArrayList()
-    private var allSecretData: ArrayList<SecretBean> = ArrayList()
+    private var allSecretData: MutableList<SecretSQLiteBean> = ArrayList()
     private var secretAdapter: SecretListAdapter? = null
     private var isUpdateData = false
 
     override fun initLayoutView(): Int = R.layout.fragment_secretlist
 
     override fun initData() {
-        sqLiteUtil = SQLiteUtil()
+
     }
 
     override fun initEvent() {
@@ -136,13 +142,13 @@ class SecretListFragment : BaseFragment() {
             override fun onClick(position: Int) {
                 val secretTagBean = dataBeans[position]
                 allSecretData.forEach {
-                    if (it.secretTitle == secretTagBean.title && it.secretAccount == secretTagBean.account) {
+                    if (it.title == secretTagBean.title && it.account == secretTagBean.account) {
                         SecretDetailDialog.Builder()
                             .setContext(context)
-                            .setDialogTitle(it.secretTitle)
-                            .setMessage(it.secretAccount)
-                            .setSubMessage(it.secretPassword)
-                            .setSecretMarks(it.secretRemarks)
+                            .setDialogTitle(it.title)
+                            .setMessage(it.account)
+                            .setSubMessage(it.password)
+                            .setSecretMarks(it.remarks)
                             .build().show()
                     }
                 }
@@ -150,7 +156,7 @@ class SecretListFragment : BaseFragment() {
         })
     }
 
-    private fun initPopupWindow(letters: ArrayList<String>, allData: ArrayList<SecretBean>) {
+    private fun initPopupWindow(letters: ArrayList<String>, allData: MutableList<SecretSQLiteBean>) {
         var layoutInflater: LayoutInflater? = null
         try {
             layoutInflater = LayoutInflater.from(context)
@@ -202,49 +208,49 @@ class SecretListFragment : BaseFragment() {
      */
     private fun obtainSecretTagData(): ArrayList<SecretTagBean> {
         Log.d(TAG, "获取数据-开始")
-        allSecretData = sqLiteUtil.loadAllSecret()
+        allSecretData = secretBeanDao.loadAll()
         val updateList = ArrayList<SecretTagBean>()
         val slideBarLetters = ArrayList<String>()
         if (!allSecretData.isNullOrEmpty()) {
             //将中英文重新混合排序
             for (resultBean in allSecretData) {
-                var secretTitle = resultBean.secretTitle
+                var secretTitle = resultBean.title
                 //获取账号第一个字符
                 val first = secretTitle!!.substring(0, 1)
                 if (StringHelper.isChinese(first) || StringHelper.isNumber(first)) {
                     secretTitle = StringHelper.obtainHanYuPinyin(first) + "-" + secretTitle
-                    resultBean.secretTitle = secretTitle
+                    resultBean.title = secretTitle
                 }
             }
             //准备排序
             val collator: Collator = Collator.getInstance(Locale.CHINA)
-            val secretComparator: SecretComparator<SecretBean> =
-                object : SecretComparator<SecretBean>() {
+            val secretComparator: SecretComparator<SecretSQLiteBean> =
+                object : SecretComparator<SecretSQLiteBean>() {
                     override fun compare(
-                        @Nullable left: SecretBean,
-                        @Nullable right: SecretBean
+                        @Nullable left: SecretSQLiteBean,
+                        @Nullable right: SecretSQLiteBean
                     ): Int {
-                        if (left.secretTitle == null) {
+                        if (left.title == null) {
                             return -1
                         }
-                        if (right.secretTitle == null) {
+                        if (right.title == null) {
                             return 1
                         }
-                        if (left.secretTitle == right.secretTitle) {
-                            if (left.secretAccount == null) {
+                        if (left.title == right.title) {
+                            if (left.account == null) {
                                 return -1
                             }
-                            return if (right.secretAccount == null) {
+                            return if (right.account == null) {
                                 1
-                            } else collator.compare(left.secretAccount, right.secretAccount)
+                            } else collator.compare(left.account, right.account)
                         }
-                        return collator.compare(left.secretTitle, right.secretTitle)
+                        return collator.compare(left.title, right.title)
                     }
                 }
             Collections.sort(allSecretData, secretComparator)
             //获取侧边栏title
             allSecretData.forEach {
-                slideBarLetters.add(it.secretTitle!!)
+                slideBarLetters.add(it.title!!)
             }
             //将中文转化为大写字母
             val letterSet = HashSet<String>()
@@ -256,18 +262,18 @@ class SecretListFragment : BaseFragment() {
             initPopupWindow(ArrayList(letterSet), allSecretData)
             //去掉之前添加得标记
             for (bean in allSecretData) {
-                val secretTitle = bean.secretTitle
+                val secretTitle = bean.title
                 if (secretTitle!!.contains("-") && secretTitle.indexOf("-") == 1) {
-                    bean.secretTitle = secretTitle.substring(2)
+                    bean.title = secretTitle.substring(2)
                 }
             }
             //获取列表数据
             for (bean in allSecretData) {
                 val secretTagBean = SecretTagBean()
-                val s = bean.secretTitle!!
+                val s = bean.title!!
                 secretTagBean.tag = StringHelper.obtainHanYuPinyin(s).toUpperCase(Locale.ROOT)
                 secretTagBean.title = s
-                secretTagBean.account = bean.secretAccount
+                secretTagBean.account = bean.account
                 updateList.add(secretTagBean)
             }
         }

@@ -10,7 +10,7 @@ import android.view.View
 import android.view.View.OnTouchListener
 import com.pengxh.app.multilib.utils.DensityUtil
 import com.pengxh.secretkey.R
-import com.pengxh.secretkey.bean.SecretBean
+import com.pengxh.secretkey.bean.SecretSQLiteBean
 import com.pengxh.secretkey.utils.StringHelper
 import java.util.*
 import kotlin.math.abs
@@ -45,11 +45,11 @@ class SlideBarView constructor(context: Context, attrs: AttributeSet? = null) :
         setOnTouchListener(this)
     }
 
-    fun setData(list: ArrayList<String>, allData: List<SecretBean>) {
+    fun setData(list: ArrayList<String>, allData: List<SecretSQLiteBean>) {
         this.data = list
         allData.forEach {
             this.allTitle.add(
-                StringHelper.obtainHanYuPinyin(it.secretTitle!!).toUpperCase(Locale.ROOT)
+                StringHelper.obtainHanYuPinyin(it.title!!).toUpperCase(Locale.ROOT)
             )
         }
     }

@@ -227,11 +227,12 @@
         <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
             android:id="@+id/selectFileButton"
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="wrap_content"
             android:layout_margin="15dp"
+            android:paddingVertical="7dp"
             android:text="选择导入文件"
             android:textColor="@color/white"
-            android:textSize="@dimen/titleFontSize"
+            android:textSize="@dimen/textFontSize"
             app:qmui_backgroundColor="@color/mainThemeColor"
             app:qmui_borderColor="@color/mainThemeColor"
             app:qmui_radius="18dp" />

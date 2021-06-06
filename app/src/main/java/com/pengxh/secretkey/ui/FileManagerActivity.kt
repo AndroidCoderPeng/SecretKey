@@ -16,12 +16,13 @@ import com.google.gson.reflect.TypeToken
 import com.pengxh.app.multilib.utils.BroadcastManager
 import com.pengxh.app.multilib.utils.DensityUtil
 import com.pengxh.secretkey.BaseActivity
+import com.pengxh.secretkey.BaseApplication
 import com.pengxh.secretkey.R
 import com.pengxh.secretkey.adapter.FileManagerAdapter
-import com.pengxh.secretkey.bean.SecretBean
+import com.pengxh.secretkey.bean.SecretSQLiteBean
+import com.pengxh.secretkey.greendao.SecretSQLiteBeanDao
 import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.ExcelHelper
-import com.pengxh.secretkey.utils.SQLiteUtil
 import com.pengxh.secretkey.utils.ToastHelper
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import kotlinx.android.synthetic.main.activity_file.*
@@ -35,7 +36,10 @@ import java.io.File
  */
 class FileManagerActivity : BaseActivity() {
 
-    private lateinit var sqLiteUtil: SQLiteUtil
+    private var secretBeanDao: SecretSQLiteBeanDao =
+        BaseApplication.instance().obtainDaoSession().secretSQLiteBeanDao
+    private var fileList: MutableList<File> = ArrayList()
+    private lateinit var fileAdapter: FileManagerAdapter
 
     override fun initLayoutView(): Int = R.layout.activity_file
 
@@ -47,17 +51,16 @@ class FileManagerActivity : BaseActivity() {
     }
 
     override fun initData() {
-        sqLiteUtil = SQLiteUtil()
-    }
-
-    override fun initEvent() {
         val dir = File(Environment.getExternalStorageDirectory(), "SecretKey")
-        val fileList = dir.listFiles()!!.toList()
-
-        val fileAdapter = FileManagerAdapter(this, fileList)
+        fileList = dir.listFiles()!!.toMutableList()
+        fileAdapter = FileManagerAdapter(this, fileList)
         fileRecyclerView.layoutManager = LinearLayoutManager(this)
         fileRecyclerView.addItemDecoration(DividerItemDecoration(this))
         fileRecyclerView.adapter = fileAdapter
+
+    }
+
+    override fun initEvent() {
         fileAdapter.setOnChildViewClickListener(object :
             FileManagerAdapter.OnChildViewClickListener {
             override fun onClicked(index: Int) {
@@ -71,8 +74,8 @@ class FileManagerActivity : BaseActivity() {
      * */
     private fun inputData(filePath: String) {
         val data = ExcelHelper.transformExcelToJson(filePath)
-        val type = object : TypeToken<List<SecretBean>>() {}.type
-        val beanList: List<SecretBean> = Gson().fromJson(data, type)
+        val type = object : TypeToken<List<SecretSQLiteBean>>() {}.type
+        val beanList: List<SecretSQLiteBean> = Gson().fromJson(data, type)
         QMUIDialog.MessageDialogBuilder(this)
             .setTitle("温馨提示")
             .setMessage("可导入${beanList.size}条数据。导入的账号数据如与密码管家已有账号数据重复，将会自动修改原有账号密码，请谨慎操作！")
@@ -80,13 +83,7 @@ class FileManagerActivity : BaseActivity() {
             .addAction("知道了") { dialog, _ ->
                 dialog.dismiss()
                 beanList.forEach {
-                    sqLiteUtil.saveSecret(
-                        it.secretCategory!!,
-                        it.secretTitle!!,
-                        it.secretAccount!!,
-                        it.secretPassword!!,
-                        it.secretRemarks!!
-                    )
+                    secretBeanDao.insert(it)
                 }
                 ToastHelper.showToast("导入成功", ToastHelper.SUCCESS)
                 finish()
@@ -145,17 +142,6 @@ class FileManagerActivity : BaseActivity() {
                     bottomLinePaint
                 )
             }
-        }
-
-        /**
-         * 在item上绘制
-         */
-        override fun onDrawOver(
-            c: Canvas,
-            parent: RecyclerView,
-            state: RecyclerView.State
-        ) {
-            super.onDrawOver(c, parent, state)
         }
     }
 }

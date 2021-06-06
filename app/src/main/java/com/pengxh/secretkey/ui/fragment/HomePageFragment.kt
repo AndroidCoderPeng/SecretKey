@@ -1,13 +1,10 @@
 package com.pengxh.secretkey.ui.fragment
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Color
 import android.os.Handler
 import android.os.Message
 import android.text.InputType
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import cn.bertsir.zbar.QrConfig
 import cn.bertsir.zbar.QrManager
 import cn.bertsir.zbar.view.ScanLineView
@@ -17,7 +14,10 @@ import com.pengxh.secretkey.adapter.SecretCategoryAdapter
 import com.pengxh.secretkey.ui.AddSecretActivity
 import com.pengxh.secretkey.ui.SearchEventActivity
 import com.pengxh.secretkey.ui.SecretDetailActivity
-import com.pengxh.secretkey.utils.*
+import com.pengxh.secretkey.utils.ColorHelper
+import com.pengxh.secretkey.utils.Constant
+import com.pengxh.secretkey.utils.OtherUtils
+import com.pengxh.secretkey.utils.ToastHelper
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.include_secret_number.*
@@ -31,13 +31,10 @@ import java.util.*
 class HomePageFragment : BaseFragment() {
 
     private var length = 0 //进度条初始值
-    private lateinit var sqLiteUtil: SQLiteUtil
 
     override fun initLayoutView(): Int = R.layout.fragment_home
 
     override fun initData() {
-        sqLiteUtil = SQLiteUtil()
-
         attentionMessage.isSelected = true
     }
 

@@ -10,18 +10,18 @@ import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.recyclerview.widget.RecyclerView
 import com.pengxh.secretkey.R
-import com.pengxh.secretkey.bean.SecretBean
+import com.pengxh.secretkey.bean.SecretSQLiteBean
 
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
  * @date: 2020/8/3 12:35
  */
-class SearchSecretAdapter(ctx: Context, list: MutableList<SecretBean>) :
+class SearchSecretAdapter(ctx: Context, list: MutableList<SecretSQLiteBean>) :
     RecyclerView.Adapter<SearchSecretAdapter.ItemViewHolder>() {
 
     private var context: Context = ctx
-    private var beanList: MutableList<SecretBean> = list
+    private var beanList: MutableList<SecretSQLiteBean> = list
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
@@ -34,10 +34,10 @@ class SearchSecretAdapter(ctx: Context, list: MutableList<SecretBean>) :
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val secretBean = beanList[position]
-        holder.secretTitle.text = secretBean.secretTitle
-        holder.secretAccount.text = secretBean.secretAccount
-        holder.secretPassword.text = secretBean.secretPassword
-        holder.secretRemarks.text = secretBean.secretRemarks
+        holder.secretTitle.text = secretBean.title
+        holder.secretAccount.text = secretBean.account
+        holder.secretPassword.text = secretBean.password
+        holder.secretRemarks.text = secretBean.remarks
 
         //账号密码长按事件
         holder.secretAccount.setOnLongClickListener {

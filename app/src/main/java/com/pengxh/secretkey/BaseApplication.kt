@@ -3,6 +3,7 @@ package com.pengxh.secretkey
 import android.app.Activity
 import android.app.Application
 import android.content.ComponentCallbacks2
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
 import com.baidu.ocr.sdk.OCR
@@ -10,6 +11,8 @@ import com.baidu.ocr.sdk.OnResultListener
 import com.baidu.ocr.sdk.exception.OCRError
 import com.baidu.ocr.sdk.model.AccessToken
 import com.pengxh.app.multilib.utils.SaveKeyValues
+import com.pengxh.secretkey.greendao.DaoMaster
+import com.pengxh.secretkey.greendao.DaoSession
 import com.pengxh.secretkey.ui.MainActivity
 import com.pengxh.secretkey.utils.Constant
 import com.pengxh.secretkey.utils.OtherUtils
@@ -29,6 +32,7 @@ class BaseApplication : Application(), Application.ActivityLifecycleCallbacks {
         //单例
         private var instance: BaseApplication by Delegates.notNull()
         fun instance() = instance
+        private lateinit var daoSession: DaoSession
     }
 
     private var isBackground = false
@@ -50,6 +54,18 @@ class BaseApplication : Application(), Application.ActivityLifecycleCallbacks {
 
             }
         }, this)
+        initDataBase()
+    }
+
+    private fun initDataBase() {
+        val devOpenHelper = DaoMaster.DevOpenHelper(this, "SecretKey.db")
+        val db: SQLiteDatabase = devOpenHelper.writableDatabase
+        val daoMaster = DaoMaster(db)
+        daoSession = daoMaster.newSession()
+    }
+
+    fun obtainDaoSession(): DaoSession {
+        return daoSession
     }
 
     override fun onActivityPaused(activity: Activity) {

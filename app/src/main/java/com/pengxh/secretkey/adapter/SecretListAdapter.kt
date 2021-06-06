@@ -8,20 +8,20 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pengxh.secretkey.R
-import com.pengxh.secretkey.bean.SecretBean
+import com.pengxh.secretkey.bean.SecretSQLiteBean
 import com.pengxh.secretkey.bean.SecretTagBean
 import com.pengxh.secretkey.utils.StringHelper
 
 class SecretListAdapter constructor(
     mContext: Context?,
     list: ArrayList<SecretTagBean>?,
-    allSecret: ArrayList<SecretBean>?
+    allSecret: MutableList<SecretSQLiteBean>?
 ) :
     RecyclerView.Adapter<SecretListAdapter.ViewHolder>() {
 
     private var context = mContext
     private var dataBeans: ArrayList<SecretTagBean>? = list
-    private var allSecretData: ArrayList<SecretBean>? = allSecret
+    private var allSecretData: MutableList<SecretSQLiteBean>? = allSecret
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -35,8 +35,8 @@ class SecretListAdapter constructor(
         val title = dataBeans!![position].title!!
         var type: String? = null
         allSecretData?.forEach {
-            if (title == it.secretTitle) {
-                type = it.secretCategory
+            if (title == it.title) {
+                type = it.category
                 return@forEach
             }
         }
